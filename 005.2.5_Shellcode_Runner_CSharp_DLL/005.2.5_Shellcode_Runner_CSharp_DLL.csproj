@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>_005._2._5_Shellcode_Runner_CSharp_DLL</RootNamespace>
-    <AssemblyName>005.2.5_Shellcode_Runner_CSharp_DLL</AssemblyName>
+    <AssemblyName>exploit</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
