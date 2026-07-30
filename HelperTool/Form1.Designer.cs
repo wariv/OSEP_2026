@@ -57,7 +57,7 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.rbMsv86 = new System.Windows.Forms.RadioButton();
             this.rbMsv64 = new System.Windows.Forms.RadioButton();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.tpProxyDLL = new System.Windows.Forms.TabPage();
             this.txtLHOST = new System.Windows.Forms.TextBox();
             this.lbLHOST = new System.Windows.Forms.Label();
             this.gnEnviroment = new System.Windows.Forms.GroupBox();
@@ -73,6 +73,9 @@
             this.txtLPORT = new System.Windows.Forms.TextBox();
             this.lbRHOST = new System.Windows.Forms.Label();
             this.txtRHOST = new System.Windows.Forms.TextBox();
+            this.txtProxyOut = new System.Windows.Forms.RichTextBox();
+            this.btnProxyLoad = new System.Windows.Forms.Button();
+            this.txtProxyPath = new System.Windows.Forms.TextBox();
             this.menuStrip1.SuspendLayout();
             this.tcMain.SuspendLayout();
             this.tpMsfVenom.SuspendLayout();
@@ -84,6 +87,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.numMsvEncIteration)).BeginInit();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
+            this.tpProxyDLL.SuspendLayout();
             this.gnEnviroment.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -120,7 +124,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tcMain.Controls.Add(this.tpMsfVenom);
-            this.tcMain.Controls.Add(this.tabPage2);
+            this.tcMain.Controls.Add(this.tpProxyDLL);
             this.tcMain.Location = new System.Drawing.Point(12, 167);
             this.tcMain.Name = "tcMain";
             this.tcMain.SelectedIndex = 0;
@@ -145,7 +149,7 @@
             this.tpMsfVenom.Padding = new System.Windows.Forms.Padding(3);
             this.tpMsfVenom.Size = new System.Drawing.Size(1382, 781);
             this.tpMsfVenom.TabIndex = 0;
-            this.tpMsfVenom.Text = "msfvenom";
+            this.tpMsfVenom.Text = "    msfvenom    ";
             this.tpMsfVenom.UseVisualStyleBackColor = true;
             // 
             // txtMsvListener
@@ -172,6 +176,7 @@
             // 
             // label4
             // 
+            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label4.Location = new System.Drawing.Point(13, 611);
@@ -182,6 +187,7 @@
             // 
             // label3
             // 
+            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.Location = new System.Drawing.Point(13, 427);
@@ -436,15 +442,18 @@
             this.rbMsv64.UseVisualStyleBackColor = true;
             this.rbMsv64.CheckedChanged += new System.EventHandler(this.rbMsv64_CheckedChanged);
             // 
-            // tabPage2
+            // tpProxyDLL
             // 
-            this.tabPage2.Location = new System.Drawing.Point(4, 29);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(1382, 781);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "tabPage2";
-            this.tabPage2.UseVisualStyleBackColor = true;
+            this.tpProxyDLL.Controls.Add(this.txtProxyPath);
+            this.tpProxyDLL.Controls.Add(this.btnProxyLoad);
+            this.tpProxyDLL.Controls.Add(this.txtProxyOut);
+            this.tpProxyDLL.Location = new System.Drawing.Point(4, 29);
+            this.tpProxyDLL.Name = "tpProxyDLL";
+            this.tpProxyDLL.Padding = new System.Windows.Forms.Padding(3);
+            this.tpProxyDLL.Size = new System.Drawing.Size(1382, 781);
+            this.tpProxyDLL.TabIndex = 1;
+            this.tpProxyDLL.Text = "    Proxy DLL Generator    ";
+            this.tpProxyDLL.UseVisualStyleBackColor = true;
             // 
             // txtLHOST
             // 
@@ -615,6 +624,36 @@
             this.txtRHOST.Text = "192.168.0.10";
             this.txtRHOST.TextChanged += new System.EventHandler(this.txtRHOST_TextChanged);
             // 
+            // txtProxyOut
+            // 
+            this.txtProxyOut.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtProxyOut.Font = new System.Drawing.Font("Consolas", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtProxyOut.Location = new System.Drawing.Point(18, 66);
+            this.txtProxyOut.Name = "txtProxyOut";
+            this.txtProxyOut.Size = new System.Drawing.Size(1346, 697);
+            this.txtProxyOut.TabIndex = 0;
+            this.txtProxyOut.Text = "";
+            // 
+            // btnProxyLoad
+            // 
+            this.btnProxyLoad.Location = new System.Drawing.Point(1223, 12);
+            this.btnProxyLoad.Name = "btnProxyLoad";
+            this.btnProxyLoad.Size = new System.Drawing.Size(141, 35);
+            this.btnProxyLoad.TabIndex = 1;
+            this.btnProxyLoad.Text = "Analyze DLL";
+            this.btnProxyLoad.UseVisualStyleBackColor = true;
+            this.btnProxyLoad.Click += new System.EventHandler(this.btnProxyLoad_Click);
+            // 
+            // txtProxyPath
+            // 
+            this.txtProxyPath.Font = new System.Drawing.Font("Consolas", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtProxyPath.Location = new System.Drawing.Point(18, 16);
+            this.txtProxyPath.Name = "txtProxyPath";
+            this.txtProxyPath.Size = new System.Drawing.Size(1199, 26);
+            this.txtProxyPath.TabIndex = 2;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -645,6 +684,8 @@
             this.groupBox2.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            this.tpProxyDLL.ResumeLayout(false);
+            this.tpProxyDLL.PerformLayout();
             this.gnEnviroment.ResumeLayout(false);
             this.gnEnviroment.PerformLayout();
             this.ResumeLayout(false);
@@ -659,7 +700,7 @@
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.TabControl tcMain;
         private System.Windows.Forms.TabPage tpMsfVenom;
-        private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.TabPage tpProxyDLL;
         private System.Windows.Forms.TextBox txtLHOST;
         private System.Windows.Forms.Label lbLHOST;
         private System.Windows.Forms.GroupBox gnEnviroment;
@@ -699,6 +740,9 @@
         private System.Windows.Forms.RadioButton rbMsvStaged;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox txtMsvCmd;
+        private System.Windows.Forms.TextBox txtProxyPath;
+        private System.Windows.Forms.Button btnProxyLoad;
+        private System.Windows.Forms.RichTextBox txtProxyOut;
     }
 }
 

