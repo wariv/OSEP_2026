@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static _008._4._2_Process_Hollowing.Entry;
+using static OSEP.Entry;
 
-namespace _008._4._2_Process_Hollowing
+namespace OSEP
 {
     public partial class CreateHollowProcess
     {

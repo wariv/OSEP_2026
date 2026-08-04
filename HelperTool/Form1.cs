@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Reflection.PortableExecutable;
 using System.Security.Cryptography;
@@ -314,6 +315,63 @@ namespace OSEP_2026
 
 
             return sb.ToString();
+
+        }
+
+
+        private void textBox2_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btn_Export_Scanner_chdir_Click(object sender, EventArgs e)
+        {
+            FolderBrowserDialog f = new FolderBrowserDialog();
+
+            f.SelectedPath = txt_Export_Scanner_Dir.Text;
+            f.ShowDialog();
+
+            txt_Export_Scanner_Dir.Text = f.SelectedPath;
+        }
+
+        private void btn_Export_Scanner_Search_Click(object sender, EventArgs e)
+        {
+            string[] fileList = Directory.GetFiles(txt_Export_Scanner_Dir.Text);
+            StringBuilder sb = new StringBuilder();
+
+            sbProgress.Value = 0;
+            sbProgress.Maximum = fileList.Length;
+            sbLabel1.Text = "";
+
+            foreach ( string file in fileList )
+            {
+                sbProgress.Increment(1);
+                sbLabel1.Text = $"Scanning Exports: {file}";
+                if (!file.EndsWith(".dll"))
+                    continue;
+
+                List<string> exports = PEHelper.GetExportedFunctions(file);
+
+                foreach (string export in exports)
+                {
+                    if (export.ToLower().Contains(txt_Export_Scanner_Search_Term.Text.ToLower()))
+                    {
+                        if (export.Contains("@"))
+                            continue;
+
+                        sb.AppendLine($"{export.PadRight(50)}" + " --> " + file);
+                    }
+
+                    Application.DoEvents();
+                }
+
+            }
+
+
+            sbLabel1.Text = "Scan complete...";
+            txt_Export_Scanner_Out.Clear();
+            txt_Export_Scanner_Out.Text = sb.ToString();
+
 
         }
     }

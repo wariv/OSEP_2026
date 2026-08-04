@@ -164,8 +164,9 @@ namespace OSEP_2026
                 }
             }
 
-            throw new System.IO.InvalidDataException(
-                "Could not map RVA 0x" + rva.ToString("X8") + " to a file offset.");
+            return -1;
+            //throw new System.IO.InvalidDataException(
+            //    "Could not map RVA 0x" + rva.ToString("X8") + " to a file offset.");
         }
 
         private static string ReadNullTerminatedAsciiString(System.IO.BinaryReader binaryReader)

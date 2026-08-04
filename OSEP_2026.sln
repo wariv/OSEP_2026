@@ -7,13 +7,24 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelperTool", "HelperTool\He
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EXE Shellcode Runner", "EXE Shellcode Runner\EXE Shellcode Runner.csproj", "{D65C6019-EF3C-41CA-A902-3D90DEC21DE0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DLL Shellcode Runner", "DLL Shellcode Runner\DLL Shellcode Runner.csproj", "{3FAA1646-E63F-44C3-8F52-FD30D83E3918}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DLL Shellcode - Invokable", "DLL Shellcode - Invokable\DLL Shellcode - Invokable.csproj", "{3FAA1646-E63F-44C3-8F52-FD30D83E3918}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EXE Hollow Process", "EXE Hollow Process\EXE Hollow Process.csproj", "{4DD03C25-76C6-4AFF-946B-6F666C60537B}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Configuration", "Configuration\Configuration.shproj", "{1C744FAE-D081-4D1C-B456-195121D27E2D}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DLL Sideload Proxy", "DLL Sideload Proxy\DLL Sideload Proxy.vcxproj", "{C7A10420-B47C-45FB-9633-8800D978D44F}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Configuration Native", "Configuration Native\Configuration Native.vcxitems", "{96170C61-F368-49F5-83C3-84FCAB42F364}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Build", "Build\Build.csproj", "{215EE669-E4FB-4D10-BA0A-A3DA6AE8B3F3}"
+	ProjectSection(ProjectDependencies) = postProject
+		{3FAA1646-E63F-44C3-8F52-FD30D83E3918} = {3FAA1646-E63F-44C3-8F52-FD30D83E3918}
+		{4DD03C25-76C6-4AFF-946B-6F666C60537B} = {4DD03C25-76C6-4AFF-946B-6F666C60537B}
+		{B5640E89-A916-49A2-98B1-B48D54865D92} = {B5640E89-A916-49A2-98B1-B48D54865D92}
+		{C7A10420-B47C-45FB-9633-8800D978D44F} = {C7A10420-B47C-45FB-9633-8800D978D44F}
+		{D65C6019-EF3C-41CA-A902-3D90DEC21DE0} = {D65C6019-EF3C-41CA-A902-3D90DEC21DE0}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -85,6 +96,18 @@ Global
 		{C7A10420-B47C-45FB-9633-8800D978D44F}.Release|x64.Build.0 = Release|x64
 		{C7A10420-B47C-45FB-9633-8800D978D44F}.Release|x86.ActiveCfg = Release|Win32
 		{C7A10420-B47C-45FB-9633-8800D978D44F}.Release|x86.Build.0 = Release|Win32
+		{215EE669-E4FB-4D10-BA0A-A3DA6AE8B3F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{215EE669-E4FB-4D10-BA0A-A3DA6AE8B3F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{215EE669-E4FB-4D10-BA0A-A3DA6AE8B3F3}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{215EE669-E4FB-4D10-BA0A-A3DA6AE8B3F3}.Debug|x64.Build.0 = Debug|Any CPU
+		{215EE669-E4FB-4D10-BA0A-A3DA6AE8B3F3}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{215EE669-E4FB-4D10-BA0A-A3DA6AE8B3F3}.Debug|x86.Build.0 = Debug|Any CPU
+		{215EE669-E4FB-4D10-BA0A-A3DA6AE8B3F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{215EE669-E4FB-4D10-BA0A-A3DA6AE8B3F3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{215EE669-E4FB-4D10-BA0A-A3DA6AE8B3F3}.Release|x64.ActiveCfg = Release|Any CPU
+		{215EE669-E4FB-4D10-BA0A-A3DA6AE8B3F3}.Release|x64.Build.0 = Release|Any CPU
+		{215EE669-E4FB-4D10-BA0A-A3DA6AE8B3F3}.Release|x86.ActiveCfg = Release|Any CPU
+		{215EE669-E4FB-4D10-BA0A-A3DA6AE8B3F3}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -94,8 +117,11 @@ Global
 	EndGlobalSection
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Configuration\Configuration.projitems*{1c744fae-d081-4d1c-b456-195121d27e2d}*SharedItemsImports = 13
+		Configuration\Configuration.projitems*{215ee669-e4fb-4d10-ba0a-a3da6ae8b3f3}*SharedItemsImports = 4
 		Configuration\Configuration.projitems*{3faa1646-e63f-44c3-8f52-fd30d83e3918}*SharedItemsImports = 4
 		Configuration\Configuration.projitems*{4dd03c25-76c6-4aff-946b-6f666c60537b}*SharedItemsImports = 4
+		Configuration Native\Configuration Native.vcxitems*{96170c61-f368-49f5-83c3-84fcab42f364}*SharedItemsImports = 9
+		Configuration Native\Configuration Native.vcxitems*{c7a10420-b47c-45fb-9633-8800d978d44f}*SharedItemsImports = 4
 		Configuration\Configuration.projitems*{d65c6019-ef3c-41ca-a902-3d90dec21de0}*SharedItemsImports = 4
 	EndGlobalSection
 EndGlobal

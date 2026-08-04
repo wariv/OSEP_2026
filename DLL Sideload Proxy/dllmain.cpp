@@ -1,6 +1,7 @@
 // dllmain.cpp : Defines the entry point for the DLL application.
 #include "pch.h"
 #include <Windows.h>
+#include "OSEPGlobals.h"
 
 //Proxy Statements
 #ifdef _WIN64
