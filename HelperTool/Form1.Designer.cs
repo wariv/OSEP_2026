@@ -29,6 +29,8 @@
         private void InitializeComponent()
         {
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.sbProgress = new System.Windows.Forms.ToolStripProgressBar();
+            this.sbLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tcMain = new System.Windows.Forms.TabControl();
@@ -62,6 +64,7 @@
             this.btnProxyLoad = new System.Windows.Forms.Button();
             this.txtProxyOut = new System.Windows.Forms.RichTextBox();
             this.tpExportScan = new System.Windows.Forms.TabPage();
+            this.btn_Export_Scanner_chdir = new System.Windows.Forms.Button();
             this.label7 = new System.Windows.Forms.Label();
             this.txt_Export_Scanner_Dir = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
@@ -83,9 +86,6 @@
             this.txtLPORT = new System.Windows.Forms.TextBox();
             this.lbRHOST = new System.Windows.Forms.Label();
             this.txtRHOST = new System.Windows.Forms.TextBox();
-            this.btn_Export_Scanner_chdir = new System.Windows.Forms.Button();
-            this.sbProgress = new System.Windows.Forms.ToolStripProgressBar();
-            this.sbLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.tcMain.SuspendLayout();
@@ -114,6 +114,17 @@
             this.statusStrip1.Size = new System.Drawing.Size(1414, 32);
             this.statusStrip1.TabIndex = 0;
             this.statusStrip1.Text = "statusStrip1";
+            // 
+            // sbProgress
+            // 
+            this.sbProgress.Name = "sbProgress";
+            this.sbProgress.Size = new System.Drawing.Size(100, 24);
+            // 
+            // sbLabel1
+            // 
+            this.sbLabel1.Name = "sbLabel1";
+            this.sbLabel1.Size = new System.Drawing.Size(179, 25);
+            this.sbLabel1.Text = "toolStripStatusLabel1";
             // 
             // menuStrip1
             // 
@@ -363,6 +374,7 @@
             "None",
             "x64/xor",
             "x64/xor_dynamic",
+            "x64/zutto_dekiru",
             "x86/shikata_ga_nai"});
             this.cbMsvEncoding.Location = new System.Drawing.Point(6, 25);
             this.cbMsvEncoding.Name = "cbMsvEncoding";
@@ -516,6 +528,16 @@
             this.tpExportScan.TabIndex = 2;
             this.tpExportScan.Text = "    DLL Export Scanner    ";
             this.tpExportScan.UseVisualStyleBackColor = true;
+            // 
+            // btn_Export_Scanner_chdir
+            // 
+            this.btn_Export_Scanner_chdir.Location = new System.Drawing.Point(1016, 72);
+            this.btn_Export_Scanner_chdir.Name = "btn_Export_Scanner_chdir";
+            this.btn_Export_Scanner_chdir.Size = new System.Drawing.Size(75, 32);
+            this.btn_Export_Scanner_chdir.TabIndex = 6;
+            this.btn_Export_Scanner_chdir.Text = "  ...  ";
+            this.btn_Export_Scanner_chdir.UseVisualStyleBackColor = true;
+            this.btn_Export_Scanner_chdir.Click += new System.EventHandler(this.btn_Export_Scanner_chdir_Click);
             // 
             // label7
             // 
@@ -742,27 +764,6 @@
             this.txtRHOST.TabIndex = 5;
             this.txtRHOST.Text = "192.168.0.10";
             this.txtRHOST.TextChanged += new System.EventHandler(this.txtRHOST_TextChanged);
-            // 
-            // btn_Export_Scanner_chdir
-            // 
-            this.btn_Export_Scanner_chdir.Location = new System.Drawing.Point(1016, 72);
-            this.btn_Export_Scanner_chdir.Name = "btn_Export_Scanner_chdir";
-            this.btn_Export_Scanner_chdir.Size = new System.Drawing.Size(75, 32);
-            this.btn_Export_Scanner_chdir.TabIndex = 6;
-            this.btn_Export_Scanner_chdir.Text = "  ...  ";
-            this.btn_Export_Scanner_chdir.UseVisualStyleBackColor = true;
-            this.btn_Export_Scanner_chdir.Click += new System.EventHandler(this.btn_Export_Scanner_chdir_Click);
-            // 
-            // sbProgress
-            // 
-            this.sbProgress.Name = "sbProgress";
-            this.sbProgress.Size = new System.Drawing.Size(100, 24);
-            // 
-            // sbLabel1
-            // 
-            this.sbLabel1.Name = "sbLabel1";
-            this.sbLabel1.Size = new System.Drawing.Size(179, 25);
-            this.sbLabel1.Text = "toolStripStatusLabel1";
             // 
             // Form1
             // 

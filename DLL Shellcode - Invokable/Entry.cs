@@ -24,7 +24,7 @@ namespace OSEP
         [DllImport("kernel32.dll")]
         static extern UInt32 WaitForSingleObject(IntPtr hHandle, UInt32 dwMilliseconds);
 
-        public static void exec()
+        public static void OSEPExec()
         {
             int size = CONFIG.SHELLCODE.Length;
 

