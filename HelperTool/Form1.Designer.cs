@@ -71,6 +71,9 @@
             this.txt_Export_Scanner_Search_Term = new System.Windows.Forms.TextBox();
             this.txt_Export_Scanner_Out = new System.Windows.Forms.RichTextBox();
             this.btn_Export_Scanner_Search = new System.Windows.Forms.Button();
+            this.tpCustomEncoder = new System.Windows.Forms.TabPage();
+            this.btnCSE_Encode = new System.Windows.Forms.Button();
+            this.txtCSE_out = new System.Windows.Forms.RichTextBox();
             this.txtLHOST = new System.Windows.Forms.TextBox();
             this.lbLHOST = new System.Windows.Forms.Label();
             this.gnEnviroment = new System.Windows.Forms.GroupBox();
@@ -86,6 +89,10 @@
             this.txtLPORT = new System.Windows.Forms.TextBox();
             this.lbRHOST = new System.Windows.Forms.Label();
             this.txtRHOST = new System.Windows.Forms.TextBox();
+            this.tpDocStomper = new System.Windows.Forms.TabPage();
+            this.txtDS_out = new System.Windows.Forms.RichTextBox();
+            this.groupBox7 = new System.Windows.Forms.GroupBox();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.tcMain.SuspendLayout();
@@ -100,7 +107,10 @@
             this.groupBox1.SuspendLayout();
             this.tpProxyDLL.SuspendLayout();
             this.tpExportScan.SuspendLayout();
+            this.tpCustomEncoder.SuspendLayout();
             this.gnEnviroment.SuspendLayout();
+            this.tpDocStomper.SuspendLayout();
+            this.groupBox7.SuspendLayout();
             this.SuspendLayout();
             // 
             // statusStrip1
@@ -152,6 +162,8 @@
             this.tcMain.Controls.Add(this.tpMsfVenom);
             this.tcMain.Controls.Add(this.tpProxyDLL);
             this.tcMain.Controls.Add(this.tpExportScan);
+            this.tcMain.Controls.Add(this.tpCustomEncoder);
+            this.tcMain.Controls.Add(this.tpDocStomper);
             this.tcMain.Location = new System.Drawing.Point(12, 167);
             this.tcMain.Name = "tcMain";
             this.tcMain.SelectedIndex = 0;
@@ -596,6 +608,39 @@
             this.btn_Export_Scanner_Search.UseVisualStyleBackColor = true;
             this.btn_Export_Scanner_Search.Click += new System.EventHandler(this.btn_Export_Scanner_Search_Click);
             // 
+            // tpCustomEncoder
+            // 
+            this.tpCustomEncoder.Controls.Add(this.btnCSE_Encode);
+            this.tpCustomEncoder.Controls.Add(this.txtCSE_out);
+            this.tpCustomEncoder.Location = new System.Drawing.Point(4, 29);
+            this.tpCustomEncoder.Name = "tpCustomEncoder";
+            this.tpCustomEncoder.Size = new System.Drawing.Size(1382, 781);
+            this.tpCustomEncoder.TabIndex = 3;
+            this.tpCustomEncoder.Text = "Custom Shellcode Encoder";
+            this.tpCustomEncoder.UseVisualStyleBackColor = true;
+            // 
+            // btnCSE_Encode
+            // 
+            this.btnCSE_Encode.Location = new System.Drawing.Point(18, 22);
+            this.btnCSE_Encode.Name = "btnCSE_Encode";
+            this.btnCSE_Encode.Size = new System.Drawing.Size(117, 34);
+            this.btnCSE_Encode.TabIndex = 3;
+            this.btnCSE_Encode.Text = "Encode";
+            this.btnCSE_Encode.UseVisualStyleBackColor = true;
+            this.btnCSE_Encode.Click += new System.EventHandler(this.btnCSE_Encode_Click);
+            // 
+            // txtCSE_out
+            // 
+            this.txtCSE_out.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtCSE_out.Font = new System.Drawing.Font("Consolas", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtCSE_out.Location = new System.Drawing.Point(18, 79);
+            this.txtCSE_out.Name = "txtCSE_out";
+            this.txtCSE_out.Size = new System.Drawing.Size(1346, 682);
+            this.txtCSE_out.TabIndex = 0;
+            this.txtCSE_out.Text = "";
+            // 
             // txtLHOST
             // 
             this.txtLHOST.Font = new System.Drawing.Font("Consolas", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -765,6 +810,48 @@
             this.txtRHOST.Text = "192.168.0.10";
             this.txtRHOST.TextChanged += new System.EventHandler(this.txtRHOST_TextChanged);
             // 
+            // tpDocStomper
+            // 
+            this.tpDocStomper.AllowDrop = true;
+            this.tpDocStomper.Controls.Add(this.groupBox7);
+            this.tpDocStomper.Controls.Add(this.txtDS_out);
+            this.tpDocStomper.Location = new System.Drawing.Point(4, 29);
+            this.tpDocStomper.Name = "tpDocStomper";
+            this.tpDocStomper.Size = new System.Drawing.Size(1382, 781);
+            this.tpDocStomper.TabIndex = 4;
+            this.tpDocStomper.Text = "Doc Stomper";
+            this.tpDocStomper.UseVisualStyleBackColor = true;
+            this.tpDocStomper.DragDrop += new System.Windows.Forms.DragEventHandler(this.tpDocStomper_DragDrop);
+            this.tpDocStomper.DragEnter += new System.Windows.Forms.DragEventHandler(this.tpDocStomper_DragEnter);
+            // 
+            // txtDS_out
+            // 
+            this.txtDS_out.Location = new System.Drawing.Point(19, 308);
+            this.txtDS_out.Name = "txtDS_out";
+            this.txtDS_out.Size = new System.Drawing.Size(738, 408);
+            this.txtDS_out.TabIndex = 0;
+            this.txtDS_out.Text = "";
+            // 
+            // groupBox7
+            // 
+            this.groupBox7.Controls.Add(this.checkBox1);
+            this.groupBox7.Location = new System.Drawing.Point(19, 24);
+            this.groupBox7.Name = "groupBox7";
+            this.groupBox7.Size = new System.Drawing.Size(737, 262);
+            this.groupBox7.TabIndex = 1;
+            this.groupBox7.TabStop = false;
+            this.groupBox7.Text = "Options";
+            // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Location = new System.Drawing.Point(19, 39);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(169, 24);
+            this.checkBox1.TabIndex = 0;
+            this.checkBox1.Text = "Stomp NewMacros";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -778,6 +865,7 @@
             this.MinimumSize = new System.Drawing.Size(1436, 1073);
             this.Name = "Form1";
             this.Text = "OSEP 2026";
+            this.Shown += new System.EventHandler(this.Form1_Shown);
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
             this.menuStrip1.ResumeLayout(false);
@@ -801,8 +889,12 @@
             this.tpProxyDLL.PerformLayout();
             this.tpExportScan.ResumeLayout(false);
             this.tpExportScan.PerformLayout();
+            this.tpCustomEncoder.ResumeLayout(false);
             this.gnEnviroment.ResumeLayout(false);
             this.gnEnviroment.PerformLayout();
+            this.tpDocStomper.ResumeLayout(false);
+            this.groupBox7.ResumeLayout(false);
+            this.groupBox7.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -868,6 +960,13 @@
         private System.Windows.Forms.Button btn_Export_Scanner_chdir;
         private System.Windows.Forms.ToolStripProgressBar sbProgress;
         private System.Windows.Forms.ToolStripStatusLabel sbLabel1;
+        private System.Windows.Forms.TabPage tpCustomEncoder;
+        private System.Windows.Forms.RichTextBox txtCSE_out;
+        private System.Windows.Forms.Button btnCSE_Encode;
+        private System.Windows.Forms.TabPage tpDocStomper;
+        private System.Windows.Forms.RichTextBox txtDS_out;
+        private System.Windows.Forms.GroupBox groupBox7;
+        private System.Windows.Forms.CheckBox checkBox1;
     }
 }
 

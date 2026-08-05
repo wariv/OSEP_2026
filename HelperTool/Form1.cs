@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.IO;
+using System.IO.IsolatedStorage;
 using System.Linq;
 using System.Reflection.PortableExecutable;
 using System.Security.Cryptography;
@@ -374,5 +375,119 @@ namespace OSEP_2026
 
 
         }
+
+
+        private string BeautifyBytes(byte[] bytes, int length)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            int i = 1;
+            foreach ( byte b in bytes )
+            {
+                sb.Append($"0x{ b.ToString("x2")},");
+                if ( i >= length )
+                {
+                    sb.Append("\n");
+                    i = 0;
+                }
+                i++;
+            }
+
+            return sb.ToString().TrimEnd(',');
+        }
+
+        private string DrawCSharpByteCode(byte[] bytes)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append($"new byte[{bytes.Length}] {{\n");
+
+            sb.Append(BeautifyBytes(bytes, 20));
+
+            sb.Append("};\n");
+
+            return sb.ToString();
+        }
+
+
+        private void Form1_Shown(object sender, EventArgs e)
+        {
+            txtCSE_out.Text = DrawCSharpByteCode(CONFIG.SHELLCODE);
+        }
+
+        private void btnCSE_Encode_Click(object sender, EventArgs e)
+        {
+            string t = txtCSE_out.Text;
+
+            //Normalize text
+            string[] parts = t.Split('=');
+            if (parts.Length == 2)
+                t = parts[1];
+            else
+                t = parts[0];
+
+            parts = t.Split('{');
+            if (parts.Length == 2)
+                t = parts[1];
+            else
+                t = parts[0];
+
+            parts = t.Split('}');
+            if (parts.Length == 2)
+                t = parts[0];
+
+            t = t.Replace("0x", "").Replace(@"\x",",").Replace("\"","").Replace("\n","").Replace(";","").TrimStart(',').TrimEnd(',');
+
+
+            parts = t.Split(',');
+
+            byte[] bytes = new byte[parts.Length];
+            int i = 0;
+            foreach (string s in parts)
+            {
+                bytes[i] = byte.Parse(s, System.Globalization.NumberStyles.HexNumber);
+                i++;
+            }
+
+            bytes = Evasion.Encode(bytes);
+
+            txtCSE_out.Text = DrawCSharpByteCode(bytes);
+
+            txtCSE_out.AppendText("\n\nThe payload has been encoded using a custom routine.\nYou need to replace the SHELLCODE global with these bytes. \nAlso set ENCODED to true.\nand rebuild the solution.");
+
+
+            Application.DoEvents();
+
+        }
+
+        private void tpDocStomper_DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data != null &&
+            e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                e.Effect = DragDropEffects.Copy;
+            }
+            else
+            {
+                e.Effect = DragDropEffects.None;
+            }
+        }
+
+        private void tpDocStomper_DragDrop(object sender, DragEventArgs e)
+        {
+            if (e.Data == null ||
+            !e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                return;
+            }
+
+            string[] paths = (string[])e.Data.GetData(DataFormats.FileDrop);
+
+            foreach (string path in paths)
+            {
+                txtDS_out.AppendText (path + "\n");
+            }
+        }
+
+
     }
 }

