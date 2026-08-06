@@ -89,10 +89,10 @@
             this.txtLPORT = new System.Windows.Forms.TextBox();
             this.lbRHOST = new System.Windows.Forms.Label();
             this.txtRHOST = new System.Windows.Forms.TextBox();
-            this.tpDocStomper = new System.Windows.Forms.TabPage();
-            this.txtDS_out = new System.Windows.Forms.RichTextBox();
-            this.groupBox7 = new System.Windows.Forms.GroupBox();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.tpVSO = new System.Windows.Forms.TabPage();
+            this.txtVSO_In = new System.Windows.Forms.RichTextBox();
+            this.btnVSO_Obfuscate = new System.Windows.Forms.Button();
+            this.txtVSO_out = new System.Windows.Forms.RichTextBox();
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.tcMain.SuspendLayout();
@@ -109,8 +109,7 @@
             this.tpExportScan.SuspendLayout();
             this.tpCustomEncoder.SuspendLayout();
             this.gnEnviroment.SuspendLayout();
-            this.tpDocStomper.SuspendLayout();
-            this.groupBox7.SuspendLayout();
+            this.tpVSO.SuspendLayout();
             this.SuspendLayout();
             // 
             // statusStrip1
@@ -144,14 +143,14 @@
             this.fileToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1414, 33);
+            this.menuStrip1.Size = new System.Drawing.Size(1414, 36);
             this.menuStrip1.TabIndex = 1;
             this.menuStrip1.Text = "menuStrip1";
             // 
             // fileToolStripMenuItem
             // 
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(54, 29);
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(54, 30);
             this.fileToolStripMenuItem.Text = "File";
             // 
             // tcMain
@@ -163,7 +162,7 @@
             this.tcMain.Controls.Add(this.tpProxyDLL);
             this.tcMain.Controls.Add(this.tpExportScan);
             this.tcMain.Controls.Add(this.tpCustomEncoder);
-            this.tcMain.Controls.Add(this.tpDocStomper);
+            this.tcMain.Controls.Add(this.tpVSO);
             this.tcMain.Location = new System.Drawing.Point(12, 167);
             this.tcMain.Name = "tcMain";
             this.tcMain.SelectedIndex = 0;
@@ -810,47 +809,44 @@
             this.txtRHOST.Text = "192.168.0.10";
             this.txtRHOST.TextChanged += new System.EventHandler(this.txtRHOST_TextChanged);
             // 
-            // tpDocStomper
+            // tpVSO
             // 
-            this.tpDocStomper.AllowDrop = true;
-            this.tpDocStomper.Controls.Add(this.groupBox7);
-            this.tpDocStomper.Controls.Add(this.txtDS_out);
-            this.tpDocStomper.Location = new System.Drawing.Point(4, 29);
-            this.tpDocStomper.Name = "tpDocStomper";
-            this.tpDocStomper.Size = new System.Drawing.Size(1382, 781);
-            this.tpDocStomper.TabIndex = 4;
-            this.tpDocStomper.Text = "Doc Stomper";
-            this.tpDocStomper.UseVisualStyleBackColor = true;
-            this.tpDocStomper.DragDrop += new System.Windows.Forms.DragEventHandler(this.tpDocStomper_DragDrop);
-            this.tpDocStomper.DragEnter += new System.Windows.Forms.DragEventHandler(this.tpDocStomper_DragEnter);
+            this.tpVSO.AllowDrop = true;
+            this.tpVSO.Controls.Add(this.txtVSO_out);
+            this.tpVSO.Controls.Add(this.btnVSO_Obfuscate);
+            this.tpVSO.Controls.Add(this.txtVSO_In);
+            this.tpVSO.Location = new System.Drawing.Point(4, 29);
+            this.tpVSO.Name = "tpVSO";
+            this.tpVSO.Size = new System.Drawing.Size(1382, 781);
+            this.tpVSO.TabIndex = 4;
+            this.tpVSO.Text = "VBA String Obfuscator";
+            this.tpVSO.UseVisualStyleBackColor = true;
             // 
-            // txtDS_out
+            // txtVSO_In
             // 
-            this.txtDS_out.Location = new System.Drawing.Point(19, 308);
-            this.txtDS_out.Name = "txtDS_out";
-            this.txtDS_out.Size = new System.Drawing.Size(738, 408);
-            this.txtDS_out.TabIndex = 0;
-            this.txtDS_out.Text = "";
+            this.txtVSO_In.Location = new System.Drawing.Point(18, 18);
+            this.txtVSO_In.Name = "txtVSO_In";
+            this.txtVSO_In.Size = new System.Drawing.Size(1345, 120);
+            this.txtVSO_In.TabIndex = 0;
+            this.txtVSO_In.Text = "";
             // 
-            // groupBox7
+            // btnVSO_Obfuscate
             // 
-            this.groupBox7.Controls.Add(this.checkBox1);
-            this.groupBox7.Location = new System.Drawing.Point(19, 24);
-            this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Size = new System.Drawing.Size(737, 262);
-            this.groupBox7.TabIndex = 1;
-            this.groupBox7.TabStop = false;
-            this.groupBox7.Text = "Options";
+            this.btnVSO_Obfuscate.Location = new System.Drawing.Point(596, 156);
+            this.btnVSO_Obfuscate.Name = "btnVSO_Obfuscate";
+            this.btnVSO_Obfuscate.Size = new System.Drawing.Size(182, 62);
+            this.btnVSO_Obfuscate.TabIndex = 1;
+            this.btnVSO_Obfuscate.Text = "Obfuscate";
+            this.btnVSO_Obfuscate.UseVisualStyleBackColor = true;
+            this.btnVSO_Obfuscate.Click += new System.EventHandler(this.btnVSO_Obfuscate_Click);
             // 
-            // checkBox1
+            // txtVSO_out
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(19, 39);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(169, 24);
-            this.checkBox1.TabIndex = 0;
-            this.checkBox1.Text = "Stomp NewMacros";
-            this.checkBox1.UseVisualStyleBackColor = true;
+            this.txtVSO_out.Location = new System.Drawing.Point(18, 251);
+            this.txtVSO_out.Name = "txtVSO_out";
+            this.txtVSO_out.Size = new System.Drawing.Size(1345, 510);
+            this.txtVSO_out.TabIndex = 2;
+            this.txtVSO_out.Text = "";
             // 
             // Form1
             // 
@@ -892,9 +888,7 @@
             this.tpCustomEncoder.ResumeLayout(false);
             this.gnEnviroment.ResumeLayout(false);
             this.gnEnviroment.PerformLayout();
-            this.tpDocStomper.ResumeLayout(false);
-            this.groupBox7.ResumeLayout(false);
-            this.groupBox7.PerformLayout();
+            this.tpVSO.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -963,10 +957,10 @@
         private System.Windows.Forms.TabPage tpCustomEncoder;
         private System.Windows.Forms.RichTextBox txtCSE_out;
         private System.Windows.Forms.Button btnCSE_Encode;
-        private System.Windows.Forms.TabPage tpDocStomper;
-        private System.Windows.Forms.RichTextBox txtDS_out;
-        private System.Windows.Forms.GroupBox groupBox7;
-        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.TabPage tpVSO;
+        private System.Windows.Forms.RichTextBox txtVSO_out;
+        private System.Windows.Forms.Button btnVSO_Obfuscate;
+        private System.Windows.Forms.RichTextBox txtVSO_In;
     }
 }
 

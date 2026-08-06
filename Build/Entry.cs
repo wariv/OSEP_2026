@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
@@ -322,7 +323,21 @@ namespace Build
                 File.WriteAllText(nf, text);
             }
 
+
+
+            //DotNetToJsTemplates
+            string dn2js_location = $"{args[0]}\\DotNetToJScript\\bin\\Release\\DotNetToJScript.exe";
+            string dll_location = $"{args[0]}\\artifacts\\x64\\Shellcode_Invokable.dll";
+            string out_location = $"{args[0]}\\artifacts\\rundll_invokable.js";
+            string cmdline = $"{dn2js_location} \"{dll_location}\" --lang=Jscript --ver=v4 -o \"{out_location}\" -c OSEPRunner";
+
+
+            Process.Start($"{dn2js_location}",$"\"{dll_location}\" --lang=Jscript --ver=v4 -o \"{out_location}\" -c OSEP.OSEPRunner");
+
+
         }
     
+
+
     }
 }

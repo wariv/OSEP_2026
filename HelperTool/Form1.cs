@@ -459,35 +459,21 @@ namespace OSEP_2026
 
         }
 
-        private void tpDocStomper_DragEnter(object sender, DragEventArgs e)
+        private void btnVSO_Obfuscate_Click(object sender, EventArgs e)
         {
-            if (e.Data != null &&
-            e.Data.GetDataPresent(DataFormats.FileDrop))
-            {
-                e.Effect = DragDropEffects.Copy;
-            }
-            else
-            {
-                e.Effect = DragDropEffects.None;
-            }
+            string tx = txtVSO_In.Text;
+
+            tx = tx.Replace("i", "\" & k & \"");
+            tx = tx.Replace("e", "\" & b & \"");
+            tx = tx.Replace("u", "\" & c & \"");
+            tx = tx.Replace("o", "\" & d & \"");
+            tx = tx.Replace("a", "\" & j & \"");
+            tx = tx.Replace("m", "\" & f & \"");
+            tx = tx.Replace("t", "\" & g & \"");
+            tx = tx.Replace("x", "\" & h & \"");
+            tx = tx.Replace("s", "\" & l & \"");
+
+            txtVSO_out.Text = tx;
         }
-
-        private void tpDocStomper_DragDrop(object sender, DragEventArgs e)
-        {
-            if (e.Data == null ||
-            !e.Data.GetDataPresent(DataFormats.FileDrop))
-            {
-                return;
-            }
-
-            string[] paths = (string[])e.Data.GetData(DataFormats.FileDrop);
-
-            foreach (string path in paths)
-            {
-                txtDS_out.AppendText (path + "\n");
-            }
-        }
-
-
     }
 }

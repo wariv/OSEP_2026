@@ -24,10 +24,18 @@ namespace OSEP
         [DllImport("kernel32.dll")]
         static extern UInt32 WaitForSingleObject(IntPtr hHandle, UInt32 dwMilliseconds);
 
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        public static extern int MessageBox(IntPtr hWnd, String text, String caption, int options);
 
-        
-        public static void OSEPExec()
+
+
+        public OSEPRunner()
         {
+            MessageBox(IntPtr.Zero, "This is my text", "This is my caption", 0);
+            System.IO.File.WriteAllText(".", "hello");
+            return;
+
+
             if (CONFIG.DETECT_SANDBOX_TIME)
                 Evasion.SandboxTimeDetect();
             

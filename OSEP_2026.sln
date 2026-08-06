@@ -26,6 +26,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Build", "Build\Build.csproj
 		{D65C6019-EF3C-41CA-A902-3D90DEC21DE0} = {D65C6019-EF3C-41CA-A902-3D90DEC21DE0}
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetToJScript", "DotNetToJScript\DotNetToJScript.csproj", "{7E3F231C-0D0B-4025-812C-0EF099404861}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -108,6 +110,18 @@ Global
 		{215EE669-E4FB-4D10-BA0A-A3DA6AE8B3F3}.Release|x64.Build.0 = Release|Any CPU
 		{215EE669-E4FB-4D10-BA0A-A3DA6AE8B3F3}.Release|x86.ActiveCfg = Release|Any CPU
 		{215EE669-E4FB-4D10-BA0A-A3DA6AE8B3F3}.Release|x86.Build.0 = Release|Any CPU
+		{7E3F231C-0D0B-4025-812C-0EF099404861}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7E3F231C-0D0B-4025-812C-0EF099404861}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7E3F231C-0D0B-4025-812C-0EF099404861}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{7E3F231C-0D0B-4025-812C-0EF099404861}.Debug|x64.Build.0 = Debug|Any CPU
+		{7E3F231C-0D0B-4025-812C-0EF099404861}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{7E3F231C-0D0B-4025-812C-0EF099404861}.Debug|x86.Build.0 = Debug|Any CPU
+		{7E3F231C-0D0B-4025-812C-0EF099404861}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7E3F231C-0D0B-4025-812C-0EF099404861}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7E3F231C-0D0B-4025-812C-0EF099404861}.Release|x64.ActiveCfg = Release|Any CPU
+		{7E3F231C-0D0B-4025-812C-0EF099404861}.Release|x64.Build.0 = Release|Any CPU
+		{7E3F231C-0D0B-4025-812C-0EF099404861}.Release|x86.ActiveCfg = Release|Any CPU
+		{7E3F231C-0D0B-4025-812C-0EF099404861}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

