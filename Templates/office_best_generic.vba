@@ -99,6 +99,8 @@ Sub {MACRO_NAME}()
                 Exit Sub
             End If
             
+
+            'MAKE SURE THIS MATCHES YOUR DOC NAME
             If ActiveDocument.Name <> "OSEPC.doc" Then
                 Exit Sub
             End If

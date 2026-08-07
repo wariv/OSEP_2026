@@ -1,0 +1,60 @@
+function Decode-Buffer {
+    param (
+        [Parameter(Mandatory = $true)]
+        [byte[]] $InputBuffer,
+
+        [Parameter(Mandatory = $true)]
+        [byte] $Key
+    )
+
+    if ($null -eq $InputBuffer) {
+        throw [System.ArgumentNullException]::new("InputBuffer")
+    }
+
+    [int] $inputLength = $InputBuffer.Length
+    [int] $remainder = $inputLength % 2
+    [int] $midPoint = [Math]::Floor($inputLength / 2)
+
+    [byte[]] $interimBuffer = New-Object byte[] $inputLength
+    [byte[]] $outputBuffer = New-Object byte[] $inputLength
+
+    # First unshuffle
+    for ([int] $i = 0; $i -lt $midPoint; $i++) {
+        [int] $j = $i * 2
+
+        $interimBuffer[$midPoint + $i] = [byte](
+            ($InputBuffer[$j] -bxor $i) -band 0xFF
+        )
+
+        $interimBuffer[$midPoint - $i - 1] = [byte](
+            ($InputBuffer[$j + 1] -bxor $i) -band 0xFF
+        )
+    }
+
+    if ($remainder -ne 0) {
+        $interimBuffer[$inputLength - 1] =
+            $InputBuffer[$inputLength - 1]
+    }
+
+    # Second unshuffle
+    for ([int] $i = 0; $i -lt $midPoint; $i++) {
+        [int] $j = $i * 2
+
+        $outputBuffer[$midPoint + $i] = [byte](
+            ($interimBuffer[$j] -bxor $Key) -band 0xFF
+        )
+
+        $outputBuffer[$midPoint - $i - 1] = [byte](
+            ($interimBuffer[$j + 1] -bxor $Key) -band 0xFF
+        )
+    }
+
+    if ($remainder -ne 0) {
+        $outputBuffer[$inputLength - 1] = [byte](
+            ($interimBuffer[$inputLength - 1] -bxor $Key) -band 0xFF
+        )
+    }
+
+    # Prevent PowerShell from enumerating the byte array into the pipeline.
+    Write-Output -NoEnumerate $outputBuffer
+}

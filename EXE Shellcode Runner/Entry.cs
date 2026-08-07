@@ -26,7 +26,7 @@ namespace OSEP
         {
 
             if (CONFIG.DETECT_SANDBOX_TIME)
-                Evasion.SandboxTimeDetect();
+                Evasion.SandboxTimeDetect(2000);
 
 
 

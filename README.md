@@ -1,0 +1,1 @@
+Currently Encoded payloads are not working DIRECTLY in vba scripts. you can still IEX a powershell or whatever with encoded payloads though.

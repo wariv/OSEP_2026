@@ -17,6 +17,7 @@ Add-Type $Kernel32
 
 
 {SHELLCODE}
+{DECODE}
 
 
 $size = ${SHELLCODE_NAME}.Length
