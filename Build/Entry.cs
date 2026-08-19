@@ -176,7 +176,12 @@ namespace Build
                 [Path.Combine(baseDir, "DLL Shellcode - Invokable")] = "Shellcode_Invokable",
                 [Path.Combine(baseDir, "DLL Sideload Proxy")] = "Shellcode_Auto",
                 [Path.Combine(baseDir, "EXE Hollow Process")] = "Hollow",
-                [Path.Combine(baseDir, "EXE Shellcode Runner")] = "Shellcode"
+                [Path.Combine(baseDir, "EXE Shellcode Runner")] = "Shellcode",
+                [Path.Combine(baseDir, "EXE InstallUtil Bypass")] = "InstallUtil_Bypass_Basic",
+                [Path.Combine(baseDir, "EXE InstallUtil Bypass Reflection Download")] = "InstallUtil_Bypass_Basic_Reflective_Download",
+                [Path.Combine(baseDir, "EXE PowerShell Runspace Static")] = "PS_Runspace_Bypass_Static",
+                [Path.Combine(baseDir, "EXE PowerShell Runspace Reflection")] = "PS_Runspace_Bypass_Reflection",
+                [Path.Combine(baseDir, "EXE PowerShell Runspace Reflection Download")] = "PS_Runspace_Bypass_Reflection_Download",
             };
 
             Dictionary<string, string> architectures = new Dictionary<string, string>
