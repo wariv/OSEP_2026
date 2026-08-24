@@ -12,6 +12,8 @@ public static class CONFIG
     public static string POWERSHELL_SCRIPT_NAME = "exploit.ps1";
     public static string WAIT_TIME_SECONDS = "2";
 
+    public static string INSTALL_UTIL_EXE_PATH = @"C:\Bill\bypass.exe";
+
     //Evasion
     public static bool ENCODED = false;
     public static byte KEY = 0xf4;

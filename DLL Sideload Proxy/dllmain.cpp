@@ -1,3 +1,9 @@
+//This is a native DLL and it executes code automatically on Process Attach.
+//The intended use is to find an application taht is missign a DLL and side load this one.
+//This will require proxy statements. So, dont forget to use the proxy generator in the "Helper Tool"
+
+
+
 // dllmain.cpp : Defines the entry point for the DLL application.
 #include "pch.h"
 #include <Windows.h>
