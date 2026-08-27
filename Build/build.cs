@@ -250,7 +250,7 @@ namespace Build
             }
             catch (Exception ex)
             {
-                Console.Error.WriteLine($"Artifact aggregation failed: {ex.Message}");
+                //
             }
         }
 
@@ -302,14 +302,14 @@ namespace Build
             artifacts.Add(new Artifact("EXE PowerShell Runspace Reflection Download", "ps-rs-reflection-download.exe", ArtifactType.PE));
             artifacts.Add(new Artifact("EXE Powershell Runspace Static", "ps-rs-static.exe", ArtifactType.PE));
             artifacts.Add(new Artifact("EXE Shellcode Runner", "sc-runner.exe", ArtifactType.PE));
-            artifacts.Add(new Artifact("HelperTool", "ambiguously-named-tool.exe", ArtifactType.Tools));
+            artifacts.Add(new Artifact("HelperTool", "OSEP-Helper.exe", ArtifactType.Tools));
 
 
 
             string solution_dir = args[0];
 
             //Prep dir structure
-            try { Directory.Delete($"{solution_dir}\\ARTIFACTS", true); } catch { }
+            try { Directory.Delete($"{solution_dir}\\ARTIFACTS", true); } catch (Exception ex){ Console.WriteLine($"{ex.Message}"); }
             Directory.CreateDirectory($"{solution_dir}\\ARTIFACTS");
             Directory.CreateDirectory($"{solution_dir}\\ARTIFACTS\\PE");
             Directory.CreateDirectory($"{solution_dir}\\ARTIFACTS\\DLL");
@@ -323,28 +323,43 @@ namespace Build
                 {
                     Directory.CreateDirectory($"{solution_dir}\\ARTIFACTS\\{a.ArtifactType}\\{Name2Dir(a.FileName)}");
 
+
+
+                    //These next set of blocks are just moving artifacts to appropriate spots and bringing the readmes with them.
                     if (File.Exists($"{solution_dir}\\{a.LocationBase}\\bin\\x64\\result.exe"))
                     {
                         Directory.CreateDirectory($"{solution_dir}\\ARTIFACTS\\{a.ArtifactType}\\{Name2Dir(a.FileName)}\\x64");
                         File.Copy($"{solution_dir}\\{a.LocationBase}\\bin\\x64\\result.exe", $"{solution_dir}\\ARTIFACTS\\{a.ArtifactType}\\{Name2Dir(a.FileName)}\\x64\\{a.FileName}");
+
+                        CopyReadme(solution_dir, a, "x64");
+                        CopyDependencies(solution_dir, a, "x64");
                     }
 
                     if (File.Exists($"{solution_dir}\\{a.LocationBase}\\bin\\x86\\result.exe"))
                     {
                         Directory.CreateDirectory($"{solution_dir}\\ARTIFACTS\\{a.ArtifactType}\\{Name2Dir(a.FileName)}\\x86");
                         File.Copy($"{solution_dir}\\{a.LocationBase}\\bin\\x86\\result.exe", $"{solution_dir}\\ARTIFACTS\\{a.ArtifactType}\\{Name2Dir(a.FileName)}\\x86\\{a.FileName}");
+
+                        CopyReadme(solution_dir, a, "x86");
+                        CopyDependencies(solution_dir, a, "x86");
                     }
 
                     if (File.Exists($"{solution_dir}\\{a.LocationBase}\\bin\\x64\\result.dll"))
                     {
                         Directory.CreateDirectory($"{solution_dir}\\ARTIFACTS\\{a.ArtifactType}\\{Name2Dir(a.FileName)}\\x64");
                         File.Copy($"{solution_dir}\\{a.LocationBase}\\bin\\x64\\result.dll", $"{solution_dir}\\ARTIFACTS\\{a.ArtifactType}\\{Name2Dir(a.FileName)}\\x64\\{a.FileName}");
+
+                        CopyReadme(solution_dir, a, "x64");
+                        CopyDependencies(solution_dir, a, "x64");
                     }
 
                     if (File.Exists($"{solution_dir}\\{a.LocationBase}\\bin\\x86\\result.dll"))
                     {
                         Directory.CreateDirectory($"{solution_dir}\\ARTIFACTS\\{a.ArtifactType}\\{Name2Dir(a.FileName)}\\x86");
                         File.Copy($"{solution_dir}\\{a.LocationBase}\\bin\\x86\\result.dll", $"{solution_dir}\\ARTIFACTS\\{a.ArtifactType}\\{Name2Dir(a.FileName)}\\x86\\{a.FileName}");
+
+                        CopyReadme(solution_dir, a, "x86");
+                        CopyDependencies(solution_dir, a, "x86");
                     }
 
 
@@ -363,6 +378,34 @@ namespace Build
 
 
 
+        }
+
+        private static void CopyReadme(string solution_dir, Artifact a, string arch)
+        {
+            if (File.Exists($"{solution_dir}\\{a.LocationBase}\\README.md"))
+            {
+                File.Copy($"{solution_dir}\\{a.LocationBase}\\README.md", $"{solution_dir}\\ARTIFACTS\\{a.ArtifactType}\\{Name2Dir(a.FileName)}\\{arch}\\README.md");
+            }
+        }
+
+        private static void CopyDependencies(string solution_dir, Artifact a, string arch)
+        {
+            string[] files = Directory.GetFiles($"{solution_dir}\\{a.LocationBase}\\bin\\{arch}");
+
+            foreach (string file in files)
+            {
+                FileInfo fi = new FileInfo(file);
+
+                if (fi.Extension == ".dll" && !fi.Name.Contains("result"))
+                {
+                    try
+                    {
+                        File.Copy(file, $"{solution_dir}\\ARTIFACTS\\{a.ArtifactType}\\{Name2Dir(a.FileName)}\\{arch}\\{fi.Name}");
+                    }
+                    catch { }
+                    
+                }
+            }
         }
 
         private static string Name2Dir(string input)

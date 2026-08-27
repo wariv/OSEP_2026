@@ -33,9 +33,9 @@ namespace OSEP
 
 
 
-        public OSEPRunner()
+        public static void OSEPExec()
         {
-            
+
             if (CONFIG.DETECT_SANDBOX_TIME)
                 Evasion.SandboxTimeDetect(2000);
 

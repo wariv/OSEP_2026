@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 
 namespace PrintSpooferNet
 {
-    //basically this works by getting spollsvvc to talk to your named pipe.
+    //basically this works by getting spoolsvc to talk to your named pipe.
     //Use https://github.com/leechristensen/SpoolSample to get spoolsvc to exec.
     //Provide it a pipe name  with a foward slash e.g. appsrv01/test
     //it will normalize it and make spoolsvc(SYSTEM) connect to appsrv01\test\pipe\spoolss
@@ -13,7 +13,7 @@ namespace PrintSpooferNet
     //https://github.com/itm4n/PrintSpoofer
 
 
-    class Program
+    class Entry
     {
         [DllImport("kernel32.dll", SetLastError = true)]
         static extern IntPtr CreateNamedPipe(string lpName, uint dwOpenMode, uint dwPipeMode, uint nMaxInstances, uint nOutBufferSize, uint nInBufferSize, uint nDefaultTimeOut, IntPtr lpSecurityAttributes);
