@@ -232,11 +232,12 @@ namespace Build
             //Prep dir structure
             try { Directory.Delete($"{solution_dir}\\ARTIFACTS", true); } catch (Exception ex){ Console.WriteLine($"{ex.Message}"); }
             Directory.CreateDirectory($"{solution_dir}\\ARTIFACTS");
-            Directory.CreateDirectory($"{solution_dir}\\ARTIFACTS\\PE");
-            Directory.CreateDirectory($"{solution_dir}\\ARTIFACTS\\DLL");
-            Directory.CreateDirectory($"{solution_dir}\\ARTIFACTS\\Callback");
-            Directory.CreateDirectory($"{solution_dir}\\ARTIFACTS\\PrivEsc");
-            Directory.CreateDirectory($"{solution_dir}\\ARTIFACTS\\Tools");
+
+            foreach (ArtifactType at in Enum.GetValues(typeof(ArtifactType)))
+            {
+                Directory.CreateDirectory($"{solution_dir}\\ARTIFACTS\\{at}");
+            }
+            
 
             foreach (Artifact a in artifacts)
             {
