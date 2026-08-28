@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{BCC64956-1411-46AC-BC11-530AE5B63AED}</ProjectGuid>
+    <ProjectGuid>{6E647728-A8BC-4FBD-8E67-5CACA5BA8B30}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <RootNamespace>OSEP</RootNamespace>
     <AssemblyName>result</AssemblyName>
@@ -50,7 +50,12 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Configuration.Install" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Management.Automation, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\inc\System.Management.Automation.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />

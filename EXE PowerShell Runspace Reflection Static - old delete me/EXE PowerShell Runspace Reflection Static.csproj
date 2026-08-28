@@ -4,9 +4,9 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{BCC64956-1411-46AC-BC11-530AE5B63AED}</ProjectGuid>
+    <ProjectGuid>{137C43B0-FF6E-4F17-B99A-5E4D59E998DE}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>OSEP</RootNamespace>
+    <RootNamespace>EXE_PowerShell_Runspace_Reflection</RootNamespace>
     <AssemblyName>result</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

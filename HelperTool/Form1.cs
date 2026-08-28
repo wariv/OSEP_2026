@@ -411,7 +411,7 @@ namespace OSEP_2026
 
         private void Form1_Shown(object sender, EventArgs e)
         {
-            txtCSE_out.Text = DrawCSharpByteCode(CONFIG.SHELLCODE);
+            txtCSE_out.Text = DrawCSharpByteCode(CONFIG.SHELLCODE64);
         }
 
         private void btnCSE_Encode_Click(object sender, EventArgs e)

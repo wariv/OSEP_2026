@@ -187,97 +187,6 @@ namespace Build
             return sb.ToString();
         }
 
-        public static void ConsolidateArtifacts(string[] args)
-        {
-            string baseDir = Path.GetFullPath(args[0]);
-            string artifactsDir = Path.Combine(baseDir, "artifacts");
-
-            Dictionary<string, string> projects = new Dictionary<string, string>
-            {
-                [Path.Combine(baseDir, "DLL Shellcode - Invokable")] = "Shellcode_Invokable",
-                [Path.Combine(baseDir, "DLL Sideload Proxy")] = "Shellcode_Auto",
-                [Path.Combine(baseDir, "EXE Hollow Process")] = "Hollow",
-                [Path.Combine(baseDir, "EXE Shellcode Runner")] = "Shellcode",
-                [Path.Combine(baseDir, "EXE InstallUtil Bypass")] = "InstallUtil_Bypass_Basic",
-                [Path.Combine(baseDir, "EXE InstallUtil Bypass Reflection Download")] = "InstallUtil_Bypass_Basic_Reflective_Download",
-                [Path.Combine(baseDir, "EXE PowerShell Runspace Static")] = "PS_Runspace_Bypass_Static",
-                [Path.Combine(baseDir, "EXE PowerShell Runspace Reflection")] = "PS_Runspace_Bypass_Reflection",
-                [Path.Combine(baseDir, "EXE PowerShell Runspace Reflection Download")] = "PS_Runspace_Bypass_Reflection_Download",
-            };
-
-            Dictionary<string, string> architectures = new Dictionary<string, string>
-            {
-                ["x64"] = "x64",
-                ["Win32"] = "x86"
-            };
-
-            try
-            {
-                Console.WriteLine("Beginning artifact aggregation...");
-
-                if (Directory.Exists(artifactsDir))
-                {
-                    Directory.Delete(artifactsDir, recursive: true);
-                }
-
-                Directory.CreateDirectory(Path.Combine(artifactsDir, "x64"));
-                Directory.CreateDirectory(Path.Combine(artifactsDir, "x86"));
-
-                foreach (KeyValuePair<string, string> project in projects)
-                {
-                    foreach (KeyValuePair<string, string> architecture in architectures)
-                    {
-                        CopyArtifact(
-                            projectDirectory: project.Key,
-                            sourceArchitecture: architecture.Key,
-                            destinationArchitecture: architecture.Value,
-                            outputName: project.Value,
-                            extension: ".dll",
-                            artifactsDirectory: artifactsDir);
-
-                        CopyArtifact(
-                            projectDirectory: project.Key,
-                            sourceArchitecture: architecture.Key,
-                            destinationArchitecture: architecture.Value,
-                            outputName: project.Value,
-                            extension: ".exe",
-                            artifactsDirectory: artifactsDir);
-                    }
-                }
-
-                Console.WriteLine($"Artifacts written to: {artifactsDir}");
-
-            }
-            catch (Exception ex)
-            {
-                //
-            }
-        }
-
-        private static void CopyArtifact(string projectDirectory, string sourceArchitecture, string destinationArchitecture, string outputName, string extension, string artifactsDirectory)
-        {
-            string source = Path.Combine(
-                projectDirectory,
-                "bin",
-                sourceArchitecture,
-                "Release",
-                $"result{extension}");
-
-            if (!File.Exists(source))
-            {
-                Console.WriteLine($"Skipped missing artifact: {source}");
-                return;
-            }
-
-            string destination = Path.Combine(
-                artifactsDirectory,
-                destinationArchitecture,
-                $"{outputName}{extension}");
-
-            File.Copy(source, destination, overwrite: true);
-
-            Console.WriteLine($"Copied: {source} -> {destination}");
-        }
     
 
         private static void GatherArtifacts(string[] args)
@@ -288,20 +197,32 @@ namespace Build
 
 
             //artifacts.Add(new Artifact("LOCATION", "NAME", ArtifactType.?));
-            artifacts.Add(new Artifact("DLL Callback - Invokable", "call-invokable.dll", ArtifactType.Callback));
-            artifacts.Add(new Artifact("DLL Shellcode - Invokable", "sc-invokable.dll", ArtifactType.DLL));
-            artifacts.Add(new Artifact("DLL Sideload Proxy", "sideload.dll", ArtifactType.DLL));
+            artifacts.Add(new Artifact("DLL Execute Assembly Dynamic", "ea-dy.dll", ArtifactType.Bypass));
+            artifacts.Add(new Artifact("DLL Execute Assembly Static", "ea-st.dll", ArtifactType.Bypass));
+            artifacts.Add(new Artifact("DLL Invoke Shellcode", "invoke-sc.dll", ArtifactType.Fundamental));
+            artifacts.Add(new Artifact("DLL PowerShell Runspace Dynamic", "ps-rs-dy.dll", ArtifactType.Bypass));
+            artifacts.Add(new Artifact("DLL PowerShell Runspace Reflection Dynamic", "ps-rs-rf-dy.dll", ArtifactType.Bypass));
+            artifacts.Add(new Artifact("DLL PowerShell Runspace Reflection Static", "ps-rs-rf-st.dll", ArtifactType.Bypass));
+            artifacts.Add(new Artifact("DLL PowerShell Runspace Static", "ps-rs-st.dll", ArtifactType.Bypass));
+            artifacts.Add(new Artifact("DLL Sideload Proxy", "sideload.dll", ArtifactType.PrivEsc));
             artifacts.Add(new Artifact("EXE Elevation PrintSpool", "el-printspool.exe", ArtifactType.PrivEsc));
-            artifacts.Add(new Artifact("EXE Hollow Process", "sc-hollow.exe", ArtifactType.PE));
-            artifacts.Add(new Artifact("EXE InstallUtil Bypass", "iu-bypass.exe", ArtifactType.PE));
-            artifacts.Add(new Artifact("EXE InstallUtil Bypass Reflection Download", "iu-bypass-reflection.exe", ArtifactType.PE));
-            artifacts.Add(new Artifact("EXE InstallUtil Callback InvokeReflection", "iu-call-ps-invokereflection.exe", ArtifactType.Callback));
-            artifacts.Add(new Artifact("EXE InstallUtil Callback Test", "iu-call-ps-curl.exe", ArtifactType.Callback));
+            artifacts.Add(new Artifact("EXE Hollow Shellcode", "hollow-sc.exe", ArtifactType.Fundamental));
+
+
+            artifacts.Add(new Artifact("EXE InstallUtil Execute Assembly Dynamic", "iu-ea-dy.exe", ArtifactType.Bypass));
+            artifacts.Add(new Artifact("EXE InstallUtil Execute Assembly Static", "iu-ea-st.exe", ArtifactType.Bypass));
+
+            artifacts.Add(new Artifact("EXE InstallUtil InvokeReflection DLL Dynamic", "iu-invokereflection-dy.exe", ArtifactType.Bypass));
+
+            artifacts.Add(new Artifact("EXE InstallUtil PowerShell Runspace Dynamic", "iu-ps-rs-dy.exe", ArtifactType.Bypass));
+            artifacts.Add(new Artifact("EXE InstallUtil PowerShell Runspace Reflection Dynamic", "iu-ps-rs-rf-dy.exe", ArtifactType.Bypass));
+            artifacts.Add(new Artifact("EXE InstallUtil PowerShell Runspace Reflection Dynamic", "iu-ps-rs-rf-st.exe", ArtifactType.Bypass));
+            artifacts.Add(new Artifact("EXE InstallUtil PowerShell Runspace Static", "iu-ps-rs-st.exe", ArtifactType.Bypass));
+
             artifacts.Add(new Artifact("EXE Minidump", "minidump.exe", ArtifactType.Tools));
-            artifacts.Add(new Artifact("EXE PowerShell Runspace Reflection", "ps-rs-reflection.exe", ArtifactType.PE));
-            artifacts.Add(new Artifact("EXE PowerShell Runspace Reflection Download", "ps-rs-reflection-download.exe", ArtifactType.PE));
-            artifacts.Add(new Artifact("EXE Powershell Runspace Static", "ps-rs-static.exe", ArtifactType.PE));
-            artifacts.Add(new Artifact("EXE Shellcode Runner", "sc-runner.exe", ArtifactType.PE));
+
+            artifacts.Add(new Artifact("EXE Run Shellcode", "run-sc.exe", ArtifactType.Fundamental));
+
             artifacts.Add(new Artifact("HelperTool", "OSEP-Helper.exe", ArtifactType.Tools));
 
 
@@ -419,6 +340,22 @@ namespace Build
             output = output.Replace("rs-", "Runspace ");
             output = output.Replace("el-", "Elevate ");
             output = output.Replace("call-", "Callback ");
+            output = output.Replace("ea-", "Execute-Assembly ");
+            output = output.Replace("dy-", "Dynamic ");
+            output = output.Replace("st-", "Static ");
+            output = output.Replace("rf-", "Reflection ");
+
+            output = output.Replace("-iu", " InstallUtil");
+            output = output.Replace("-sc", " Shellcode");
+            output = output.Replace("-ps", " PowerShell");
+            output = output.Replace("-rs", " Runspace");
+            output = output.Replace("-el", " Elevate");
+            output = output.Replace("-call", " Callback");
+            output = output.Replace("-ea", " Execute-Assembly");
+            output = output.Replace("-dy", " Dynamic");
+            output = output.Replace("-st", " Static");
+            output = output.Replace("-rf", " Refelction");
+
             output = output.Replace("-", " ");
 
             return output;
@@ -633,7 +570,8 @@ namespace Build
                 //Convert shellcode strings to appropriate language
                 if (fi.Extension == ".ps1")
                 {
-                    output = output.Replace("{SHELLCODE}", ConvertByteCode(CONFIG.SHELLCODE, ByteCodeLang.ps1));
+                    output = output.Replace("{SHELLCODE}", ConvertByteCode(CONFIG.SHELLCODE64, ByteCodeLang.ps1));
+                    output = output.Replace("{SHELLCODE86}", ConvertByteCode(CONFIG.SHELLCODE86, ByteCodeLang.ps1));
 
                     if (CONFIG.ENCODED)
                     {
@@ -643,15 +581,18 @@ namespace Build
                 }
                 else if (fi.Extension == ".vba")
                 {
-                    output = output.Replace("{SHELLCODE}", ConvertByteCode(CONFIG.SHELLCODE, ByteCodeLang.vba));
+                    output = output.Replace("{SHELLCODE}", ConvertByteCode(CONFIG.SHELLCODE64, ByteCodeLang.vba));
+                    output = output.Replace("{SHELLCODE86}", ConvertByteCode(CONFIG.SHELLCODE86, ByteCodeLang.vba));
                 }
                 else if (fi.Extension == ".py")
                 {
-                    output = output.Replace("{SHELLCODE}", ConvertByteCode(CONFIG.SHELLCODE, ByteCodeLang.python));
+                    output = output.Replace("{SHELLCODE}", ConvertByteCode(CONFIG.SHELLCODE64, ByteCodeLang.python));
+                    output = output.Replace("{SHELLCODE86}", ConvertByteCode(CONFIG.SHELLCODE86, ByteCodeLang.python));
                 }
                 else if (fi.Extension == ".c" || fi.Extension == ".cpp" || fi.Extension == ".h" || fi.Extension == ".hpp")
                 {
-                    output = output.Replace("{SHELLCODE}", ConvertByteCode(CONFIG.SHELLCODE, ByteCodeLang.c));
+                    output = output.Replace("{SHELLCODE}", ConvertByteCode(CONFIG.SHELLCODE64, ByteCodeLang.c));
+                    output = output.Replace("{SHELLCODE86}", ConvertByteCode(CONFIG.SHELLCODE86, ByteCodeLang.c));
                 }
 
                 output = output.Replace("{DECODE}", "");
@@ -673,7 +614,7 @@ namespace Build
 
     public enum ArtifactType
     {
-        Callback, DLL, PE, Tools, PrivEsc
+        Tools, PrivEsc, Bypass, Fundamental
     }
 
     public class Artifact

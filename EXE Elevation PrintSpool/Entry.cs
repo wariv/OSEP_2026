@@ -1,7 +1,8 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 
-namespace PrintSpooferNet
+namespace OSEP
 {
     //basically this works by getting spoolsvc to talk to your named pipe.
     //Use https://github.com/leechristensen/SpoolSample to get spoolsvc to exec.
@@ -44,6 +45,8 @@ namespace PrintSpooferNet
 
         static void Main(string[] args)
         {
+            Debug.RunDebug("\nMain started - PrintSpool");
+
             if (args.Length == 0)
             {
                 Console.WriteLine("Usage: PrintSpooferNet.exe pipename");

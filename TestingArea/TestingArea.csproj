@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{FBF34D47-D709-46FE-B62A-FDD233275A08}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>TestingArea</RootNamespace>
-    <AssemblyName>TestingArea</AssemblyName>
+    <RootNamespace>OSEP</RootNamespace>
+    <AssemblyName>result</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -21,7 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-        <OutputPath>bin\$(Platform)\</OutputPath>
+    <OutputPath>bin\$(Platform)\</OutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -30,7 +30,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-        <OutputPath>bin\$(Platform)\</OutputPath>
+    <OutputPath>bin\$(Platform)\</OutputPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <PlatformTarget>x64</PlatformTarget>
@@ -59,11 +59,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
+    <Compile Include="Entry.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup Condition="'$(PlatformTarget)' == 'x86'">
+    <DefineConstants>$(DefineConstants);X86</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(PlatformTarget)' == 'x64'">
+    <DefineConstants>$(DefineConstants);X64</DefineConstants>
+  </PropertyGroup>
 </Project>

@@ -61,16 +61,21 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>$(MSBuildProjectDirectory)\bin\$(Platform)\</OutDir>
-    <IntDir>$(MSBuildProjectDirectory)\obj\$(Platform)\</IntDir>
+    <OutDir>$(MSBuildProjectDirectory)\bin\x64\</OutDir>
+    <IntDir>$(MSBuildProjectDirectory)\obj\x64\</IntDir>
     <TargetName>result</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <OutDir>$(MSBuildProjectDirectory)\bin\$(Platform)\</OutDir>
-    <IntDir>$(MSBuildProjectDirectory)\obj\$(Platform)\</IntDir>
+    <OutDir>$(MSBuildProjectDirectory)\bin\x64\</OutDir>
+    <IntDir>$(MSBuildProjectDirectory)\obj\x64\</IntDir>
     <TargetName>result</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(MSBuildProjectDirectory)\bin\x86\</OutDir>
+    <IntDir>$(MSBuildProjectDirectory)\obj\x86\</IntDir>
+    <TargetName>result</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>$(MSBuildProjectDirectory)\bin\x86\</OutDir>
     <IntDir>$(MSBuildProjectDirectory)\obj\x86\</IntDir>
     <TargetName>result</TargetName>
