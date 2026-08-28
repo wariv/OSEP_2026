@@ -14,6 +14,7 @@ namespace OSEP
         public static void OSEPExec()
         {
             //Malware here.
+            Debug.RunDebug("DLL Artifact <NAME> OSEPExec() has started...");
         }
 
     }

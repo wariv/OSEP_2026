@@ -60,6 +60,7 @@
     <Compile Include="Entry.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <Import Project="..\Configuration\Configuration.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup Condition="'$(PlatformTarget)' == 'x86'">
     <DefineConstants>$(DefineConstants);X86</DefineConstants>

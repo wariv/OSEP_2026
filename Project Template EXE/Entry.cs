@@ -11,7 +11,7 @@ namespace Project_Template
         static void Main(string[] args)
         {
             //This is a project template which has all the settings ready for build.
-
+            Debug.RunDebug("Artifact <NAME> Main() has started...");
         }
     }
 }
