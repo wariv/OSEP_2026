@@ -43,21 +43,6 @@ namespace Build
             Console.WriteLine("[+] Generating script Templates...");
             GenerateScripts(args);
 
-
-            //BuildTemplates(args);
-
-            //if (args.Length < 1 || string.IsNullOrWhiteSpace(args[0]))
-            //{
-            //    Console.Error.WriteLine("Missing solution directory argument.");
-            //    return 1;
-            //}
-
-            //ConsolidateArtifacts(args);
-
-            //BuildTemplates(args);
-
-
-
             return 0;
         }
 
@@ -230,7 +215,7 @@ namespace Build
             string solution_dir = args[0];
 
             //Prep dir structure
-            try { Directory.Delete($"{solution_dir}\\ARTIFACTS", true); } catch (Exception ex){ Console.WriteLine($"{ex.Message}"); }
+            try { Directory.Delete($"{solution_dir}\\ARTIFACTS", true); } catch {  }
             Directory.CreateDirectory($"{solution_dir}\\ARTIFACTS");
 
             foreach (ArtifactType at in Enum.GetValues(typeof(ArtifactType)))
@@ -422,22 +407,24 @@ namespace Build
                 File.WriteAllText(nf, text);
             }
 
-            
+
 
 
 
             //DotNetToJsTemplates
-
-
-            //string dn2js_location = $"{args[0]}\\DotNetToJScript\\bin\\x64\\DotNetToJScript.exe";
-            //string dll_location = $"{args[0]}\\ARTIFACTS\\DLL\\Shellcode invokable\\x64\\sc-invokable.dll";
-            //string out_location = $"{args[0]}\\ARTIFACTS\\scripts\\rundll_invokable.js";
-            //string cmdline = $"{dn2js_location} \"{dll_location}\" --lang=Jscript --ver=v4 -o \"{out_location}\" -c OSEP.OSEPRunner";
-
-
-            //Process.Start(cmdline);
-
-
+            if (!IsDefenderRealTimeProtectionEnabled())
+            {
+                string dn2js_location = $"{args[0]}\\DotNetToJScript\\bin\\x64\\DotNetToJScript.exe";
+                string dll_location = $"{args[0]}\\ARTIFACTS\\Fundamental\\DLL invoke Shellcode\\x64\\invoke-sc.dll";
+                string out_location = $"{args[0]}\\ARTIFACTS\\scripts\\rundll_invokable.js";
+                string cmdline = $"{dn2js_location} \"{dll_location}\" --lang=Jscript --ver=v4 -o \"{out_location}\" -c OSEP.OSEPRunner";
+                RunProccess(cmdline);
+            }
+            else
+            {
+                //Console.WriteLine("\nWARNING: MS DEFENDER is enabled. DotNetToJScript will not run...");
+            }
+               
         }
 
         public static void GenerateWordDocuments(string[] args)
@@ -635,6 +622,56 @@ namespace Build
 
 
             return output;
+        }
+
+        public static bool IsDefenderRealTimeProtectionEnabled()
+        {
+            //AI Gen
+            ProcessStartInfo psi = new ProcessStartInfo();
+            psi.FileName = "powershell.exe";
+            psi.Arguments = "-NoProfile -ExecutionPolicy Bypass -Command \"Get-CimInstance -Namespace root/Microsoft/Windows/Defender -ClassName MSFT_MpComputerStatus | Select-Object -ExpandProperty RealTimeProtectionEnabled\"";
+            psi.UseShellExecute = false;
+            psi.RedirectStandardOutput = true;
+            psi.RedirectStandardError = true;
+            psi.CreateNoWindow = true;
+
+            using (Process p = Process.Start(psi))
+            {
+                string output = p.StandardOutput.ReadToEnd().Trim();
+                string error = p.StandardError.ReadToEnd().Trim();
+
+                p.WaitForExit();
+
+                if (p.ExitCode != 0)
+                    throw new Exception("PowerShell error: " + error);
+
+                return output.Equals("True", StringComparison.OrdinalIgnoreCase);
+            }
+        }
+
+        public static void RunProccess(string cmdline)
+        {
+            ProcessStartInfo psi = new ProcessStartInfo();
+
+            psi.FileName = "cmd.exe";
+            psi.Arguments = "/c " + cmdline;
+            psi.UseShellExecute = false;
+            psi.RedirectStandardOutput = false;
+            psi.RedirectStandardError = false;
+            psi.CreateNoWindow = true;
+
+            using (Process p = new Process())
+            {
+                p.StartInfo = psi;
+
+                p.Start();
+
+                //string stdout = p.StandardOutput.ReadToEnd();
+                //string stderr = p.StandardError.ReadToEnd();
+
+                p.WaitForExit();
+
+            }
         }
 
     }
