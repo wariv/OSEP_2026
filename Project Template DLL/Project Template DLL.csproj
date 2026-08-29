@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Project_Template_DLL</RootNamespace>
-    <AssemblyName>Project Template DLL</AssemblyName>
+    <AssemblyName>Project_Template_DLL</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -67,5 +67,9 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(PlatformTarget)' == 'x64'">
     <DefineConstants>$(DefineConstants);X64</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PostBuildEvent>copy /Y "$(TargetPath)" "$(TargetDir)result.dll"
+del /F /Q "$(TargetPath)"</PostBuildEvent>
   </PropertyGroup>
 </Project>

@@ -7,7 +7,7 @@
     <ProjectGuid>{6E647728-A8BC-4FBD-8E67-5CACA5BA8B30}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <RootNamespace>OSEP</RootNamespace>
-    <AssemblyName>result</AssemblyName>
+    <AssemblyName>pe-iu-ps-rs-st</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -72,4 +72,8 @@
   </ItemGroup>
   <Import Project="..\Configuration\Configuration.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>copy /Y "$(TargetPath)" "$(TargetDir)result.exe"
+del /F /Q "$(TargetPath)"</PostBuildEvent>
+  </PropertyGroup>
 </Project>

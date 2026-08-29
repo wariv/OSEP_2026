@@ -7,7 +7,7 @@
     <ProjectGuid>{D2C8E8EC-8F7C-49E5-9C5B-6A1AE4BBEBAC}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <RootNamespace>OSEP</RootNamespace>
-    <AssemblyName>result</AssemblyName>
+    <AssemblyName>pe-iu-invokeDLL-rf-dy</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -68,4 +68,8 @@
   </ItemGroup>
   <Import Project="..\Configuration\Configuration.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>copy /Y "$(TargetPath)" "$(TargetDir)result.exe"
+del /F /Q "$(TargetPath)"</PostBuildEvent>
+  </PropertyGroup>
 </Project>

@@ -7,7 +7,7 @@
     <ProjectGuid>{FBF34D47-D709-46FE-B62A-FDD233275A08}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <RootNamespace>OSEP</RootNamespace>
-    <AssemblyName>result</AssemblyName>
+    <AssemblyName>testing_area</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -65,11 +65,16 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <Import Project="..\Configuration\Configuration.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup Condition="'$(PlatformTarget)' == 'x86'">
     <DefineConstants>$(DefineConstants);X86</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition="'$(PlatformTarget)' == 'x64'">
     <DefineConstants>$(DefineConstants);X64</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PostBuildEvent>copy /Y "$(TargetPath)" "$(TargetDir)result.exe"
+del /F /Q "$(TargetPath)"</PostBuildEvent>
   </PropertyGroup>
 </Project>

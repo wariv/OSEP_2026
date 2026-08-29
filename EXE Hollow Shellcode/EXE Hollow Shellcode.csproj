@@ -7,7 +7,7 @@
     <ProjectGuid>{4DD03C25-76C6-4AFF-946B-6F666C60537B}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <RootNamespace>OSEP</RootNamespace>
-    <AssemblyName>result</AssemblyName>
+    <AssemblyName>pe-hollow-sc</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -85,5 +85,9 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(PlatformTarget)' == 'x64'">
     <DefineConstants>$(DefineConstants);X64</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PostBuildEvent>copy /Y "$(TargetPath)" "$(TargetDir)result.exe"
+del /F /Q "$(TargetPath)"</PostBuildEvent>
   </PropertyGroup>
 </Project>

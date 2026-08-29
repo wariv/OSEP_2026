@@ -7,7 +7,7 @@
     <ProjectGuid>{B5640E89-A916-49A2-98B1-B48D54865D92}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>OSEP_2026</RootNamespace>
-    <AssemblyName>result</AssemblyName>
+    <AssemblyName>helper-tool</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -145,4 +145,8 @@
   </ItemGroup>
   <Import Project="..\Configuration\Configuration.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>copy /Y "$(TargetPath)" "$(TargetDir)result.exe"
+del /F /Q "$(TargetPath)"</PostBuildEvent>
+  </PropertyGroup>
 </Project>

@@ -335,6 +335,16 @@ namespace Build
             //convert shorthand file name to full text
             string[] parts = input.Split('.');
             string output = parts[0];
+
+            if (parts[1] == "dll")
+            {
+                output = "DLL " + output;
+            }
+            else
+            {
+                output = "EXE " + output;
+            }
+
             output = output.Replace("iu-","InstallUtil ");
             output = output.Replace("sc-", "Shellcode ");
             output = output.Replace("ps-", "PowerShell ");
@@ -356,6 +366,28 @@ namespace Build
             output = output.Replace("-dy", " Dynamic");
             output = output.Replace("-st", " Static");
             output = output.Replace("-rf", " Refelction");
+
+            output = output.Replace("iu ", "InstallUtil ");
+            output = output.Replace("sc ", "Shellcode ");
+            output = output.Replace("ps ", "PowerShell ");
+            output = output.Replace("rs ", "Runspace ");
+            output = output.Replace("el ", "Elevate ");
+            output = output.Replace("call ", "Callback ");
+            output = output.Replace("ea ", "Execute-Assembly ");
+            output = output.Replace("dy ", "Dynamic ");
+            output = output.Replace("st ", "Static ");
+            output = output.Replace("rf ", "Reflection ");
+
+            output = output.Replace(" iu", " InstallUtil");
+            output = output.Replace(" sc", " Shellcode");
+            output = output.Replace(" ps", " PowerShell");
+            output = output.Replace(" rs", " Runspace");
+            output = output.Replace(" el", " Elevate");
+            output = output.Replace(" call", " Callback");
+            output = output.Replace(" ea", " Execute-Assembly");
+            output = output.Replace(" dy", " Dynamic");
+            output = output.Replace(" st", " Static");
+            output = output.Replace(" rf", " Reflection");
 
             output = output.Replace("-", " ");
 

