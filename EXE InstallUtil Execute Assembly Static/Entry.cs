@@ -30,14 +30,28 @@ namespace OSEP
 
             //await RunAssembly(CONFIG.EA_STATIC_PATH, CONFIG.EA_STATIC_ARGS);
 
-            RunAssembly("C:\\Users\\warum\\source\\repos\\OSEP_2026\\TestingArea\\bin\\x64\\test_results.exe",CONFIG.EA_STATIC_ARGS).GetAwaiter().GetResult();
+            RunAssembly(CONFIG.EA_STATIC_PATH,CONFIG.EA_STATIC_ARGS).GetAwaiter().GetResult();
 
         }
 
         private static async Task<int> RunAssembly(string assemblyPath, params string[] args)
         {
             Debug.RunDebug("Loading assembly...");
-            Assembly asm = Assembly.LoadFrom(assemblyPath);
+
+            Assembly asm;
+
+            if (CONFIG.EA_ASSEMBLY_IS_ENCODED)
+            {
+                byte[] ebytes = File.ReadAllBytes(assemblyPath);
+                File.WriteAllBytes(CONFIG.EA_ASSEMBLY_WRITE_LOCATION, Evasion.Decode(ebytes));
+                asm = Assembly.LoadFrom(CONFIG.EA_ASSEMBLY_WRITE_LOCATION);
+            }
+            else
+            {
+                asm = Assembly.LoadFrom(assemblyPath);
+            }
+
+
             MethodInfo entry = asm.EntryPoint;
             ParameterInfo[] entryParams = entry.GetParameters();
 

