@@ -135,6 +135,7 @@ namespace OSEP_2026
 
         private void UpdateMSFVenomUI()
         {
+            string oldchoice = cbMsvPayload.Text;
 
             cbMsvPayload.Text = "";
             cbMsvPayload.Items.Clear();
@@ -167,6 +168,15 @@ namespace OSEP_2026
 
             }
             cbMsvPayload.Text = cbMsvPayload.Items[0].ToString();
+
+            foreach (string s in cbMsvPayload.Items)
+            {
+                string[] oldparts = oldchoice.Split('/');
+                string[] newparts = s.Split('/');
+
+                if (oldparts[oldparts.Length-1] == newparts[newparts.Length - 1])
+                    cbMsvPayload.SelectedItem = s;
+            }
 
             UpdatePayloadText();
         }
@@ -495,6 +505,11 @@ namespace OSEP_2026
 
             File.WriteAllBytes(encodedName, encoded);
             txtEA_out.Text = $"Encoded Assembly: {encodedName}";
+        }
+
+        private void cbMsvPayload_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            UpdatePayloadText();
         }
     }
 }

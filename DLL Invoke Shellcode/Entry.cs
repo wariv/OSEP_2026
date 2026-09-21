@@ -34,7 +34,7 @@ namespace OSEP
 
 
 
-        public static void OSEPExec()
+        public OSEPRunner()
         {
             Debug.RunDebug("\nOSEPExec() start");
 

