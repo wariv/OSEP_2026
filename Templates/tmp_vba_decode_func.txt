@@ -1,0 +1,39 @@
+Public Function Decode(ByVal inputBuffer As Variant, ByVal key As Long) As Byte()
+    Dim n As Long, base As Long, midPoint As Long
+    Dim i As Long, j As Long
+    Dim interimBuffer() As Byte, outputBuffer() As Byte
+
+    base = LBound(inputBuffer)
+    n = UBound(inputBuffer) - base + 1
+    midPoint = n \ 2
+
+    ReDim interimBuffer(0 To n - 1)
+    ReDim outputBuffer(0 To n - 1)
+
+    For i = 0 To midPoint - 1
+        j = i * 2
+        interimBuffer(midPoint + i) = _
+            (CLng(inputBuffer(base + j)) Xor i) And &HFF&
+        interimBuffer(midPoint - i - 1) = _
+            (CLng(inputBuffer(base + j + 1)) Xor i) And &HFF&
+    Next i
+
+    If (n Mod 2) <> 0 Then
+        interimBuffer(n - 1) = inputBuffer(base + n - 1)
+    End If
+
+    For i = 0 To midPoint - 1
+        j = i * 2
+        outputBuffer(midPoint + i) = _
+            (CLng(interimBuffer(j)) Xor CLng(key)) And &HFF&
+        outputBuffer(midPoint - i - 1) = _
+            (CLng(interimBuffer(j + 1)) Xor CLng(key)) And &HFF&
+    Next i
+
+    If (n Mod 2) <> 0 Then
+        outputBuffer(n - 1) = _
+            (CLng(interimBuffer(n - 1)) Xor CLng(key)) And &HFF&
+    End If
+
+    Decode = outputBuffer
+End Function

