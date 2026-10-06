@@ -43,6 +43,14 @@ namespace Build
             Console.WriteLine("[+] Generating script Templates...");
             GenerateScripts(args);
 
+
+            if (CONFIG.ENCODED)
+            {
+                Console.WriteLine("Restoring orginal shellcode...");
+                CONFIG.DecodeCONFIG();
+            }
+            
+
             return 0;
         }
 
@@ -686,6 +694,9 @@ namespace Build
 
             }
         }
+
+        
+
 
     }
 

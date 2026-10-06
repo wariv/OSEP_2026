@@ -511,5 +511,49 @@ namespace OSEP_2026
         {
             UpdatePayloadText();
         }
+
+        private void btnCSE_Decode_Click(object sender, EventArgs e)
+        {
+            string t = txtCSE_out.Text;
+
+            //Normalize text
+            string[] parts = t.Split('=');
+            if (parts.Length == 2)
+                t = parts[1];
+            else
+                t = parts[0];
+
+            parts = t.Split('{');
+            if (parts.Length == 2)
+                t = parts[1];
+            else
+                t = parts[0];
+
+            parts = t.Split('}');
+            if (parts.Length == 2)
+                t = parts[0];
+
+            t = t.Replace("0x", "").Replace(@"\x", ",").Replace("\"", "").Replace("\n", "").Replace(";", "").TrimStart(',').TrimEnd(',');
+
+
+            parts = t.Split(',');
+
+            byte[] bytes = new byte[parts.Length];
+            int i = 0;
+            foreach (string s in parts)
+            {
+                bytes[i] = byte.Parse(s, System.Globalization.NumberStyles.HexNumber);
+                i++;
+            }
+
+            bytes = Evasion.Decode(bytes);
+
+            txtCSE_out.Text = DrawCSharpByteCode(bytes);
+
+            //txtCSE_out.AppendText("\n\nThe payload has been encoded using a custom routine.\nYou need to replace the SHELLCODE global with these bytes. \nAlso set ENCODED to true.\nand rebuild the solution.");
+
+
+            Application.DoEvents();
+        }
     }
 }

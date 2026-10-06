@@ -4,21 +4,37 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 18.8.12009.203
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelperTool", "HelperTool\HelperTool.csproj", "{B5640E89-A916-49A2-98B1-B48D54865D92}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0A267552-DE62-414F-89ED-73922C8863EF} = {0A267552-DE62-414F-89ED-73922C8863EF}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EXE Run Shellcode", "EXE Run Shellcode\EXE Run Shellcode.csproj", "{D65C6019-EF3C-41CA-A902-3D90DEC21DE0}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0A267552-DE62-414F-89ED-73922C8863EF} = {0A267552-DE62-414F-89ED-73922C8863EF}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DLL Invoke Shellcode", "DLL Invoke Shellcode\DLL Invoke Shellcode.csproj", "{3FAA1646-E63F-44C3-8F52-FD30D83E3918}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0A267552-DE62-414F-89ED-73922C8863EF} = {0A267552-DE62-414F-89ED-73922C8863EF}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EXE Hollow Shellcode", "EXE Hollow Shellcode\EXE Hollow Shellcode.csproj", "{4DD03C25-76C6-4AFF-946B-6F666C60537B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0A267552-DE62-414F-89ED-73922C8863EF} = {0A267552-DE62-414F-89ED-73922C8863EF}
+	EndProjectSection
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Configuration", "Configuration\Configuration.shproj", "{1C744FAE-D081-4D1C-B456-195121D27E2D}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DLL Sideload Proxy", "DLL Sideload Proxy\DLL Sideload Proxy.vcxproj", "{C7A10420-B47C-45FB-9633-8800D978D44F}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0A267552-DE62-414F-89ED-73922C8863EF} = {0A267552-DE62-414F-89ED-73922C8863EF}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Configuration Native", "Configuration Native\Configuration Native.vcxitems", "{96170C61-F368-49F5-83C3-84FCAB42F364}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Build", "Build\Build.csproj", "{215EE669-E4FB-4D10-BA0A-A3DA6AE8B3F3}"
 	ProjectSection(ProjectDependencies) = postProject
+		{0A267552-DE62-414F-89ED-73922C8863EF} = {0A267552-DE62-414F-89ED-73922C8863EF}
 		{2F7640F9-59C4-4E62-9F9F-5472EDEFF285} = {2F7640F9-59C4-4E62-9F9F-5472EDEFF285}
 		{3FAA1646-E63F-44C3-8F52-FD30D83E3918} = {3FAA1646-E63F-44C3-8F52-FD30D83E3918}
 		{4DD03C25-76C6-4AFF-946B-6F666C60537B} = {4DD03C25-76C6-4AFF-946B-6F666C60537B}
@@ -45,18 +61,39 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Build", "Build\Build.csproj
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetToJScript", "DotNetToJScript\DotNetToJScript.csproj", "{7E3F231C-0D0B-4025-812C-0EF099404861}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0A267552-DE62-414F-89ED-73922C8863EF} = {0A267552-DE62-414F-89ED-73922C8863EF}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestingArea", "TestingArea\TestingArea.csproj", "{FBF34D47-D709-46FE-B62A-FDD233275A08}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0A267552-DE62-414F-89ED-73922C8863EF} = {0A267552-DE62-414F-89ED-73922C8863EF}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EXE InstallUtil PowerShell Runspace Static", "EXE InstallUtil PowerShell Runspace Static\EXE InstallUtil PowerShell Runspace Static.csproj", "{6E647728-A8BC-4FBD-8E67-5CACA5BA8B30}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0A267552-DE62-414F-89ED-73922C8863EF} = {0A267552-DE62-414F-89ED-73922C8863EF}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EXE InstallUtil PowerShell Runspace Reflection Dynamic", "EXE InstallUtil PowerShell Runspace Reflection Dynamic\EXE InstallUtil PowerShell Runspace Reflection Dynamic.csproj", "{88A81B1B-3E20-44EF-87E5-590E417F49F6}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0A267552-DE62-414F-89ED-73922C8863EF} = {0A267552-DE62-414F-89ED-73922C8863EF}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EXE Elevation PrintSpool", "EXE Elevation PrintSpool\EXE Elevation PrintSpool.csproj", "{BCC64956-1411-46AC-BC11-530AE5B63AED}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0A267552-DE62-414F-89ED-73922C8863EF} = {0A267552-DE62-414F-89ED-73922C8863EF}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EXE Minidump", "EXE Minidump\EXE Minidump.csproj", "{63EFB3D6-5612-4232-8C30-834790D38B22}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0A267552-DE62-414F-89ED-73922C8863EF} = {0A267552-DE62-414F-89ED-73922C8863EF}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EXE InstallUtil InvokeReflection DLL Dynamic", "EXE InstallUtil InvokeReflection DLL Dynamic\EXE InstallUtil InvokeReflection DLL Dynamic.csproj", "{D2C8E8EC-8F7C-49E5-9C5B-6A1AE4BBEBAC}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0A267552-DE62-414F-89ED-73922C8863EF} = {0A267552-DE62-414F-89ED-73922C8863EF}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{9017F92F-2F30-491D-9885-681DCA651407}"
 EndProject
@@ -67,32 +104,71 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PrivEsc", "PrivEsc", "{E0EAEB98-2A5A-4604-9312-2CC483DBA537}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EXE InstallUtil Execute Assembly Static", "EXE InstallUtil Execute Assembly Static\EXE InstallUtil Execute Assembly Static.csproj", "{EE3B9494-7C9C-439F-BBBE-F2C18800C3F3}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0A267552-DE62-414F-89ED-73922C8863EF} = {0A267552-DE62-414F-89ED-73922C8863EF}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EXE InstallUtil Execute Assembly Dynamic", "EXE InstallUtil Execute Assembly Dynamic\EXE InstallUtil Execute Assembly Dynamic.csproj", "{9321FF53-DC11-48F3-970B-F111B6856D97}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0A267552-DE62-414F-89ED-73922C8863EF} = {0A267552-DE62-414F-89ED-73922C8863EF}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DLL PowerShell Runspace Static", "DLL PowerShell Runspace Static\DLL PowerShell Runspace Static.csproj", "{7E72B6F4-E351-451F-AC61-E2B0B288EAA9}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0A267552-DE62-414F-89ED-73922C8863EF} = {0A267552-DE62-414F-89ED-73922C8863EF}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DLL PowerShell Runspace Dynamic", "DLL PowerShell Runspace Dynamic\DLL PowerShell Runspace Dynamic.csproj", "{2F7640F9-59C4-4E62-9F9F-5472EDEFF285}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0A267552-DE62-414F-89ED-73922C8863EF} = {0A267552-DE62-414F-89ED-73922C8863EF}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DLL Execute Assembly Dynamic", "DLL Execute Assembly Dynamic\DLL Execute Assembly Dynamic.csproj", "{EC70A4DA-BAF8-44C4-972B-0ED45959DBB1}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0A267552-DE62-414F-89ED-73922C8863EF} = {0A267552-DE62-414F-89ED-73922C8863EF}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DLL Execute Assembly Static", "DLL Execute Assembly Static\DLL Execute Assembly Static.csproj", "{B45C8B83-68A3-45DD-9250-CCF57316EBD7}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0A267552-DE62-414F-89ED-73922C8863EF} = {0A267552-DE62-414F-89ED-73922C8863EF}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DLL PowerShell Runspace Reflection Static", "DLL PowerShell Runspace Reflection Static\DLL PowerShell Runspace Reflection Static.csproj", "{77B9DC1A-7953-4835-AA7D-F28ED3D55EF0}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0A267552-DE62-414F-89ED-73922C8863EF} = {0A267552-DE62-414F-89ED-73922C8863EF}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DLL PowerShell Runspace Reflection Dynamic", "DLL PowerShell Runspace Reflection Dynamic\DLL PowerShell Runspace Reflection Dynamic.csproj", "{F7FA4EBC-94FE-43A9-AFDB-63225391CC98}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0A267552-DE62-414F-89ED-73922C8863EF} = {0A267552-DE62-414F-89ED-73922C8863EF}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EXE InstallUtil PowerShell Runspace Reflection Static", "EXE InstallUtil PowerShell Runspace Reflection Static\EXE InstallUtil PowerShell Runspace Reflection Static.csproj", "{50374D34-6C80-437E-B246-E164B8331E11}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0A267552-DE62-414F-89ED-73922C8863EF} = {0A267552-DE62-414F-89ED-73922C8863EF}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EXE InstallUtil PowerShell Runspace Dynamic", "EXE InstallUtil PowerShell Runspace Dynamic\EXE InstallUtil PowerShell Runspace Dynamic.csproj", "{F9554F34-4D16-4C9F-9D0E-56E44C6C9097}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0A267552-DE62-414F-89ED-73922C8863EF} = {0A267552-DE62-414F-89ED-73922C8863EF}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Project Template EXE", "Project Template EXE\Project Template EXE.csproj", "{0B69EE90-90E3-4C83-A83A-4535BEA3128C}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0A267552-DE62-414F-89ED-73922C8863EF} = {0A267552-DE62-414F-89ED-73922C8863EF}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Project Template DLL", "Project Template DLL\Project Template DLL.csproj", "{C5FF4446-4193-431C-BE7F-06025793F550}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0A267552-DE62-414F-89ED-73922C8863EF} = {0A267552-DE62-414F-89ED-73922C8863EF}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WIP", "WIP", "{2249491F-6AF3-47E1-86F5-82733D5B2E93}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DLL Native PowerShell Runspace Static", "DLL Native PowerShell Runspace Static\DLL Native PowerShell Runspace Static.vcxproj", "{DE01C5F7-B3C0-49A7-BEE4-6557E63A2028}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0A267552-DE62-414F-89ED-73922C8863EF} = {0A267552-DE62-414F-89ED-73922C8863EF}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PreBuild", "PreBuild\PreBuild.csproj", "{0A267552-DE62-414F-89ED-73922C8863EF}"
 EndProject
