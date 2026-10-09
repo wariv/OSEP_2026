@@ -61,3 +61,15 @@ For the most part it all just works. This is the product of a mad scientist and 
 
 All the same I hope you find it interesting and useful. Eventually I will get around to making it a bit more coherent.
 
+This tool contains resources that were not created by me.
+
+Namely Dotnet2Jscript, winpeas, and powerview.
+
+
+https://github.com/tyranid/DotNetToJScript
+
+https://github.com/PowerShellEmpire/PowerTools/blob/master/PowerView/powerview.ps1
+
+https://github.com/peass-ng/PEASS-ng/blob/master/winPEAS/winPEASexe/README.md
+
+
