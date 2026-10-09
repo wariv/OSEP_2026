@@ -9,7 +9,7 @@ This is my personal tool set to assist with OSEP. It's not all me though. I had 
   - ATTACKER_IP - This should be your Tun0 IP
   - ENCODED - Set true if you want custom shellcode encoding enabled.
   - SHELLCODE64 - Generate your preferred payload shellcode x64
-  - SHELLCODE86 - Generate your preferred payload shellcode x64
+  - SHELLCODE86 - Generate your preferred payload shellcode x86
 5. Build -> Rebuild Solution
 6. Enjoy your payloads in "ARTIFACTS" (created in the solution directory)
 
