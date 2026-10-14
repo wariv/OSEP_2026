@@ -72,6 +72,7 @@
             this.txt_Export_Scanner_Out = new System.Windows.Forms.RichTextBox();
             this.btn_Export_Scanner_Search = new System.Windows.Forms.Button();
             this.tpCustomEncoder = new System.Windows.Forms.TabPage();
+            this.btnCSE_Decode = new System.Windows.Forms.Button();
             this.btnCSE_Encode = new System.Windows.Forms.Button();
             this.txtCSE_out = new System.Windows.Forms.RichTextBox();
             this.tpVSO = new System.Windows.Forms.TabPage();
@@ -96,7 +97,9 @@
             this.txtLPORT = new System.Windows.Forms.TextBox();
             this.lbRHOST = new System.Windows.Forms.Label();
             this.txtRHOST = new System.Windows.Forms.TextBox();
-            this.btnCSE_Decode = new System.Windows.Forms.Button();
+            this.tpCmdCon = new System.Windows.Forms.TabPage();
+            this.txtCmdCon = new System.Windows.Forms.RichTextBox();
+            this.btnCmdCon = new System.Windows.Forms.Button();
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.tcMain.SuspendLayout();
@@ -115,6 +118,7 @@
             this.tpVSO.SuspendLayout();
             this.tpEncodeAssembly.SuspendLayout();
             this.gnEnviroment.SuspendLayout();
+            this.tpCmdCon.SuspendLayout();
             this.SuspendLayout();
             // 
             // statusStrip1
@@ -123,10 +127,10 @@
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.sbProgress,
             this.sbLabel1});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 649);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 643);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Padding = new System.Windows.Forms.Padding(1, 0, 9, 0);
-            this.statusStrip1.Size = new System.Drawing.Size(947, 23);
+            this.statusStrip1.Size = new System.Drawing.Size(945, 23);
             this.statusStrip1.TabIndex = 0;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -149,7 +153,7 @@
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(4, 1, 0, 1);
-            this.menuStrip1.Size = new System.Drawing.Size(947, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(945, 24);
             this.menuStrip1.TabIndex = 1;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -170,11 +174,12 @@
             this.tcMain.Controls.Add(this.tpCustomEncoder);
             this.tcMain.Controls.Add(this.tpVSO);
             this.tcMain.Controls.Add(this.tpEncodeAssembly);
+            this.tcMain.Controls.Add(this.tpCmdCon);
             this.tcMain.Location = new System.Drawing.Point(8, 109);
-            this.tcMain.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tcMain.Margin = new System.Windows.Forms.Padding(2);
             this.tcMain.Name = "tcMain";
             this.tcMain.SelectedIndex = 0;
-            this.tcMain.Size = new System.Drawing.Size(927, 529);
+            this.tcMain.Size = new System.Drawing.Size(925, 523);
             this.tcMain.TabIndex = 2;
             // 
             // tpMsfVenom
@@ -191,9 +196,9 @@
             this.tpMsfVenom.Controls.Add(this.groupBox2);
             this.tpMsfVenom.Controls.Add(this.groupBox1);
             this.tpMsfVenom.Location = new System.Drawing.Point(4, 22);
-            this.tpMsfVenom.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tpMsfVenom.Margin = new System.Windows.Forms.Padding(2);
             this.tpMsfVenom.Name = "tpMsfVenom";
-            this.tpMsfVenom.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tpMsfVenom.Padding = new System.Windows.Forms.Padding(2);
             this.tpMsfVenom.Size = new System.Drawing.Size(919, 503);
             this.tpMsfVenom.TabIndex = 0;
             this.tpMsfVenom.Text = "    msfvenom    ";
@@ -205,7 +210,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtMsvListener.Font = new System.Drawing.Font("Consolas", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtMsvListener.Location = new System.Drawing.Point(12, 421);
-            this.txtMsvListener.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtMsvListener.Margin = new System.Windows.Forms.Padding(2);
             this.txtMsvListener.Name = "txtMsvListener";
             this.txtMsvListener.Size = new System.Drawing.Size(885, 84);
             this.txtMsvListener.TabIndex = 12;
@@ -217,7 +222,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtMsvGenerator.Font = new System.Drawing.Font("Consolas", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtMsvGenerator.Location = new System.Drawing.Point(12, 301);
-            this.txtMsvGenerator.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtMsvGenerator.Margin = new System.Windows.Forms.Padding(2);
             this.txtMsvGenerator.Name = "txtMsvGenerator";
             this.txtMsvGenerator.Size = new System.Drawing.Size(885, 84);
             this.txtMsvGenerator.TabIndex = 11;
@@ -251,7 +256,7 @@
             // 
             this.btnMsvGenerate.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnMsvGenerate.Location = new System.Drawing.Point(135, 177);
-            this.btnMsvGenerate.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnMsvGenerate.Margin = new System.Windows.Forms.Padding(2);
             this.btnMsvGenerate.Name = "btnMsvGenerate";
             this.btnMsvGenerate.Size = new System.Drawing.Size(600, 63);
             this.btnMsvGenerate.TabIndex = 8;
@@ -263,9 +268,9 @@
             // 
             this.groupBox6.Controls.Add(this.numMsvNopSled);
             this.groupBox6.Location = new System.Drawing.Point(773, 14);
-            this.groupBox6.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox6.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox6.Padding = new System.Windows.Forms.Padding(2);
             this.groupBox6.Size = new System.Drawing.Size(137, 122);
             this.groupBox6.TabIndex = 7;
             this.groupBox6.TabStop = false;
@@ -274,7 +279,7 @@
             // numMsvNopSled
             // 
             this.numMsvNopSled.Location = new System.Drawing.Point(4, 16);
-            this.numMsvNopSled.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.numMsvNopSled.Margin = new System.Windows.Forms.Padding(2);
             this.numMsvNopSled.Name = "numMsvNopSled";
             this.numMsvNopSled.Size = new System.Drawing.Size(129, 20);
             this.numMsvNopSled.TabIndex = 2;
@@ -286,9 +291,9 @@
             this.groupBox5.Controls.Add(this.txtMsvFilename);
             this.groupBox5.Controls.Add(this.cbMsvOutput);
             this.groupBox5.Location = new System.Drawing.Point(351, 14);
-            this.groupBox5.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox5.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox5.Padding = new System.Windows.Forms.Padding(2);
             this.groupBox5.Size = new System.Drawing.Size(137, 122);
             this.groupBox5.TabIndex = 6;
             this.groupBox5.TabStop = false;
@@ -307,7 +312,7 @@
             // txtMsvFilename
             // 
             this.txtMsvFilename.Location = new System.Drawing.Point(4, 60);
-            this.txtMsvFilename.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtMsvFilename.Margin = new System.Windows.Forms.Padding(2);
             this.txtMsvFilename.Name = "txtMsvFilename";
             this.txtMsvFilename.Size = new System.Drawing.Size(118, 20);
             this.txtMsvFilename.TabIndex = 2;
@@ -340,7 +345,7 @@
             "psh-net",
             "psh-reflection"});
             this.cbMsvOutput.Location = new System.Drawing.Point(4, 16);
-            this.cbMsvOutput.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.cbMsvOutput.Margin = new System.Windows.Forms.Padding(2);
             this.cbMsvOutput.Name = "cbMsvOutput";
             this.cbMsvOutput.Size = new System.Drawing.Size(118, 21);
             this.cbMsvOutput.TabIndex = 1;
@@ -351,9 +356,9 @@
             // 
             this.groupBox4.Controls.Add(this.cbMsvEncryption);
             this.groupBox4.Location = new System.Drawing.Point(632, 14);
-            this.groupBox4.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox4.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox4.Padding = new System.Windows.Forms.Padding(2);
             this.groupBox4.Size = new System.Drawing.Size(137, 122);
             this.groupBox4.TabIndex = 5;
             this.groupBox4.TabStop = false;
@@ -367,7 +372,7 @@
             "aes256",
             "rc4"});
             this.cbMsvEncryption.Location = new System.Drawing.Point(4, 16);
-            this.cbMsvEncryption.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.cbMsvEncryption.Margin = new System.Windows.Forms.Padding(2);
             this.cbMsvEncryption.Name = "cbMsvEncryption";
             this.cbMsvEncryption.Size = new System.Drawing.Size(118, 21);
             this.cbMsvEncryption.TabIndex = 1;
@@ -380,9 +385,9 @@
             this.groupBox3.Controls.Add(this.numMsvEncIteration);
             this.groupBox3.Controls.Add(this.cbMsvEncoding);
             this.groupBox3.Location = new System.Drawing.Point(491, 14);
-            this.groupBox3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox3.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox3.Padding = new System.Windows.Forms.Padding(2);
             this.groupBox3.Size = new System.Drawing.Size(137, 122);
             this.groupBox3.TabIndex = 4;
             this.groupBox3.TabStop = false;
@@ -401,7 +406,7 @@
             // numMsvEncIteration
             // 
             this.numMsvEncIteration.Location = new System.Drawing.Point(4, 60);
-            this.numMsvEncIteration.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.numMsvEncIteration.Margin = new System.Windows.Forms.Padding(2);
             this.numMsvEncIteration.Name = "numMsvEncIteration";
             this.numMsvEncIteration.Size = new System.Drawing.Size(117, 20);
             this.numMsvEncIteration.TabIndex = 2;
@@ -417,7 +422,7 @@
             "x64/zutto_dekiru",
             "x86/shikata_ga_nai"});
             this.cbMsvEncoding.Location = new System.Drawing.Point(4, 16);
-            this.cbMsvEncoding.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.cbMsvEncoding.Margin = new System.Windows.Forms.Padding(2);
             this.cbMsvEncoding.Name = "cbMsvEncoding";
             this.cbMsvEncoding.Size = new System.Drawing.Size(118, 21);
             this.cbMsvEncoding.TabIndex = 1;
@@ -430,9 +435,9 @@
             this.groupBox2.Controls.Add(this.rbMsvStaged);
             this.groupBox2.Controls.Add(this.cbMsvPayload);
             this.groupBox2.Location = new System.Drawing.Point(97, 14);
-            this.groupBox2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox2.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox2.Padding = new System.Windows.Forms.Padding(2);
             this.groupBox2.Size = new System.Drawing.Size(249, 122);
             this.groupBox2.TabIndex = 3;
             this.groupBox2.TabStop = false;
@@ -442,7 +447,7 @@
             // 
             this.rbMsvFull.AutoSize = true;
             this.rbMsvFull.Location = new System.Drawing.Point(92, 44);
-            this.rbMsvFull.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.rbMsvFull.Margin = new System.Windows.Forms.Padding(2);
             this.rbMsvFull.Name = "rbMsvFull";
             this.rbMsvFull.Size = new System.Drawing.Size(41, 17);
             this.rbMsvFull.TabIndex = 2;
@@ -455,7 +460,7 @@
             this.rbMsvStaged.AutoSize = true;
             this.rbMsvStaged.Checked = true;
             this.rbMsvStaged.Location = new System.Drawing.Point(4, 46);
-            this.rbMsvStaged.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.rbMsvStaged.Margin = new System.Windows.Forms.Padding(2);
             this.rbMsvStaged.Name = "rbMsvStaged";
             this.rbMsvStaged.Size = new System.Drawing.Size(59, 17);
             this.rbMsvStaged.TabIndex = 1;
@@ -475,7 +480,7 @@
             "windows/x64/shell/reverse_tcp",
             "windows/x64/shell/bind_tcp"});
             this.cbMsvPayload.Location = new System.Drawing.Point(4, 16);
-            this.cbMsvPayload.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.cbMsvPayload.Margin = new System.Windows.Forms.Padding(2);
             this.cbMsvPayload.Name = "cbMsvPayload";
             this.cbMsvPayload.Size = new System.Drawing.Size(240, 21);
             this.cbMsvPayload.TabIndex = 0;
@@ -487,9 +492,9 @@
             this.groupBox1.Controls.Add(this.rbMsv86);
             this.groupBox1.Controls.Add(this.rbMsv64);
             this.groupBox1.Location = new System.Drawing.Point(12, 14);
-            this.groupBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(2);
             this.groupBox1.Size = new System.Drawing.Size(81, 122);
             this.groupBox1.TabIndex = 2;
             this.groupBox1.TabStop = false;
@@ -499,7 +504,7 @@
             // 
             this.rbMsv86.AutoSize = true;
             this.rbMsv86.Location = new System.Drawing.Point(13, 51);
-            this.rbMsv86.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.rbMsv86.Margin = new System.Windows.Forms.Padding(2);
             this.rbMsv86.Name = "rbMsv86";
             this.rbMsv86.Size = new System.Drawing.Size(42, 17);
             this.rbMsv86.TabIndex = 1;
@@ -512,7 +517,7 @@
             this.rbMsv64.AutoSize = true;
             this.rbMsv64.Checked = true;
             this.rbMsv64.Location = new System.Drawing.Point(13, 25);
-            this.rbMsv64.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.rbMsv64.Margin = new System.Windows.Forms.Padding(2);
             this.rbMsv64.Name = "rbMsv64";
             this.rbMsv64.Size = new System.Drawing.Size(42, 17);
             this.rbMsv64.TabIndex = 0;
@@ -527,9 +532,9 @@
             this.tpProxyDLL.Controls.Add(this.btnProxyLoad);
             this.tpProxyDLL.Controls.Add(this.txtProxyOut);
             this.tpProxyDLL.Location = new System.Drawing.Point(4, 22);
-            this.tpProxyDLL.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tpProxyDLL.Margin = new System.Windows.Forms.Padding(2);
             this.tpProxyDLL.Name = "tpProxyDLL";
-            this.tpProxyDLL.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tpProxyDLL.Padding = new System.Windows.Forms.Padding(2);
             this.tpProxyDLL.Size = new System.Drawing.Size(919, 503);
             this.tpProxyDLL.TabIndex = 1;
             this.tpProxyDLL.Text = "    Proxy DLL Generator    ";
@@ -539,7 +544,7 @@
             // 
             this.txtProxyPath.Font = new System.Drawing.Font("Consolas", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtProxyPath.Location = new System.Drawing.Point(12, 10);
-            this.txtProxyPath.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtProxyPath.Margin = new System.Windows.Forms.Padding(2);
             this.txtProxyPath.Name = "txtProxyPath";
             this.txtProxyPath.Size = new System.Drawing.Size(801, 20);
             this.txtProxyPath.TabIndex = 2;
@@ -547,7 +552,7 @@
             // btnProxyLoad
             // 
             this.btnProxyLoad.Location = new System.Drawing.Point(815, 8);
-            this.btnProxyLoad.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnProxyLoad.Margin = new System.Windows.Forms.Padding(2);
             this.btnProxyLoad.Name = "btnProxyLoad";
             this.btnProxyLoad.Size = new System.Drawing.Size(94, 23);
             this.btnProxyLoad.TabIndex = 1;
@@ -562,7 +567,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtProxyOut.Font = new System.Drawing.Font("Consolas", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtProxyOut.Location = new System.Drawing.Point(12, 43);
-            this.txtProxyOut.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtProxyOut.Margin = new System.Windows.Forms.Padding(2);
             this.txtProxyOut.Name = "txtProxyOut";
             this.txtProxyOut.Size = new System.Drawing.Size(899, 454);
             this.txtProxyOut.TabIndex = 0;
@@ -578,7 +583,7 @@
             this.tpExportScan.Controls.Add(this.txt_Export_Scanner_Out);
             this.tpExportScan.Controls.Add(this.btn_Export_Scanner_Search);
             this.tpExportScan.Location = new System.Drawing.Point(4, 22);
-            this.tpExportScan.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tpExportScan.Margin = new System.Windows.Forms.Padding(2);
             this.tpExportScan.Name = "tpExportScan";
             this.tpExportScan.Size = new System.Drawing.Size(919, 503);
             this.tpExportScan.TabIndex = 2;
@@ -588,7 +593,7 @@
             // btn_Export_Scanner_chdir
             // 
             this.btn_Export_Scanner_chdir.Location = new System.Drawing.Point(677, 47);
-            this.btn_Export_Scanner_chdir.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btn_Export_Scanner_chdir.Margin = new System.Windows.Forms.Padding(2);
             this.btn_Export_Scanner_chdir.Name = "btn_Export_Scanner_chdir";
             this.btn_Export_Scanner_chdir.Size = new System.Drawing.Size(50, 21);
             this.btn_Export_Scanner_chdir.TabIndex = 6;
@@ -609,7 +614,7 @@
             // txt_Export_Scanner_Dir
             // 
             this.txt_Export_Scanner_Dir.Location = new System.Drawing.Point(80, 47);
-            this.txt_Export_Scanner_Dir.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txt_Export_Scanner_Dir.Margin = new System.Windows.Forms.Padding(2);
             this.txt_Export_Scanner_Dir.Name = "txt_Export_Scanner_Dir";
             this.txt_Export_Scanner_Dir.Size = new System.Drawing.Size(595, 20);
             this.txt_Export_Scanner_Dir.TabIndex = 4;
@@ -629,7 +634,7 @@
             // txt_Export_Scanner_Search_Term
             // 
             this.txt_Export_Scanner_Search_Term.Location = new System.Drawing.Point(80, 16);
-            this.txt_Export_Scanner_Search_Term.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txt_Export_Scanner_Search_Term.Margin = new System.Windows.Forms.Padding(2);
             this.txt_Export_Scanner_Search_Term.Name = "txt_Export_Scanner_Search_Term";
             this.txt_Export_Scanner_Search_Term.Size = new System.Drawing.Size(666, 20);
             this.txt_Export_Scanner_Search_Term.TabIndex = 2;
@@ -642,7 +647,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txt_Export_Scanner_Out.Font = new System.Drawing.Font("Consolas", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txt_Export_Scanner_Out.Location = new System.Drawing.Point(12, 84);
-            this.txt_Export_Scanner_Out.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txt_Export_Scanner_Out.Margin = new System.Windows.Forms.Padding(2);
             this.txt_Export_Scanner_Out.Name = "txt_Export_Scanner_Out";
             this.txt_Export_Scanner_Out.Size = new System.Drawing.Size(898, 415);
             this.txt_Export_Scanner_Out.TabIndex = 1;
@@ -651,7 +656,7 @@
             // btn_Export_Scanner_Search
             // 
             this.btn_Export_Scanner_Search.Location = new System.Drawing.Point(775, 16);
-            this.btn_Export_Scanner_Search.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btn_Export_Scanner_Search.Margin = new System.Windows.Forms.Padding(2);
             this.btn_Export_Scanner_Search.Name = "btn_Export_Scanner_Search";
             this.btn_Export_Scanner_Search.Size = new System.Drawing.Size(134, 47);
             this.btn_Export_Scanner_Search.TabIndex = 0;
@@ -665,17 +670,28 @@
             this.tpCustomEncoder.Controls.Add(this.btnCSE_Encode);
             this.tpCustomEncoder.Controls.Add(this.txtCSE_out);
             this.tpCustomEncoder.Location = new System.Drawing.Point(4, 22);
-            this.tpCustomEncoder.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tpCustomEncoder.Margin = new System.Windows.Forms.Padding(2);
             this.tpCustomEncoder.Name = "tpCustomEncoder";
             this.tpCustomEncoder.Size = new System.Drawing.Size(919, 503);
             this.tpCustomEncoder.TabIndex = 3;
             this.tpCustomEncoder.Text = "Custom Shellcode Encoder";
             this.tpCustomEncoder.UseVisualStyleBackColor = true;
             // 
+            // btnCSE_Decode
+            // 
+            this.btnCSE_Decode.Location = new System.Drawing.Point(117, 14);
+            this.btnCSE_Decode.Margin = new System.Windows.Forms.Padding(2);
+            this.btnCSE_Decode.Name = "btnCSE_Decode";
+            this.btnCSE_Decode.Size = new System.Drawing.Size(78, 22);
+            this.btnCSE_Decode.TabIndex = 4;
+            this.btnCSE_Decode.Text = "Decode";
+            this.btnCSE_Decode.UseVisualStyleBackColor = true;
+            this.btnCSE_Decode.Click += new System.EventHandler(this.btnCSE_Decode_Click);
+            // 
             // btnCSE_Encode
             // 
             this.btnCSE_Encode.Location = new System.Drawing.Point(12, 14);
-            this.btnCSE_Encode.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnCSE_Encode.Margin = new System.Windows.Forms.Padding(2);
             this.btnCSE_Encode.Name = "btnCSE_Encode";
             this.btnCSE_Encode.Size = new System.Drawing.Size(78, 22);
             this.btnCSE_Encode.TabIndex = 3;
@@ -690,7 +706,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtCSE_out.Font = new System.Drawing.Font("Consolas", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtCSE_out.Location = new System.Drawing.Point(12, 51);
-            this.txtCSE_out.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtCSE_out.Margin = new System.Windows.Forms.Padding(2);
             this.txtCSE_out.Name = "txtCSE_out";
             this.txtCSE_out.Size = new System.Drawing.Size(899, 445);
             this.txtCSE_out.TabIndex = 0;
@@ -703,7 +719,7 @@
             this.tpVSO.Controls.Add(this.btnVSO_Obfuscate);
             this.tpVSO.Controls.Add(this.txtVSO_In);
             this.tpVSO.Location = new System.Drawing.Point(4, 22);
-            this.tpVSO.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tpVSO.Margin = new System.Windows.Forms.Padding(2);
             this.tpVSO.Name = "tpVSO";
             this.tpVSO.Size = new System.Drawing.Size(919, 503);
             this.tpVSO.TabIndex = 4;
@@ -713,7 +729,7 @@
             // txtVSO_out
             // 
             this.txtVSO_out.Location = new System.Drawing.Point(12, 163);
-            this.txtVSO_out.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtVSO_out.Margin = new System.Windows.Forms.Padding(2);
             this.txtVSO_out.Name = "txtVSO_out";
             this.txtVSO_out.Size = new System.Drawing.Size(898, 333);
             this.txtVSO_out.TabIndex = 2;
@@ -722,7 +738,7 @@
             // btnVSO_Obfuscate
             // 
             this.btnVSO_Obfuscate.Location = new System.Drawing.Point(397, 101);
-            this.btnVSO_Obfuscate.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnVSO_Obfuscate.Margin = new System.Windows.Forms.Padding(2);
             this.btnVSO_Obfuscate.Name = "btnVSO_Obfuscate";
             this.btnVSO_Obfuscate.Size = new System.Drawing.Size(121, 40);
             this.btnVSO_Obfuscate.TabIndex = 1;
@@ -733,7 +749,7 @@
             // txtVSO_In
             // 
             this.txtVSO_In.Location = new System.Drawing.Point(12, 12);
-            this.txtVSO_In.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtVSO_In.Margin = new System.Windows.Forms.Padding(2);
             this.txtVSO_In.Name = "txtVSO_In";
             this.txtVSO_In.Size = new System.Drawing.Size(898, 79);
             this.txtVSO_In.TabIndex = 0;
@@ -775,7 +791,7 @@
             // 
             this.txtLHOST.Font = new System.Drawing.Font("Consolas", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtLHOST.Location = new System.Drawing.Point(57, 21);
-            this.txtLHOST.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtLHOST.Margin = new System.Windows.Forms.Padding(2);
             this.txtLHOST.Name = "txtLHOST";
             this.txtLHOST.Size = new System.Drawing.Size(104, 20);
             this.txtLHOST.TabIndex = 3;
@@ -813,10 +829,10 @@
             this.gnEnviroment.Controls.Add(this.txtLHOST);
             this.gnEnviroment.Font = new System.Drawing.Font("Consolas", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.gnEnviroment.Location = new System.Drawing.Point(8, 23);
-            this.gnEnviroment.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.gnEnviroment.Margin = new System.Windows.Forms.Padding(2);
             this.gnEnviroment.Name = "gnEnviroment";
-            this.gnEnviroment.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.gnEnviroment.Size = new System.Drawing.Size(924, 81);
+            this.gnEnviroment.Padding = new System.Windows.Forms.Padding(2);
+            this.gnEnviroment.Size = new System.Drawing.Size(922, 81);
             this.gnEnviroment.TabIndex = 5;
             this.gnEnviroment.TabStop = false;
             this.gnEnviroment.Text = "Environment";
@@ -837,9 +853,9 @@
             this.txtMsvCmd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.txtMsvCmd.Font = new System.Drawing.Font("Consolas", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtMsvCmd.Location = new System.Drawing.Point(431, 52);
-            this.txtMsvCmd.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtMsvCmd.Margin = new System.Windows.Forms.Padding(2);
             this.txtMsvCmd.Name = "txtMsvCmd";
-            this.txtMsvCmd.Size = new System.Drawing.Size(482, 20);
+            this.txtMsvCmd.Size = new System.Drawing.Size(480, 20);
             this.txtMsvCmd.TabIndex = 15;
             this.txtMsvCmd.Text = "whoami";
             this.txtMsvCmd.TextChanged += new System.EventHandler(this.txtMsvCmd_TextChanged);
@@ -859,7 +875,7 @@
             // 
             this.txtPASS.Font = new System.Drawing.Font("Consolas", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtPASS.Location = new System.Drawing.Point(235, 49);
-            this.txtPASS.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtPASS.Margin = new System.Windows.Forms.Padding(2);
             this.txtPASS.Name = "txtPASS";
             this.txtPASS.PasswordChar = '*';
             this.txtPASS.Size = new System.Drawing.Size(104, 20);
@@ -883,7 +899,7 @@
             // 
             this.txtUSER.Font = new System.Drawing.Font("Consolas", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtUSER.Location = new System.Drawing.Point(57, 49);
-            this.txtUSER.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtUSER.Margin = new System.Windows.Forms.Padding(2);
             this.txtUSER.Name = "txtUSER";
             this.txtUSER.Size = new System.Drawing.Size(104, 20);
             this.txtUSER.TabIndex = 11;
@@ -905,7 +921,7 @@
             // 
             this.txtRPORT.Font = new System.Drawing.Font("Consolas", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtRPORT.Location = new System.Drawing.Point(606, 18);
-            this.txtRPORT.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtRPORT.Margin = new System.Windows.Forms.Padding(2);
             this.txtRPORT.Name = "txtRPORT";
             this.txtRPORT.Size = new System.Drawing.Size(104, 20);
             this.txtRPORT.TabIndex = 9;
@@ -927,7 +943,7 @@
             // 
             this.txtLPORT.Font = new System.Drawing.Font("Consolas", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtLPORT.Location = new System.Drawing.Point(419, 19);
-            this.txtLPORT.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtLPORT.Margin = new System.Windows.Forms.Padding(2);
             this.txtLPORT.Name = "txtLPORT";
             this.txtLPORT.Size = new System.Drawing.Size(104, 20);
             this.txtLPORT.TabIndex = 7;
@@ -949,35 +965,57 @@
             // 
             this.txtRHOST.Font = new System.Drawing.Font("Consolas", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtRHOST.Location = new System.Drawing.Point(235, 20);
-            this.txtRHOST.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtRHOST.Margin = new System.Windows.Forms.Padding(2);
             this.txtRHOST.Name = "txtRHOST";
             this.txtRHOST.Size = new System.Drawing.Size(104, 20);
             this.txtRHOST.TabIndex = 5;
             this.txtRHOST.Text = "192.168.0.10";
             this.txtRHOST.TextChanged += new System.EventHandler(this.txtRHOST_TextChanged);
             // 
-            // btnCSE_Decode
+            // tpCmdCon
             // 
-            this.btnCSE_Decode.Location = new System.Drawing.Point(117, 14);
-            this.btnCSE_Decode.Margin = new System.Windows.Forms.Padding(2);
-            this.btnCSE_Decode.Name = "btnCSE_Decode";
-            this.btnCSE_Decode.Size = new System.Drawing.Size(78, 22);
-            this.btnCSE_Decode.TabIndex = 4;
-            this.btnCSE_Decode.Text = "Decode";
-            this.btnCSE_Decode.UseVisualStyleBackColor = true;
-            this.btnCSE_Decode.Click += new System.EventHandler(this.btnCSE_Decode_Click);
+            this.tpCmdCon.Controls.Add(this.btnCmdCon);
+            this.tpCmdCon.Controls.Add(this.txtCmdCon);
+            this.tpCmdCon.Location = new System.Drawing.Point(4, 22);
+            this.tpCmdCon.Name = "tpCmdCon";
+            this.tpCmdCon.Padding = new System.Windows.Forms.Padding(3);
+            this.tpCmdCon.Size = new System.Drawing.Size(917, 497);
+            this.tpCmdCon.TabIndex = 6;
+            this.tpCmdCon.Text = "Command Converter";
+            this.tpCmdCon.UseVisualStyleBackColor = true;
+            // 
+            // txtCmdCon
+            // 
+            this.txtCmdCon.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.txtCmdCon.Location = new System.Drawing.Point(6, 6);
+            this.txtCmdCon.Name = "txtCmdCon";
+            this.txtCmdCon.Size = new System.Drawing.Size(903, 450);
+            this.txtCmdCon.TabIndex = 0;
+            this.txtCmdCon.Text = "";
+            this.txtCmdCon.TextChanged += new System.EventHandler(this.txtCmdCon_TextChanged);
+            // 
+            // btnCmdCon
+            // 
+            this.btnCmdCon.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnCmdCon.Location = new System.Drawing.Point(776, 459);
+            this.btnCmdCon.Name = "btnCmdCon";
+            this.btnCmdCon.Size = new System.Drawing.Size(135, 32);
+            this.btnCmdCon.TabIndex = 1;
+            this.btnCmdCon.Text = "Convert";
+            this.btnCmdCon.UseVisualStyleBackColor = true;
+            this.btnCmdCon.Click += new System.EventHandler(this.btnCmdCon_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(947, 672);
+            this.ClientSize = new System.Drawing.Size(945, 666);
             this.Controls.Add(this.gnEnviroment);
             this.Controls.Add(this.tcMain);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.MinimumSize = new System.Drawing.Size(961, 705);
             this.Name = "Form1";
             this.Text = "OSEP 2026";
@@ -1010,6 +1048,7 @@
             this.tpEncodeAssembly.ResumeLayout(false);
             this.gnEnviroment.ResumeLayout(false);
             this.gnEnviroment.PerformLayout();
+            this.tpCmdCon.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1086,6 +1125,9 @@
         private System.Windows.Forms.Button btnEA_Encode;
         private System.Windows.Forms.RichTextBox txtEA_out;
         private System.Windows.Forms.Button btnCSE_Decode;
+        private System.Windows.Forms.TabPage tpCmdCon;
+        private System.Windows.Forms.Button btnCmdCon;
+        private System.Windows.Forms.RichTextBox txtCmdCon;
     }
 }
 

@@ -612,6 +612,10 @@ namespace Build
                 output = output.Replace("{INSTALL_UTIL_EXE_PATH}", CONFIG.INSTALL_UTIL_EXE_PATH);
                 output = output.Replace("{ATTACKER_IP}", CONFIG.ATTACKER_IP);
                 output = output.Replace("{LPORT}", CONFIG.LPORT);
+                output = output.Replace("{SLIV_LISTENER_64}", CONFIG.SLIV_LISTENER_64);
+                output = output.Replace("{SLIV_LISTENER_86}", CONFIG.SLIV_LISTENER_86);
+                output = output.Replace("{SLIV_STAGER_64}", CONFIG.SLIV_STAGER_64);
+                output = output.Replace("{SLIV_STAGER_86}", CONFIG.SLIV_STAGER_86);
 
 
 

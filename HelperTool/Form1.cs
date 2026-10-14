@@ -555,5 +555,42 @@ namespace OSEP_2026
 
             Application.DoEvents();
         }
+
+        private void btnCmdCon_Click(object sender, EventArgs e)
+        {
+            string rawtxt = txtCmdCon.Text;
+            txtCmdCon.Clear();
+
+
+            byte[] uni = Encoding.Unicode.GetBytes(rawtxt);
+            byte[] utf8 = Encoding.UTF8.GetBytes(rawtxt);
+
+            StringBuilder sb = new StringBuilder();
+
+            sb.AppendLine("--- Sliver ---");
+            sb.AppendLine($"execute -o -- {rawtxt}");
+            sb.AppendLine("\n\n--- SharpSh ---");
+            sb.AppendLine($"sharpsh -- -e -c {Convert.ToBase64String(utf8)}");
+            sb.AppendLine("\n\n--- Powershell ---");
+            sb.AppendLine($"powershell -e {Convert.ToBase64String(uni)}");
+
+            txtCmdCon.Text = sb.ToString();
+
+
+
+
+        }
+
+        private void txtCmdCon_TextChanged(object sender, EventArgs e)
+        {
+            if (txtCmdCon.Lines.Count()> 1)
+            {
+                btnCmdCon.Enabled = false;
+            }
+            else
+            {
+                btnCmdCon.Enabled = true;
+            }
+        }
     }
 }
